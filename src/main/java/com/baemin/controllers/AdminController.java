@@ -16,7 +16,7 @@ import com.baemin.services.AdminService;
 import com.baemin.services.MemberService;
 
 @RestController
-@RequestMapping("api/admin")
+@RequestMapping("/api/admin")
 public class AdminController {
 	private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
 	
