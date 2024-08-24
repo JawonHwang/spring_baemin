@@ -18,7 +18,7 @@ public class MemberDTO {
     private String memStuId;
     private String memGender;
     private int memClubNum;
-    private int memTierId;   
+    private int memTierId;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp memJoinDate;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -131,5 +131,4 @@ public class MemberDTO {
 		this.memApprovalDate = memApprovalDate;
 		this.role = role;
 	}
-	
 }

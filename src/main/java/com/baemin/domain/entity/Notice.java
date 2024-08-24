@@ -5,66 +5,68 @@ import java.sql.Timestamp;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "NOTICES")
 public class Notice {
 
 	@Id
-	@Column(name="NOT_ID")			//공지사항ID
-	private int not_id;
+	@Column(name="NOT_ID")		//공지사항ID
+	private int notId;
 
-	@Column(name="TITLE")			//제목
+	@Column(name="TITLE")		//제목
 	private String title;
 	
-	@Column(name="CONTENT")			//내용
+	@Column(name="CONTENT")		//내용
 	private String content;
 	
-	@Column(name="NOT_TAG_ID")		//태그ID
-	private int not_tag_id;
+	@Column(name="NOT_TAG_ID")	//태그ID
+	private int notTagId;
 	
-	@Column(name="VIEWS")			//조회수
+	@Column(name="VIEWS")		//조회수
 	private int views;
 	
-	@Column(name="NOT_STE_ID")		//상태ID
-	private int not_ste_id;
+	@Column(name="NOT_STE_ID")	//상태ID
+	private int notSteId;
 	
-	@Column(name="ADMIN_ID")		//작성자(관리자)ID
-	private String admin_id;
+	@Column(name="ADMIN_ID")	//작성자(관리자)ID
+	private String adminId;
 	
-	@Column(name="CRE_AT")			//작성일
-	private Timestamp cre_at;
+	@Column(name="CRE_AT")		//작성일
+	private Timestamp creAt;
 	
-	@Column(name="UPT_AT")			//수정일
-	private Timestamp upt_at;
+	@Column(name="UPT_AT")		//수정일
+	private Timestamp uptAt;
 	
-	@Column(name="DEL_AT")			//삭제일
-	private Timestamp del_at;
+	@Column(name="DEL_AT")		//삭제일
+	private Timestamp delAt;
 
 	public Notice() {
 		super();
 	}
 
-	public Notice(int not_id, String title, String content, int not_tag_id, int views, int not_ste_id, String admin_id,
-			Timestamp cre_at, Timestamp upt_at, Timestamp del_at) {
+	public Notice(int notId, String title, String content, int notTagId, int views, int notSteId, String adminId,
+			Timestamp creAt, Timestamp uptAt, Timestamp delAt) {
 		super();
-		this.not_id = not_id;
+		this.notId = notId;
 		this.title = title;
 		this.content = content;
-		this.not_tag_id = not_tag_id;
+		this.notTagId = notTagId;
 		this.views = views;
-		this.not_ste_id = not_ste_id;
-		this.admin_id = admin_id;
-		this.cre_at = cre_at;
-		this.upt_at = upt_at;
-		this.del_at = del_at;
+		this.notSteId = notSteId;
+		this.adminId = adminId;
+		this.creAt = creAt;
+		this.uptAt = uptAt;
+		this.delAt = delAt;
 	}
 
-	public int getNot_id() {
-		return not_id;
+	public int getNotId() {
+		return notId;
 	}
 
-	public void setNot_id(int not_id) {
-		this.not_id = not_id;
+	public void setNotId(int notId) {
+		this.notId = notId;
 	}
 
 	public String getTitle() {
@@ -83,12 +85,12 @@ public class Notice {
 		this.content = content;
 	}
 
-	public int getNot_tag_id() {
-		return not_tag_id;
+	public int getNotTagId() {
+		return notTagId;
 	}
 
-	public void setNot_tag_id(int not_tag_id) {
-		this.not_tag_id = not_tag_id;
+	public void setNotTagId(int notTagId) {
+		this.notTagId = notTagId;
 	}
 
 	public int getViews() {
@@ -99,43 +101,43 @@ public class Notice {
 		this.views = views;
 	}
 
-	public int getNot_ste_id() {
-		return not_ste_id;
+	public int getNotSteId() {
+		return notSteId;
 	}
 
-	public void setNot_ste_id(int not_ste_id) {
-		this.not_ste_id = not_ste_id;
+	public void setNotSteId(int notSteId) {
+		this.notSteId = notSteId;
 	}
 
-	public String getAdmin_id() {
-		return admin_id;
+	public String getAdminId() {
+		return adminId;
 	}
 
-	public void setAdmin_id(String admin_id) {
-		this.admin_id = admin_id;
+	public void setAdminId(String adminId) {
+		this.adminId = adminId;
 	}
 
-	public Timestamp getCre_at() {
-		return cre_at;
+	public Timestamp getCreAt() {
+		return creAt;
 	}
 
-	public void setCre_at(Timestamp cre_at) {
-		this.cre_at = cre_at;
+	public void setCreAt(Timestamp creAt) {
+		this.creAt = creAt;
 	}
 
-	public Timestamp getUpt_at() {
-		return upt_at;
+	public Timestamp getUptAt() {
+		return uptAt;
 	}
 
-	public void setUpt_at(Timestamp upt_at) {
-		this.upt_at = upt_at;
+	public void setUptAt(Timestamp uptAt) {
+		this.uptAt = uptAt;
 	}
 
-	public Timestamp getDel_at() {
-		return del_at;
+	public Timestamp getDelAt() {
+		return delAt;
 	}
 
-	public void setDel_at(Timestamp del_at) {
-		this.del_at = del_at;
+	public void setDelAt(Timestamp delAt) {
+		this.delAt = delAt;
 	}
 }

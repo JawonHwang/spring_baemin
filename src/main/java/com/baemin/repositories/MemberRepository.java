@@ -9,9 +9,10 @@ import com.baemin.domain.entity.Member;
 public interface MemberRepository extends JpaRepository<Member, String> {
 
 	List<Member> findByMemNameAndMemEmail(String name, String email);
-	
+
 	Member findAllByMemId(String email);
-	
+
+	Member findByMemId(String MemId);
+
 	List<Member> findAll();
-	
 }

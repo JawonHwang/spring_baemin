@@ -2,41 +2,62 @@ package com.baemin.domain.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "ADMINS")
 public class Admin {
-
+	
 	@Id
-	@Column(name="ADMIN_USER_ID")		//관리자ID
-	private String admin_user_id;
+	@Column(name = "ADMIN_ID")
+	private String adminId;
 
-	@Column(name="ADMIN_TYPE_ID")		//관리자 유형 ID
-	private int admin_type_id;
+	@OneToOne(fetch = FetchType.LAZY)
+	@MapsId
+	@JoinColumn(name = "ADMIN_ID", insertable = false, updatable = false)
+	private Member member;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "ADMIN_TYPE_ID", insertable = false, updatable = false)
+	private AdminType adminType;
 
 	public Admin() {
 		super();
 	}
 
-	public Admin(String admin_user_id, int admin_type_id) {
+	public Admin(Member member, AdminType adminType) {
 		super();
-		this.admin_user_id = admin_user_id;
-		this.admin_type_id = admin_type_id;
+		this.member = member;
+		this.adminType = adminType;
 	}
 
-	public String getAdmin_user_id() {
-		return admin_user_id;
+	public String getAdminId() {
+		return adminId;
 	}
 
-	public void setAdmin_user_id(String admin_user_id) {
-		this.admin_user_id = admin_user_id;
+	public void setAdminId(String adminId) {
+		this.adminId = adminId;
 	}
 
-	public int getAdmin_type_id() {
-		return admin_type_id;
+	public Member getMember() {
+		return member;
 	}
 
-	public void setAdmin_type_id(int admin_type_id) {
-		this.admin_type_id = admin_type_id;
+	public void setMember(Member member) {
+		this.member = member;
+	}
+
+	public AdminType getAdminType() {
+		return adminType;
+	}
+
+	public void setAdminType(AdminType adminType) {
+		this.adminType = adminType;
 	}
 }
