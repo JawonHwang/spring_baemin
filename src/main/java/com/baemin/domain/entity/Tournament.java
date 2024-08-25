@@ -2,6 +2,7 @@ package com.baemin.domain.entity;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -53,7 +54,7 @@ public class Tournament {
 	
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name = "MT_ID")
-	private MatchTeam matchTeam;
+	private Set<MatchTeam> matchTeam;
 
 	public Tournament() {
 		super();
@@ -61,7 +62,7 @@ public class Tournament {
 
 	public Tournament(int tomId, String tomName, String tomLocation, LocalDate tomYear, LocalDate tomStartDate,
 			LocalDate tomEndDate, com.baemin.domain.entity.TomState tomState, Timestamp creAt, Timestamp uptAt,
-			Admin admin, int views, MatchTeam matchTeam) {
+			Admin admin, int views, Set<MatchTeam> matchTeam) {
 		super();
 		this.tomId = tomId;
 		this.tomName = tomName;
@@ -165,11 +166,11 @@ public class Tournament {
 		this.views = views;
 	}
 
-	public MatchTeam getMatchTeam() {
+	public Set<MatchTeam> getMatchTeam() {
 		return matchTeam;
 	}
 
-	public void setMatchTeam(MatchTeam matchTeam) {
+	public void setMatchTeam(Set<MatchTeam> matchTeam) {
 		this.matchTeam = matchTeam;
 	}
 }
