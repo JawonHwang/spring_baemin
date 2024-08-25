@@ -5,7 +5,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
@@ -20,9 +19,9 @@ public class MatchTeam {
 	@JoinColumn(name = "MATCH_ID")
 	private Match match;
 
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinColumn(name = "TEAM_ID")
-	private Team team;
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "TEAM_ID")
+    private Team team;
 
 	@Column(name="SCORE")
 	private String score;

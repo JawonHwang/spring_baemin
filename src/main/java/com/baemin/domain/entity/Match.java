@@ -22,7 +22,7 @@ public class Match {
 
 	@Column(name="MATCH_DATE_TIME")
 	private Timestamp matchDateTime;
-
+	
 	public Match() {
 		super();
 	}

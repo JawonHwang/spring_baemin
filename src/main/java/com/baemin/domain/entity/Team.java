@@ -21,7 +21,7 @@ public class Team {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "PLAYERS_ID")
 	private Player player;
-
+	
 	public Team() {
 		super();
 	}

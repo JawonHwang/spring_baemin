@@ -2,6 +2,7 @@ package com.baemin.dto;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.util.Set;
 
 import com.baemin.domain.entity.TomState;
 
@@ -17,7 +18,7 @@ public class TournamentDTO {
 	private Timestamp uptAt;
 	private AdminDTO admin;
 	private int views;
-	private MatchTeamDTO matchTeam;
+	private Set<MatchTeamDTO> matchTeam;
 	
 	public TournamentDTO() {
 		super();
@@ -25,7 +26,7 @@ public class TournamentDTO {
 
 	public TournamentDTO(int tomId, String tomName, String tomLocation, LocalDate tomYear, LocalDate tomStartDate,
 			LocalDate tomEndDate, com.baemin.domain.entity.TomState tomState, Timestamp creAt, Timestamp uptAt,
-			AdminDTO admin, int views, MatchTeamDTO matchTeam) {
+			AdminDTO admin, int views, Set<MatchTeamDTO> matchTeam) {
 		super();
 		this.tomId = tomId;
 		this.tomName = tomName;
@@ -129,11 +130,11 @@ public class TournamentDTO {
 		this.views = views;
 	}
 
-	public MatchTeamDTO getMatchTeam() {
+	public Set<MatchTeamDTO> getMatchTeam() {
 		return matchTeam;
 	}
 
-	public void setMatchTeam(MatchTeamDTO matchTeam) {
+	public void setMatchTeam(Set<MatchTeamDTO> matchTeam) {
 		this.matchTeam = matchTeam;
 	}
 }
