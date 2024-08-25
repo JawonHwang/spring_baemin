@@ -166,6 +166,9 @@ public class Member {
 	public void setRole(String role) {
 		this.role = role;
 	}
+	
+	public Member() {
+	}
 
 	public Member(String memId, String memPw, String memName, String memContact, String memEmail, LocalDate memBirth,
 			String memDept, String memStuId, String memGender, int memClubNum, int memTierId, Timestamp memJoinDate,
@@ -186,7 +189,5 @@ public class Member {
 		this.memApprovalDate = memApprovalDate;
 		this.role = role;
 	}
-	
-	
 	
 }
