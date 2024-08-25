@@ -3,24 +3,24 @@ package com.baemin.dto;
 import java.sql.Timestamp;
 
 public class MatchDTO {
-	private int matchId;
+	private Long matchId;
 	private String matchName;
 	private String matchStage;
 	private Timestamp matchDateTime;
 	public MatchDTO() {
 		super();
 	}
-	public MatchDTO(int matchId, String matchName, String matchStage, Timestamp matchDateTime) {
+	public MatchDTO(Long matchId, String matchName, String matchStage, Timestamp matchDateTime) {
 		super();
 		this.matchId = matchId;
 		this.matchName = matchName;
 		this.matchStage = matchStage;
 		this.matchDateTime = matchDateTime;
 	}
-	public int getMatchId() {
+	public Long getMatchId() {
 		return matchId;
 	}
-	public void setMatchId(int matchId) {
+	public void setMatchId(Long matchId) {
 		this.matchId = matchId;
 	}
 	public String getMatchName() {

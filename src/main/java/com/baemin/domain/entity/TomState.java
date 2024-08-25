@@ -10,7 +10,7 @@ import jakarta.persistence.Table;
 public class TomState {
 	@Id
 	@Column(name="TOM_STE_ID")
-	private int tomSteId;
+	private Long tomSteId;
 
 	@Column(name="TOM_STE_NAME")
 	private String tomSteName;
@@ -19,17 +19,17 @@ public class TomState {
 		super();
 	}
 
-	public TomState(int tomSteId, String tomSteName) {
+	public TomState(Long tomSteId, String tomSteName) {
 		super();
 		this.tomSteId = tomSteId;
 		this.tomSteName = tomSteName;
 	}
 
-	public int getTomSteId() {
+	public Long getTomSteId() {
 		return tomSteId;
 	}
 
-	public void setTomSteId(int tomSteId) {
+	public void setTomSteId(Long tomSteId) {
 		this.tomSteId = tomSteId;
 	}
 

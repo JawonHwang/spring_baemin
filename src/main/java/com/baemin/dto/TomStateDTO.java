@@ -1,21 +1,21 @@
 package com.baemin.dto;
 
 public class TomStateDTO {
-	private int tomSteId;
+	private Long tomSteId;
 	private String tomSteName;
 	
 	public TomStateDTO() {
 		super();
 	}
-	public TomStateDTO(int tomSteId, String tomSteName) {
+	public TomStateDTO(Long tomSteId, String tomSteName) {
 		super();
 		this.tomSteId = tomSteId;
 		this.tomSteName = tomSteName;
 	}
-	public int getTomSteId() {
+	public Long getTomSteId() {
 		return tomSteId;
 	}
-	public void setTomSteId(int tomSteId) {
+	public void setTomSteId(Long tomSteId) {
 		this.tomSteId = tomSteId;
 	}
 	public String getTomSteName() {

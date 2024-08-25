@@ -18,7 +18,7 @@ import jakarta.persistence.Table;
 public class Tournament {
 	@Id
 	@Column(name="TOM_ID")
-	private int tomId;
+	private Long tomId;
 
 	@Column(name="TOM_NAME")
 	private String tomName;
@@ -50,7 +50,7 @@ public class Tournament {
 	private Admin admin;
 	
 	@Column(name="VIEWS")
-	private int views;
+	private Long views;
 	
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name = "MT_ID")
@@ -60,9 +60,9 @@ public class Tournament {
 		super();
 	}
 
-	public Tournament(int tomId, String tomName, String tomLocation, LocalDate tomYear, LocalDate tomStartDate,
+	public Tournament(Long tomId, String tomName, String tomLocation, LocalDate tomYear, LocalDate tomStartDate,
 			LocalDate tomEndDate, com.baemin.domain.entity.TomState tomState, Timestamp creAt, Timestamp uptAt,
-			Admin admin, int views, Set<MatchTeam> matchTeam) {
+			Admin admin, Long views, Set<MatchTeam> matchTeam) {
 		super();
 		this.tomId = tomId;
 		this.tomName = tomName;
@@ -78,11 +78,11 @@ public class Tournament {
 		this.matchTeam = matchTeam;
 	}
 
-	public int getTomId() {
+	public Long getTomId() {
 		return tomId;
 	}
 
-	public void setTomId(int tomId) {
+	public void setTomId(Long tomId) {
 		this.tomId = tomId;
 	}
 
@@ -158,11 +158,11 @@ public class Tournament {
 		this.admin = admin;
 	}
 
-	public int getViews() {
+	public Long getViews() {
 		return views;
 	}
 
-	public void setViews(int views) {
+	public void setViews(Long views) {
 		this.views = views;
 	}
 

@@ -4,12 +4,12 @@ import java.sql.Timestamp;
 
 public class NoticeDTO {
 
-	private Integer notId;			//관리자ID
+	private Long notId;			//관리자ID
 	private String title;		//제목
 	private String content;		//내용
-	private Integer notTagId;		//태그ID
-	private Integer views;			//조회수
-	private Integer notSteId;		//상태ID
+	private Long notTagId;		//태그ID
+	private Long views;			//조회수
+	private Long notSteId;		//상태ID
 	private String adminId;		//작성자(관리자)ID
 	private Timestamp creAt;	//작성일
 	private Timestamp uptAt;	//수정일
@@ -19,7 +19,7 @@ public class NoticeDTO {
 		super();
 	}
 
-	public NoticeDTO(Integer notId, String title, String content, Integer notTagId, Integer views, Integer notSteId, String adminId,
+	public NoticeDTO(Long notId, String title, String content, Long notTagId, Long views, Long notSteId, String adminId,
 			Timestamp creAt, Timestamp uptAt, Timestamp delAt) {
 		super();
 		this.notId = notId;
@@ -34,11 +34,11 @@ public class NoticeDTO {
 		this.delAt = delAt;
 	}
 
-	public Integer getNotId() {
+	public Long getNotId() {
 		return notId;
 	}
 
-	public void setNotId(Integer notId) {
+	public void setNotId(Long notId) {
 		this.notId = notId;
 	}
 
@@ -58,27 +58,27 @@ public class NoticeDTO {
 		this.content = content;
 	}
 
-	public Integer getNotTagId() {
+	public Long getNotTagId() {
 		return notTagId;
 	}
 
-	public void setNotTagId(Integer notTagId) {
+	public void setNotTagId(Long notTagId) {
 		this.notTagId = notTagId;
 	}
 
-	public Integer getViews() {
+	public Long getViews() {
 		return views;
 	}
 
-	public void setViews(Integer views) {
+	public void setViews(Long views) {
 		this.views = views;
 	}
 
-	public Integer getNotSteId() {
+	public Long getNotSteId() {
 		return notSteId;
 	}
 
-	public void setNotSteId(Integer notSteId) {
+	public void setNotSteId(Long notSteId) {
 		this.notSteId = notSteId;
 	}
 

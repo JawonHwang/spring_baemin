@@ -1,24 +1,24 @@
 package com.baemin.dto;
 
 public class PlayerDTO {
-	private int playersId;
+	private Long playersId;
 	private MemberDTO member;
 	
 	public PlayerDTO() {
 		super();
 	}
 
-	public PlayerDTO(int playersId, MemberDTO member) {
+	public PlayerDTO(Long playersId, MemberDTO member) {
 		super();
 		this.playersId = playersId;
 		this.member = member;
 	}
 
-	public int getPlayersId() {
+	public Long getPlayersId() {
 		return playersId;
 	}
 
-	public void setPlayersId(int playersId) {
+	public void setPlayersId(Long playersId) {
 		this.playersId = playersId;
 	}
 

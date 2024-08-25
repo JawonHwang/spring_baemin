@@ -13,7 +13,7 @@ public class Notice {
 
 	@Id
 	@Column(name="NOT_ID")		//공지사항ID
-	private int notId;
+	private Long notId;
 
 	@Column(name="TITLE")		//제목
 	private String title;
@@ -22,13 +22,13 @@ public class Notice {
 	private String content;
 	
 	@Column(name="NOT_TAG_ID")	//태그ID
-	private int notTagId;
+	private Long notTagId;
 	
 	@Column(name="VIEWS")		//조회수
-	private int views;
+	private Long views;
 	
 	@Column(name="NOT_STE_ID")	//상태ID
-	private int notSteId;
+	private Long notSteId;
 	
 	@Column(name="ADMIN_ID")	//작성자(관리자)ID
 	private String adminId;
@@ -46,7 +46,7 @@ public class Notice {
 		super();
 	}
 
-	public Notice(int notId, String title, String content, int notTagId, int views, int notSteId, String adminId,
+	public Notice(Long notId, String title, String content, Long notTagId, Long views, Long notSteId, String adminId,
 			Timestamp creAt, Timestamp uptAt, Timestamp delAt) {
 		super();
 		this.notId = notId;
@@ -61,11 +61,11 @@ public class Notice {
 		this.delAt = delAt;
 	}
 
-	public int getNotId() {
+	public Long getNotId() {
 		return notId;
 	}
 
-	public void setNotId(int notId) {
+	public void setNotId(Long notId) {
 		this.notId = notId;
 	}
 
@@ -85,27 +85,27 @@ public class Notice {
 		this.content = content;
 	}
 
-	public int getNotTagId() {
+	public Long getNotTagId() {
 		return notTagId;
 	}
 
-	public void setNotTagId(int notTagId) {
+	public void setNotTagId(Long notTagId) {
 		this.notTagId = notTagId;
 	}
 
-	public int getViews() {
+	public Long getViews() {
 		return views;
 	}
 
-	public void setViews(int views) {
+	public void setViews(Long views) {
 		this.views = views;
 	}
 
-	public int getNotSteId() {
+	public Long getNotSteId() {
 		return notSteId;
 	}
 
-	public void setNotSteId(int notSteId) {
+	public void setNotSteId(Long notSteId) {
 		this.notSteId = notSteId;
 	}
 

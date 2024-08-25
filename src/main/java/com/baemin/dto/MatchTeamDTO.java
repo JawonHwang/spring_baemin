@@ -1,16 +1,16 @@
 package com.baemin.dto;
 
 public class MatchTeamDTO {
-	private int mtId;
+	private Long mtId;
 	private MatchDTO match;
 	private TeamDTO team;
-	private String score;
-	private String dScore;
-	private String isWinner;
+	private Long score;
+	private Long dScore;
+	private Boolean isWinner;
 	public MatchTeamDTO() {
 		super();
 	}
-	public MatchTeamDTO(int mtId, MatchDTO match, TeamDTO team, String score, String dScore, String isWinner) {
+	public MatchTeamDTO(Long mtId, MatchDTO match, TeamDTO team, Long score, Long dScore, Boolean isWinner) {
 		super();
 		this.mtId = mtId;
 		this.match = match;
@@ -19,10 +19,10 @@ public class MatchTeamDTO {
 		this.dScore = dScore;
 		this.isWinner = isWinner;
 	}
-	public int getMtId() {
+	public Long getMtId() {
 		return mtId;
 	}
-	public void setMtId(int mtId) {
+	public void setMtId(Long mtId) {
 		this.mtId = mtId;
 	}
 	public MatchDTO getMatch() {
@@ -37,22 +37,22 @@ public class MatchTeamDTO {
 	public void setTeam(TeamDTO team) {
 		this.team = team;
 	}
-	public String getScore() {
+	public Long getScore() {
 		return score;
 	}
-	public void setScore(String score) {
+	public void setScore(Long score) {
 		this.score = score;
 	}
-	public String getdScore() {
+	public Long getdScore() {
 		return dScore;
 	}
-	public void setdScore(String dScore) {
+	public void setdScore(Long dScore) {
 		this.dScore = dScore;
 	}
-	public String getIsWinner() {
+	public Boolean getIsWinner() {
 		return isWinner;
 	}
-	public void setIsWinner(String isWinner) {
+	public void setIsWinner(Boolean isWinner) {
 		this.isWinner = isWinner;
 	}
 }
