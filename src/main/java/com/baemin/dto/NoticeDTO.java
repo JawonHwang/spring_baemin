@@ -4,42 +4,42 @@ import java.sql.Timestamp;
 
 public class NoticeDTO {
 
-	private int not_id;			//관리자ID
+	private Integer notId;			//관리자ID
 	private String title;		//제목
 	private String content;		//내용
-	private int not_tag_id;		//태그ID
-	private int views;			//조회수
-	private int not_ste_id;		//상태ID
-	private String admin_id;	//작성자(관리자)ID
-	private Timestamp cre_at;	//작성일
-	private Timestamp upt_at;	//수정일
-	private Timestamp del_at;	//삭제일
+	private Integer notTagId;		//태그ID
+	private Integer views;			//조회수
+	private Integer notSteId;		//상태ID
+	private String adminId;		//작성자(관리자)ID
+	private Timestamp creAt;	//작성일
+	private Timestamp uptAt;	//수정일
+	private Timestamp delAt;	//삭제일
 		
 	public NoticeDTO() {
 		super();
 	}
 
-	public NoticeDTO(int not_id, String title, String content, int not_tag_id, int views, int not_ste_id,
-			String admin_id, Timestamp cre_at, Timestamp upt_at, Timestamp del_at) {
+	public NoticeDTO(Integer notId, String title, String content, Integer notTagId, Integer views, Integer notSteId, String adminId,
+			Timestamp creAt, Timestamp uptAt, Timestamp delAt) {
 		super();
-		this.not_id = not_id;
+		this.notId = notId;
 		this.title = title;
 		this.content = content;
-		this.not_tag_id = not_tag_id;
+		this.notTagId = notTagId;
 		this.views = views;
-		this.not_ste_id = not_ste_id;
-		this.admin_id = admin_id;
-		this.cre_at = cre_at;
-		this.upt_at = upt_at;
-		this.del_at = del_at;
+		this.notSteId = notSteId;
+		this.adminId = adminId;
+		this.creAt = creAt;
+		this.uptAt = uptAt;
+		this.delAt = delAt;
 	}
 
-	public int getNot_id() {
-		return not_id;
+	public Integer getNotId() {
+		return notId;
 	}
 
-	public void setNot_id(int not_id) {
-		this.not_id = not_id;
+	public void setNotId(Integer notId) {
+		this.notId = notId;
 	}
 
 	public String getTitle() {
@@ -58,59 +58,59 @@ public class NoticeDTO {
 		this.content = content;
 	}
 
-	public int getNot_tag_id() {
-		return not_tag_id;
+	public Integer getNotTagId() {
+		return notTagId;
 	}
 
-	public void setNot_tag_id(int not_tag_id) {
-		this.not_tag_id = not_tag_id;
+	public void setNotTagId(Integer notTagId) {
+		this.notTagId = notTagId;
 	}
 
-	public int getViews() {
+	public Integer getViews() {
 		return views;
 	}
 
-	public void setViews(int views) {
+	public void setViews(Integer views) {
 		this.views = views;
 	}
 
-	public int getNot_ste_id() {
-		return not_ste_id;
+	public Integer getNotSteId() {
+		return notSteId;
 	}
 
-	public void setNot_ste_id(int not_ste_id) {
-		this.not_ste_id = not_ste_id;
+	public void setNotSteId(Integer notSteId) {
+		this.notSteId = notSteId;
 	}
 
-	public String getAdmin_id() {
-		return admin_id;
+	public String getAdminId() {
+		return adminId;
 	}
 
-	public void setAdmin_id(String admin_id) {
-		this.admin_id = admin_id;
+	public void setAdminId(String adminId) {
+		this.adminId = adminId;
 	}
 
-	public Timestamp getCre_at() {
-		return cre_at;
+	public Timestamp getCreAt() {
+		return creAt;
 	}
 
-	public void setCre_at(Timestamp cre_at) {
-		this.cre_at = cre_at;
+	public void setCreAt(Timestamp creAt) {
+		this.creAt = creAt;
 	}
 
-	public Timestamp getUpt_at() {
-		return upt_at;
+	public Timestamp getUptAt() {
+		return uptAt;
 	}
 
-	public void setUpt_at(Timestamp upt_at) {
-		this.upt_at = upt_at;
+	public void setUptAt(Timestamp uptAt) {
+		this.uptAt = uptAt;
 	}
 
-	public Timestamp getDel_at() {
-		return del_at;
+	public Timestamp getDelAt() {
+		return delAt;
 	}
 
-	public void setDel_at(Timestamp del_at) {
-		this.del_at = del_at;
+	public void setDelAt(Timestamp delAt) {
+		this.delAt = delAt;
 	}
 }
