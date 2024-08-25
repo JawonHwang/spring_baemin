@@ -13,7 +13,7 @@ import jakarta.persistence.Table;
 public class MatchTeam {
 	@Id
 	@Column(name="MT_ID")
-	private int mtId;
+	private Long mtId;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "MATCH_ID")
@@ -24,19 +24,19 @@ public class MatchTeam {
     private Team team;
 
 	@Column(name="SCORE")
-	private String score;
+	private Long score;
 
 	@Column(name="D_SCORE")
-	private String dScore;
+	private Long dScore;
 
 	@Column(name="IS_WINNER")
-	private String isWinner;
+	private Boolean isWinner;
 
 	public MatchTeam() {
 		super();
 	}
 
-	public MatchTeam(int mtId, Match match, Team team, String score, String dScore, String isWinner) {
+	public MatchTeam(Long mtId, Match match, Team team, Long score, Long dScore, Boolean isWinner) {
 		super();
 		this.mtId = mtId;
 		this.match = match;
@@ -46,11 +46,11 @@ public class MatchTeam {
 		this.isWinner = isWinner;
 	}
 
-	public int getMtId() {
+	public Long getMtId() {
 		return mtId;
 	}
 
-	public void setMtId(int mtId) {
+	public void setMtId(Long mtId) {
 		this.mtId = mtId;
 	}
 
@@ -70,27 +70,27 @@ public class MatchTeam {
 		this.team = team;
 	}
 
-	public String getScore() {
+	public Long getScore() {
 		return score;
 	}
 
-	public void setScore(String score) {
+	public void setScore(Long score) {
 		this.score = score;
 	}
 
-	public String getdScore() {
+	public Long getdScore() {
 		return dScore;
 	}
 
-	public void setdScore(String dScore) {
+	public void setdScore(Long dScore) {
 		this.dScore = dScore;
 	}
 
-	public String getIsWinner() {
+	public Boolean getIsWinner() {
 		return isWinner;
 	}
 
-	public void setIsWinner(String isWinner) {
+	public void setIsWinner(Boolean isWinner) {
 		this.isWinner = isWinner;
 	}
 }

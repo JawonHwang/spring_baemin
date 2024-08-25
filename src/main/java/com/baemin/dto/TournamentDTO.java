@@ -7,7 +7,7 @@ import java.util.Set;
 import com.baemin.domain.entity.TomState;
 
 public class TournamentDTO {
-	private int tomId;
+	private Long tomId;
 	private String tomName;
 	private String tomLocation;
 	private LocalDate tomYear;
@@ -17,16 +17,16 @@ public class TournamentDTO {
 	private Timestamp creAt;
 	private Timestamp uptAt;
 	private AdminDTO admin;
-	private int views;
+	private Long views;
 	private Set<MatchTeamDTO> matchTeam;
 	
 	public TournamentDTO() {
 		super();
 	}
 
-	public TournamentDTO(int tomId, String tomName, String tomLocation, LocalDate tomYear, LocalDate tomStartDate,
+	public TournamentDTO(Long tomId, String tomName, String tomLocation, LocalDate tomYear, LocalDate tomStartDate,
 			LocalDate tomEndDate, com.baemin.domain.entity.TomState tomState, Timestamp creAt, Timestamp uptAt,
-			AdminDTO admin, int views, Set<MatchTeamDTO> matchTeam) {
+			AdminDTO admin, Long views, Set<MatchTeamDTO> matchTeam) {
 		super();
 		this.tomId = tomId;
 		this.tomName = tomName;
@@ -42,11 +42,11 @@ public class TournamentDTO {
 		this.matchTeam = matchTeam;
 	}
 
-	public int getTomId() {
+	public Long getTomId() {
 		return tomId;
 	}
 
-	public void setTomId(int tomId) {
+	public void setTomId(Long tomId) {
 		this.tomId = tomId;
 	}
 
@@ -122,11 +122,11 @@ public class TournamentDTO {
 		this.admin = admin;
 	}
 
-	public int getViews() {
+	public Long getViews() {
 		return views;
 	}
 
-	public void setViews(int views) {
+	public void setViews(Long views) {
 		this.views = views;
 	}
 

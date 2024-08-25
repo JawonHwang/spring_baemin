@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 public class AttendanceDTO {
 	
-	private Integer attId;			//출석ID
+	private Long attId;			//출석ID
 	private String memId;		//회원ID
 	private Boolean isAtt;		//출석여부
 	private Timestamp attAt;	//출석날짜
@@ -15,7 +15,7 @@ public class AttendanceDTO {
 		super();
 	}
 
-	public AttendanceDTO(Integer attId, String memId, Boolean isAtt, Timestamp attAt, Timestamp creAt, Timestamp uptAt) {
+	public AttendanceDTO(Long attId, String memId, Boolean isAtt, Timestamp attAt, Timestamp creAt, Timestamp uptAt) {
 		super();
 		this.attId = attId;
 		this.memId = memId;
@@ -25,11 +25,11 @@ public class AttendanceDTO {
 		this.uptAt = uptAt;
 	}
 
-	public Integer getAttId() {
+	public Long getAttId() {
 		return attId;
 	}
 
-	public void setAttId(Integer attId) {
+	public void setAttId(Long attId) {
 		this.attId = attId;
 	}
 

@@ -11,7 +11,7 @@ public class AdminType {
 
 	@Id
 	@Column(name="ADMIN_TYPE_ID")
-	private Integer adminTypeId;	//유형ID
+	private Long adminTypeId;	//유형ID
 	
 	@Column(name="ADMIN_TYPE_NAME")
 	private String adminTypeName;	//관리자유형
@@ -20,18 +20,18 @@ public class AdminType {
 		super();
 	}
 
-	public AdminType(Integer adminTypeId, String adminTypeName) {
+	public AdminType(Long adminTypeId, String adminTypeName) {
 		super();
 		this.adminTypeId = adminTypeId;
 		this.adminTypeName = adminTypeName;
 	}
 	
 
-	public Integer getAdminTypeId() {
+	public Long getAdminTypeId() {
 		return adminTypeId;
 	}
 
-	public void setAdminTypeId(int adminTypeId) {
+	public void setAdminTypeId(Long adminTypeId) {
 		this.adminTypeId = adminTypeId;
 	}
 

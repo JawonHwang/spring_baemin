@@ -13,7 +13,7 @@ public class Attendance {
 
 	@Id
 	@Column(name="ATT_ID")		//출석ID
-	private Integer attId;
+	private Long attId;
 
 	@Column(name="MEM_ID")		//회원ID
 	private String memId;
@@ -34,7 +34,7 @@ public class Attendance {
 		super();
 	}
 
-	public Attendance(int attId, String memId, Boolean isAtt, Timestamp attAt, Timestamp creAt, Timestamp uptAt) {
+	public Attendance(Long attId, String memId, Boolean isAtt, Timestamp attAt, Timestamp creAt, Timestamp uptAt) {
 		super();
 		this.attId = attId;
 		this.memId = memId;
@@ -44,11 +44,11 @@ public class Attendance {
 		this.uptAt = uptAt;
 	}
 
-	public int getAttId() {
+	public Long getAttId() {
 		return attId;
 	}
 
-	public void setAttId(int attId) {
+	public void setAttId(Long attId) {
 		this.attId = attId;
 	}
 

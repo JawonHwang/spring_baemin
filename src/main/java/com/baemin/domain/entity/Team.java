@@ -13,7 +13,7 @@ import jakarta.persistence.Table;
 public class Team {
 	@Id
 	@Column(name = "TEAM_ID")
-	private int teamId;
+	private Long teamId;
 
 	@Column(name = "TEAM_NAME")
 	private String teamName;
@@ -26,18 +26,18 @@ public class Team {
 		super();
 	}
 
-	public Team(int teamId, String teamName, Player player) {
+	public Team(Long teamId, String teamName, Player player) {
 		super();
 		this.teamId = teamId;
 		this.teamName = teamName;
 		this.player = player;
 	}
 
-	public int getTeamId() {
+	public Long getTeamId() {
 		return teamId;
 	}
 
-	public void setTeamId(int teamId) {
+	public void setTeamId(Long teamId) {
 		this.teamId = teamId;
 	}
 

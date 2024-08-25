@@ -12,7 +12,7 @@ import jakarta.persistence.Table;
 public class Match {
 	@Id
 	@Column(name="MATCH_ID")
-	private int matchId;
+	private Long matchId;
 
 	@Column(name="MATCH_NAME")
 	private String matchName;
@@ -27,7 +27,7 @@ public class Match {
 		super();
 	}
 
-	public Match(int matchId, String matchName, String matchStage, Timestamp matchDateTime) {
+	public Match(Long matchId, String matchName, String matchStage, Timestamp matchDateTime) {
 		super();
 		this.matchId = matchId;
 		this.matchName = matchName;
@@ -35,11 +35,11 @@ public class Match {
 		this.matchDateTime = matchDateTime;
 	}
 
-	public int getMatchId() {
+	public Long getMatchId() {
 		return matchId;
 	}
 
-	public void setMatchId(int matchId) {
+	public void setMatchId(Long matchId) {
 		this.matchId = matchId;
 	}
 
