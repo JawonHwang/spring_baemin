@@ -2,29 +2,36 @@ package com.baemin.dto;
 
 public class AdminTypeDTO {
 
-	private int admin_type_id;		//유형ID
-	private String admin_type_name;	//관리자유형
+	private Integer adminTypeId;		//유형ID
+	private String adminTypeName;	//관리자유형
 	
 	public AdminTypeDTO() {
 		super();
 	}
-	
-	public AdminTypeDTO(int admin_type_id, String admin_type_name) {
+
+	public AdminTypeDTO(Integer adminTypeId, String adminTypeName) {
 		super();
-		this.admin_type_id = admin_type_id;
-		this.admin_type_name = admin_type_name;
+		this.adminTypeId = adminTypeId;
+		this.adminTypeName = adminTypeName;
+	}
+	public AdminTypeDTO(String adminTypeName) {
+		super();
+		this.adminTypeName = adminTypeName;
 	}
 
-	public int getAdmin_type_id() {
-		return admin_type_id;
+	public Integer getAdminTypeId() {
+		return adminTypeId;
 	}
-	public void setAdmin_type_id(int admin_type_id) {
-		this.admin_type_id = admin_type_id;
+
+	public void setAdminTypeId(int adminTypeId) {
+		this.adminTypeId = adminTypeId;
 	}
-	public String getAdmin_type_name() {
-		return admin_type_name;
+
+	public String getAdminTypeName() {
+		return adminTypeName;
 	}
-	public void setAdmin_type_name(String admin_type_name) {
-		this.admin_type_name = admin_type_name;
+
+	public void setAdminTypeName(String adminTypeName) {
+		this.adminTypeName = adminTypeName;
 	}
 }

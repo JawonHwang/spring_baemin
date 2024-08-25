@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,13 +24,14 @@ import com.baemin.domain.entity.Member;
 import com.baemin.dto.MemberDTO;
 import com.baemin.mappers.MemberMapper;
 import com.baemin.repositories.MemberRepository;
+import com.baemin.security.SecurityUser;
 
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.mail.internet.MimeMessage.RecipientType;
 
 @Service
-public class MemberService {
+public class MemberService implements UserDetailsService{
 
 	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
 	
@@ -41,7 +43,7 @@ public class MemberService {
 	
 	@Autowired
 	private JavaMailSender javaMailSender;
-	
+
 	//전체 조회
 	public List<MemberDTO> getMemberAll() {
 		List<Member> list = mRepo.findAll();
@@ -274,5 +276,4 @@ public class MemberService {
 		m.setMemContact(dto.getMemContact());
 		mRepo.save(m);
 	}
-	
 }

@@ -1,33 +1,42 @@
 package com.baemin.dto;
 
 public class AdminDTO {
-
-	private String admin_user_id;	//관리자ID
-	private int admin_type_id;		//관리자유형ID
+	private String adminId;
+	private MemberDTO member;
+	private AdminTypeDTO adminType;
 
 	public AdminDTO() {
 		super();
 	}
-
-	public AdminDTO(String admin_user_id, int admin_type_id) {
+	
+	public AdminDTO(MemberDTO member, AdminTypeDTO adminType) {
 		super();
-		this.admin_user_id = admin_user_id;
-		this.admin_type_id = admin_type_id;
+		this.member = member;
+		this.adminType = adminType;
 	}
 
-	public String getAdmin_user_id() {
-		return admin_user_id;
+
+	public String getAdminId() {
+		return adminId;
 	}
 
-	public void setAdmin_user_id(String admin_user_id) {
-		this.admin_user_id = admin_user_id;
+	public void setAdminId(String adminId) {
+		this.adminId = adminId;
 	}
 
-	public int getAdmin_type_id() {
-		return admin_type_id;
+	public MemberDTO getMember() {
+		return member;
 	}
 
-	public void setAdmin_type_id(int admin_type_id) {
-		this.admin_type_id = admin_type_id;
+	public void setMember(MemberDTO member) {
+		this.member = member;
+	}
+
+	public AdminTypeDTO getAdminType() {
+		return adminType;
+	}
+
+	public void setAdminType(AdminTypeDTO adminType) {
+		this.adminType = adminType;
 	}
 }

@@ -1,7 +1,5 @@
 package com.baemin.mappers;
 
-import java.util.List;
-
 import org.mapstruct.Mapper;
 
 import com.baemin.domain.entity.Admin;
