@@ -1,23 +1,23 @@
 package com.baemin.dto;
 
 public class TeamDTO {
-	private int TeamId;
+	private Long TeamId;
 	private String TeamName;
 	private PlayerDTO player;
 
 	public TeamDTO() {
 		super();
 	}
-	public TeamDTO(int teamId, String teamName, PlayerDTO player) {
+	public TeamDTO(Long teamId, String teamName, PlayerDTO player) {
 		super();
 		TeamId = teamId;
 		TeamName = teamName;
 		this.player = player;
 	}
-	public int getTeamId() {
+	public Long getTeamId() {
 		return TeamId;
 	}
-	public void setTeamId(int teamId) {
+	public void setTeamId(Long teamId) {
 		TeamId = teamId;
 	}
 	public String getTeamName() {

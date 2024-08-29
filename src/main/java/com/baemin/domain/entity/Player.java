@@ -14,7 +14,7 @@ import jakarta.persistence.Table;
 public class Player {
 	@Id
 	@Column(name = "PLAYERS_ID")
-	private int playersId;
+	private Long playersId;
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@MapsId
@@ -25,17 +25,17 @@ public class Player {
 		super();
 	}
 
-	public Player(int playersId, Member member) {
+	public Player(Long playersId, Member member) {
 		super();
 		this.playersId = playersId;
 		this.member = member;
 	}
 
-	public int getPlayersId() {
+	public Long getPlayersId() {
 		return playersId;
 	}
 
-	public void setPlayersId(int playersId) {
+	public void setPlayersId(Long playersId) {
 		this.playersId = playersId;
 	}
 
