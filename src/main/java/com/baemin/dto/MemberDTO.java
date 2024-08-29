@@ -111,6 +111,9 @@ public class MemberDTO {
 		this.role = role;
 	}
 	
+	public MemberDTO() {
+		super();
+	}
 	
 	public MemberDTO(String memId, String memPw, String memName, String memContact, String memEmail, LocalDate memBirth,
 			String memDept, String memStuId, String memGender, int memClubNum, int memTierId, Timestamp memJoinDate,
