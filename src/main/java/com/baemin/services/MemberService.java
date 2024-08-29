@@ -51,12 +51,22 @@ public class MemberService implements UserDetailsService{
 		return dtos;
 	}
 	
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Member m = mRepo.findById(username).get();
-		SecurityUser su =new SecurityUser(m);
-		su.setMemName(m.getMemName());
-		return su;
+	@Override
+	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
+	    Member m = mRepo.findByMemId(userName);
+	    if (m == null) {
+	        throw new UsernameNotFoundException("User not found: " + userName);
+	    }
+	    SecurityUser su = new SecurityUser(m);
+	    su.setMemName(m.getMemName());
+	    return su;
 	}
+
+//	public UserDetails loadUserByUsername(String userName) {
+//	    return mRepo.findByMemName(userName)
+//	        .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
+//	}
+
 	
 	@Transactional
 	public void sendVerificationEmail(String email) {
