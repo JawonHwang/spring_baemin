@@ -1,5 +1,7 @@
 package com.baemin.domain.entity;
 
+import java.sql.Timestamp;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -32,11 +34,18 @@ public class MatchTeam {
 	@Column(name="IS_WINNER")
 	private Boolean isWinner;
 
+	@Column(name="TOM_START_DATE")
+	private Timestamp tomStartDate;
+
+	@Column(name="TOM_END_DATE")
+	private Timestamp tomEndDate;
+
 	public MatchTeam() {
 		super();
 	}
 
-	public MatchTeam(Long mtId, Match match, Team team, Long score, Long dScore, Boolean isWinner) {
+	public MatchTeam(Long mtId, Match match, Team team, Long score, Long dScore, Boolean isWinner,
+			Timestamp tomStartDate, Timestamp tomEndDate) {
 		super();
 		this.mtId = mtId;
 		this.match = match;
@@ -44,6 +53,8 @@ public class MatchTeam {
 		this.score = score;
 		this.dScore = dScore;
 		this.isWinner = isWinner;
+		this.tomStartDate = tomStartDate;
+		this.tomEndDate = tomEndDate;
 	}
 
 	public Long getMtId() {
@@ -92,5 +103,21 @@ public class MatchTeam {
 
 	public void setIsWinner(Boolean isWinner) {
 		this.isWinner = isWinner;
+	}
+
+	public Timestamp getTomStartDate() {
+		return tomStartDate;
+	}
+
+	public void setTomStartDate(Timestamp tomStartDate) {
+		this.tomStartDate = tomStartDate;
+	}
+
+	public Timestamp getTomEndDate() {
+		return tomEndDate;
+	}
+
+	public void setTomEndDate(Timestamp tomEndDate) {
+		this.tomEndDate = tomEndDate;
 	}
 }

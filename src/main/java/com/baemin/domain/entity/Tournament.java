@@ -25,33 +25,27 @@ public class Tournament {
 
 	@Column(name="TOM_LOCATION")
 	private String tomLocation;
-	
-	@Column(name="TOM_YEAR")
-	private LocalDate tomYear;
-	
-	@Column(name="TOM_START_DATE")
-	private LocalDate tomStartDate;
-	
-	@Column(name="TOM_END_DATE")
-	private LocalDate tomEndDate;
-	
+
+	@Column(name="TOM_DATE")
+	private LocalDate tomDate;
+
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="TOM_STE_ID")
-	private TomState TomState;
-	
+	private TomState tomState;
+
 	@Column(name="CRE_AT")
 	private Timestamp creAt;
-	
+
 	@Column(name="UPT_AT")
 	private Timestamp uptAt;
-	
+
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ADMIN_ID")
 	private Admin admin;
-	
+
 	@Column(name="VIEWS")
 	private Long views;
-	
+
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name = "MT_ID")
 	private Set<MatchTeam> matchTeam;
@@ -60,17 +54,14 @@ public class Tournament {
 		super();
 	}
 
-	public Tournament(Long tomId, String tomName, String tomLocation, LocalDate tomYear, LocalDate tomStartDate,
-			LocalDate tomEndDate, com.baemin.domain.entity.TomState tomState, Timestamp creAt, Timestamp uptAt,
-			Admin admin, Long views, Set<MatchTeam> matchTeam) {
+	public Tournament(Long tomId, String tomName, String tomLocation, LocalDate tomDate, TomState tomState,
+			Timestamp creAt, Timestamp uptAt, Admin admin, Long views, Set<MatchTeam> matchTeam) {
 		super();
 		this.tomId = tomId;
 		this.tomName = tomName;
 		this.tomLocation = tomLocation;
-		this.tomYear = tomYear;
-		this.tomStartDate = tomStartDate;
-		this.tomEndDate = tomEndDate;
-		TomState = tomState;
+		this.tomDate = tomDate;
+		this.tomState = tomState;
 		this.creAt = creAt;
 		this.uptAt = uptAt;
 		this.admin = admin;
@@ -102,36 +93,20 @@ public class Tournament {
 		this.tomLocation = tomLocation;
 	}
 
-	public LocalDate getTomYear() {
-		return tomYear;
+	public LocalDate getTomDate() {
+		return tomDate;
 	}
 
-	public void setTomYear(LocalDate tomYear) {
-		this.tomYear = tomYear;
-	}
-
-	public LocalDate getTomStartDate() {
-		return tomStartDate;
-	}
-
-	public void setTomStartDate(LocalDate tomStartDate) {
-		this.tomStartDate = tomStartDate;
-	}
-
-	public LocalDate getTomEndDate() {
-		return tomEndDate;
-	}
-
-	public void setTomEndDate(LocalDate tomEndDate) {
-		this.tomEndDate = tomEndDate;
+	public void setTomDate(LocalDate tomDate) {
+		this.tomDate = tomDate;
 	}
 
 	public TomState getTomState() {
-		return TomState;
+		return tomState;
 	}
 
 	public void setTomState(TomState tomState) {
-		TomState = tomState;
+		this.tomState = tomState;
 	}
 
 	public Timestamp getCreAt() {
@@ -173,4 +148,5 @@ public class Tournament {
 	public void setMatchTeam(Set<MatchTeam> matchTeam) {
 		this.matchTeam = matchTeam;
 	}
+
 }

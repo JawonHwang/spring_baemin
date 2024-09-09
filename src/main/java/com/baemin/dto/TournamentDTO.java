@@ -10,10 +10,8 @@ public class TournamentDTO {
 	private Long tomId;
 	private String tomName;
 	private String tomLocation;
-	private LocalDate tomYear;
-	private LocalDate tomStartDate;
-	private LocalDate tomEndDate;
-	private TomState TomState;
+	private LocalDate tomDate;
+	private TomState tomState;
 	private Timestamp creAt;
 	private Timestamp uptAt;
 	private AdminDTO admin;
@@ -24,17 +22,14 @@ public class TournamentDTO {
 		super();
 	}
 
-	public TournamentDTO(Long tomId, String tomName, String tomLocation, LocalDate tomYear, LocalDate tomStartDate,
-			LocalDate tomEndDate, com.baemin.domain.entity.TomState tomState, Timestamp creAt, Timestamp uptAt,
-			AdminDTO admin, Long views, Set<MatchTeamDTO> matchTeam) {
+	public TournamentDTO(Long tomId, String tomName, String tomLocation, LocalDate tomDate, TomState tomState,
+			Timestamp creAt, Timestamp uptAt, AdminDTO admin, Long views, Set<MatchTeamDTO> matchTeam) {
 		super();
 		this.tomId = tomId;
 		this.tomName = tomName;
 		this.tomLocation = tomLocation;
-		this.tomYear = tomYear;
-		this.tomStartDate = tomStartDate;
-		this.tomEndDate = tomEndDate;
-		TomState = tomState;
+		this.tomDate = tomDate;
+		this.tomState = tomState;
 		this.creAt = creAt;
 		this.uptAt = uptAt;
 		this.admin = admin;
@@ -66,36 +61,20 @@ public class TournamentDTO {
 		this.tomLocation = tomLocation;
 	}
 
-	public LocalDate getTomYear() {
-		return tomYear;
+	public LocalDate getTomDate() {
+		return tomDate;
 	}
 
-	public void setTomYear(LocalDate tomYear) {
-		this.tomYear = tomYear;
-	}
-
-	public LocalDate getTomStartDate() {
-		return tomStartDate;
-	}
-
-	public void setTomStartDate(LocalDate tomStartDate) {
-		this.tomStartDate = tomStartDate;
-	}
-
-	public LocalDate getTomEndDate() {
-		return tomEndDate;
-	}
-
-	public void setTomEndDate(LocalDate tomEndDate) {
-		this.tomEndDate = tomEndDate;
+	public void setTomDate(LocalDate tomDate) {
+		this.tomDate = tomDate;
 	}
 
 	public TomState getTomState() {
-		return TomState;
+		return tomState;
 	}
 
 	public void setTomState(TomState tomState) {
-		TomState = tomState;
+		this.tomState = tomState;
 	}
 
 	public Timestamp getCreAt() {
@@ -137,4 +116,5 @@ public class TournamentDTO {
 	public void setMatchTeam(Set<MatchTeamDTO> matchTeam) {
 		this.matchTeam = matchTeam;
 	}
+
 }
