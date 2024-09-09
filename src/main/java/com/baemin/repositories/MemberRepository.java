@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.baemin.domain.entity.Member;
 
 public interface MemberRepository extends JpaRepository<Member, String> {
+	
+	Member findAllByMemName(String userName);
 
 	List<Member> findByMemNameAndMemEmail(String name, String email);
 
