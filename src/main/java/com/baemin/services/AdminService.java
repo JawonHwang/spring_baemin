@@ -1,6 +1,5 @@
 package com.baemin.services;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -11,12 +10,18 @@ import org.springframework.stereotype.Service;
 import com.baemin.controllers.AdminController;
 import com.baemin.domain.entity.Admin;
 import com.baemin.domain.entity.Member;
+import com.baemin.domain.entity.MemberShipFee;
+import com.baemin.domain.entity.NoticeTag;
 import com.baemin.dto.AdminDTO;
-import com.baemin.dto.AdminTypeDTO;
-import com.baemin.dto.MemberDTO;
+import com.baemin.dto.MemberShipFeeDTO;
+import com.baemin.dto.NoticeTagDTO;
 import com.baemin.mappers.AdminMapper;
+import com.baemin.mappers.MemberShipFeeMapper;
+import com.baemin.mappers.NoticeTagMapper;
 import com.baemin.repositories.AdminRepository;
 import com.baemin.repositories.MemberRepository;
+import com.baemin.repositories.MemberShipFeeRepository;
+import com.baemin.repositories.NoticeTagRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -32,6 +37,18 @@ public class AdminService {
 	
 	@Autowired
 	private MemberRepository mRepo;
+	
+	@Autowired
+	private NoticeTagRepository ntRepo;
+	
+	@Autowired
+	private NoticeTagMapper ntMapper;
+	
+	@Autowired
+	private MemberShipFeeRepository fRepo;
+	
+	@Autowired
+	private MemberShipFeeMapper fMapper;
 	
 	//관리자 관리 > 전체조회
 	/*public List<AdminDTO> getAdminAll() {
@@ -91,5 +108,17 @@ public class AdminService {
 		Admin admin = new Admin();
 		admin.setAdminId(memId);
 		aRepo.save(admin);
+	}
+ 
+	//대회관리 > 태그 > 전체조회
+	public List<NoticeTagDTO> getNoticeTagAll() {
+		List<NoticeTag> list = ntRepo.findAll();
+		return ntMapper.toDtoList(list);
+	}
+
+	//회비관리 > 전체조회
+	public List<MemberShipFeeDTO> getMemberShipFeeAll() {
+		List<MemberShipFee> list = fRepo.findAll();
+		return fMapper.toDtoList(list);
 	}
 }
