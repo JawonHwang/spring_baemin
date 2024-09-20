@@ -1,5 +1,7 @@
 package com.baemin.services;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -253,6 +255,8 @@ public class MemberService implements UserDetailsService{
 	
 	public void register(MemberDTO dto) throws Exception {
 		dto.setMemPw(new BCryptPasswordEncoder().encode(dto.getMemPw()));
+		dto.setMemJoinDate(Timestamp.from(Instant.now()));
+		dto.setMemTierId(6);;
 		dto.setRole("ROLE_MEMBER");
 		
 		Member m = mMapper.toEntity(dto);
