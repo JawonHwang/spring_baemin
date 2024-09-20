@@ -75,6 +75,7 @@ public class MemberController {
 
 	@PostMapping("/register")
 	public ResponseEntity<Void> register(@RequestBody MemberDTO dto) {
+		System.out.println(dto.getMemId());
 		try {
 			mServ.register(dto);
 		} catch (Exception e) {

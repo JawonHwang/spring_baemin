@@ -43,9 +43,11 @@ public class SecurityConfig {
 
 				// username 파라미터 이름은 아래와 같다고 선언
 				.usernameParameter("MemId")
+				
 
 				// password 파라미터 이름은 아래와 같다고 선언
 				.passwordParameter("MemPw")
+				
 
 				// 성공했을 때 핸들러
 				.successHandler((request, response, authentication) -> {
