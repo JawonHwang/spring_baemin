@@ -50,7 +50,7 @@ public class Member {
    private Timestamp memJoinDate;
    
    @Column(name="IS_BAN")
-   private int isBan;
+   private boolean isBan;
    
    @Column(name="ROLE")
    private String role;
@@ -151,11 +151,11 @@ public class Member {
       this.memJoinDate = memJoinDate;
    }
 
-	public int getIsBan() {
+	public boolean getIsBan() {
 		return isBan;
 	}
 	
-	public void setIsBan(int isBan) {
+	public void setIsBan(boolean isBan) {
 		this.isBan = isBan;
 	}
 
@@ -172,7 +172,7 @@ public class Member {
 
 	public Member(String memId, String memPw, String memName, String memContact, String memEmail, LocalDate memBirth,
 			String memDept, String memStuId, String memGender, int memClubNum, int memTierId, Timestamp memJoinDate,
-			int isBan, String role) {
+			boolean isBan, String role) {
 		super();
 		this.memId = memId;
 		this.memPw = memPw;
