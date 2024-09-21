@@ -13,9 +13,11 @@ import com.baemin.domain.entity.Member;
 import com.baemin.domain.entity.MemberShipFee;
 import com.baemin.domain.entity.NoticeTag;
 import com.baemin.dto.AdminDTO;
+import com.baemin.dto.MemberDTO;
 import com.baemin.dto.MemberShipFeeDTO;
 import com.baemin.dto.NoticeTagDTO;
 import com.baemin.mappers.AdminMapper;
+import com.baemin.mappers.MemberMapper;
 import com.baemin.mappers.MemberShipFeeMapper;
 import com.baemin.mappers.NoticeTagMapper;
 import com.baemin.repositories.AdminRepository;
@@ -31,68 +33,37 @@ public class AdminService {
 
 	@Autowired
 	private AdminRepository aRepo;
-	
+
 	@Autowired
 	private AdminMapper aMapper;
-	
+
 	@Autowired
 	private MemberRepository mRepo;
 	
 	@Autowired
+	private MemberMapper mMapper;
+
+	@Autowired
 	private NoticeTagRepository ntRepo;
-	
+
 	@Autowired
 	private NoticeTagMapper ntMapper;
-	
+
 	@Autowired
 	private MemberShipFeeRepository fRepo;
-	
+
 	@Autowired
 	private MemberShipFeeMapper fMapper;
-	
-	//관리자 관리 > 전체조회
-	/*public List<AdminDTO> getAdminAll() {
-		List<Admin> list = aRepo.selectAdminAll();
-		return aMapper.toDtoList(list);
-	}*/
-	public List<AdminDTO> getAdminAll() {
-		List<Admin> list = aRepo.findAll();
-		return aMapper.toDtoList(list);
+
+	//회원 관리 > 전체조회
+	public List<MemberDTO> getByMember() {
+		List<Member> list = mRepo.findByRole("ROLE_MEMBER");
+		return mMapper.toDtoList(list);
 	}
-	/*public List<AdminDTO> getAdminAll() {
-			List<Admin> admins = aRepo.findAll();
 
-			List<AdminDTO> adminDTOs = new ArrayList<>();
-			for (Admin admin : admins) {
-				String memId = admin.getMember().getMemId();
-				int adminTypeId = admin.getAdminType().getAdminTypeId();
-				Member member = mRepo.findByMemId(memId);
-
-				if (member != null) {
-					AdminDTO dto = new AdminDTO();
-					dto.setAdminId(admin.getMember().getMemId());
-					dto.setMember(new MemberDTO(
-						member.getMemId(),
-						member.getMemPw(),
-						member.getMemName(),
-						member.getMemContact(),
-						member.getMemEmail(),
-						member.getMemBirth(),
-						member.getMemDept(),
-						member.getMemStuId(),
-						member.getMemGender(),
-						member.getMemClubNum(),
-						member.getMemTierId()
-				));
-					dto.setAdminType(new AdminTypeDTO(admin.getAdminType().getAdminTypeName()));
-					adminDTOs.add(dto);
-				}
-			}
-			return adminDTOs;
-	}*/
 	@Transactional
 	public void grantAdminRole(String memId) {
-		updateRoleByMemId(memId, "ADMIN");
+		updateRoleByMemId(memId, "ROLE_ADMIN");
 		insertAdmin(memId);
 	}
 
@@ -105,11 +76,41 @@ public class AdminService {
 
 	//회원관리 > ADMIN 테이블 관리자 데이터 생성
 	public void insertAdmin(String memId) {
+		Member member = mRepo.findByMemId(memId);
+
+		if (member == null) {
+			throw new IllegalArgumentException("해당 ID의 회원을 찾을 수 없습니다.");
+		}
+
 		Admin admin = new Admin();
-		admin.setAdminId(memId);
+		admin.setMember(member);  // Member 객체와의 관계 설정
 		aRepo.save(admin);
 	}
- 
+
+	//관리자 관리 > 전체조회
+	public List<AdminDTO> getAdminAll() {
+		List<Admin> list = aRepo.findAll();
+		return aMapper.toDtoList(list);
+	}
+
+	@Transactional
+	public void revokeAdminRole(String adminId) {
+		updateRoleByAdminId(adminId, "ROLE_MEMBER");
+		deleteAdmin(adminId);
+	}
+
+	//관리자관리 > 관리자 권한 취소
+	public void updateRoleByAdminId(String adminId, String role) {
+		Member member = mRepo.findByMemId(adminId);
+		member.setRole(role);
+		mRepo.save(member);
+	}
+	
+	//관리자관리 > 관리자 권한 취소로 관리자 테이블 데이터 삭제
+	public void deleteAdmin(String adminId) {
+		aRepo.deleteById(adminId);
+	}
+
 	//대회관리 > 태그 > 전체조회
 	public List<NoticeTagDTO> getNoticeTagAll() {
 		List<NoticeTag> list = ntRepo.findAll();

@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,15 +32,16 @@ public class AdminController {
 
 	//관리
 	//회원관리 > 전체조회
+
 	@GetMapping("/management/member/getAll")
 	public ResponseEntity<List<MemberDTO>> getMemberAll() {
-		List<MemberDTO> list = mServ.getMemberAll();
+		List<MemberDTO> list = aServ.getByMember();
 		return ResponseEntity.ok(list);
 	}
 
 	//회원관리 > 관리자 권한 부여 && ADMIN 테이블 데이터 생성
-	@PutMapping("/management/member/grant-role/{memId}")
-		public ResponseEntity<Void> revoke(@PathVariable String memId) {
+	@PostMapping("/management/member/grant-role/{memId}")
+		public ResponseEntity<Void> grant(@PathVariable String memId) {
 		aServ.grantAdminRole(memId);
 		return ResponseEntity.ok().build();
 	}
@@ -52,6 +53,13 @@ public class AdminController {
 		return ResponseEntity.ok(list);
 	}
 	
+	//관리자관리 > 관리자 권한 취소
+	@PostMapping("/management/admin/revoke-role/{adminId}")
+		public ResponseEntity<Void> revoke(@PathVariable String adminId) {
+		aServ.revokeAdminRole(adminId);
+		return ResponseEntity.ok().build();
+	}
+
 	//대회관리 > 태그 > 전체조회
 	@GetMapping("/management/noticeTag/getAll")
 	public ResponseEntity<List<NoticeTagDTO>> getNoticeTagAll() {

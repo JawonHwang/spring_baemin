@@ -8,20 +8,12 @@ public class AdminDTO {
 	public AdminDTO() {
 		super();
 	}
-	
-	public AdminDTO(MemberDTO member, AdminTypeDTO adminType) {
+
+	public AdminDTO(String adminId, MemberDTO member, AdminTypeDTO adminType) {
 		super();
+		this.adminId = adminId;
 		this.member = member;
 		this.adminType = adminType;
-	}
-
-
-	public String getAdminId() {
-		return adminId;
-	}
-
-	public void setAdminId(String adminId) {
-		this.adminId = adminId;
 	}
 
 	public MemberDTO getMember() {
@@ -38,5 +30,13 @@ public class AdminDTO {
 
 	public void setAdminType(AdminTypeDTO adminType) {
 		this.adminType = adminType;
+	}
+
+	public String getAdminId() {
+		return adminId;
+	}
+
+	public void setAdminId(String adminId) {
+		this.adminId = adminId;
 	}
 }
