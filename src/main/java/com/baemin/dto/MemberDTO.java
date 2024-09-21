@@ -91,7 +91,7 @@ public class MemberDTO {
 	public boolean isBan() {
 		return isBan;
 	}
-	public void setBan(boolean isBan) {
+	public void setIsBan(boolean isBan) {
 		this.isBan = isBan;
 	}
 	public String getRole() {
