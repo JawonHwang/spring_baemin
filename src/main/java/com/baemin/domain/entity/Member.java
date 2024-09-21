@@ -46,9 +46,6 @@ public class Member {
    @Column(name="MEM_TIER_ID")
    private int memTierId;
    
-   @Column(name="MEM_JOIN_DATE", columnDefinition = "TIMESTAMP")
-   private Timestamp memJoinDate;
-   
    @Column(name="IS_BAN")
    private boolean isBan;
    
@@ -143,14 +140,6 @@ public class Member {
       this.memTierId = memTierId;
    }
 
-   public Timestamp getMemJoinDate() {
-      return memJoinDate;
-   }
-
-   public void setMemJoinDate(Timestamp memJoinDate) {
-      this.memJoinDate = memJoinDate;
-   }
-
 	public boolean getIsBan() {
 		return isBan;
 	}
@@ -171,8 +160,8 @@ public class Member {
 	}
 
 	public Member(String memId, String memPw, String memName, String memContact, String memEmail, LocalDate memBirth,
-			String memDept, String memStuId, String memGender, int memClubNum, int memTierId, Timestamp memJoinDate,
-			boolean isBan, String role) {
+			String memDept, String memStuId, String memGender, int memClubNum, int memTierId, boolean isBan,
+			String role) {
 		super();
 		this.memId = memId;
 		this.memPw = memPw;
@@ -185,7 +174,6 @@ public class Member {
 		this.memGender = memGender;
 		this.memClubNum = memClubNum;
 		this.memTierId = memTierId;
-		this.memJoinDate = memJoinDate;
 		this.isBan = isBan;
 		this.role = role;
 	}

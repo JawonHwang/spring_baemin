@@ -1,6 +1,5 @@
 package com.baemin.dto;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -19,8 +18,6 @@ public class MemberDTO {
     private String memGender;
     private int memClubNum;
     private int memTierId;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Timestamp memJoinDate;
     private boolean isBan;
 	private String role;
 	
@@ -91,12 +88,6 @@ public class MemberDTO {
 	public void setMemTierId(int memTierId) {
 		this.memTierId = memTierId;
 	}
-	public Timestamp getMemJoinDate() {
-		return memJoinDate;
-	}
-	public void setMemJoinDate(Timestamp memJoinDate) {
-		this.memJoinDate = memJoinDate;
-	}
 	public boolean isBan() {
 		return isBan;
 	}
@@ -114,8 +105,8 @@ public class MemberDTO {
 		super();
 	}
 	public MemberDTO(String memId, String memPw, String memName, String memContact, String memEmail, LocalDate memBirth,
-			String memDept, String memStuId, String memGender, int memClubNum, int memTierId, Timestamp memJoinDate,
-			boolean isBan, String role) {
+			String memDept, String memStuId, String memGender, int memClubNum, int memTierId, boolean isBan,
+			String role) {
 		super();
 		this.memId = memId;
 		this.memPw = memPw;
@@ -128,7 +119,6 @@ public class MemberDTO {
 		this.memGender = memGender;
 		this.memClubNum = memClubNum;
 		this.memTierId = memTierId;
-		this.memJoinDate = memJoinDate;
 		this.isBan = isBan;
 		this.role = role;
 	}

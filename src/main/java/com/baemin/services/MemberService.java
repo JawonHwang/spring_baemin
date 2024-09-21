@@ -255,7 +255,7 @@ public class MemberService implements UserDetailsService{
 	
 	public void register(MemberDTO dto) throws Exception {
 		dto.setMemPw(new BCryptPasswordEncoder().encode(dto.getMemPw()));
-		dto.setMemJoinDate(Timestamp.from(Instant.now()));
+		//dto.setMemJoinDate(Timestamp.from(Instant.now()));
 		dto.setMemTierId(6);;
 		dto.setRole("ROLE_MEMBER");
 		
