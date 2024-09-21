@@ -21,8 +21,7 @@ public class MemberDTO {
     private int memTierId;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp memJoinDate;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Timestamp memApprovalDate;
+    private boolean isBan;
 	private String role;
 	
 	
@@ -98,11 +97,11 @@ public class MemberDTO {
 	public void setMemJoinDate(Timestamp memJoinDate) {
 		this.memJoinDate = memJoinDate;
 	}
-	public Timestamp getMemApprovalDate() {
-		return memApprovalDate;
+	public boolean isBan() {
+		return isBan;
 	}
-	public void setMemApprovalDate(Timestamp memApprovalDate) {
-		this.memApprovalDate = memApprovalDate;
+	public void setBan(boolean isBan) {
+		this.isBan = isBan;
 	}
 	public String getRole() {
 		return role;
@@ -114,10 +113,9 @@ public class MemberDTO {
 	public MemberDTO() {
 		super();
 	}
-	
 	public MemberDTO(String memId, String memPw, String memName, String memContact, String memEmail, LocalDate memBirth,
 			String memDept, String memStuId, String memGender, int memClubNum, int memTierId, Timestamp memJoinDate,
-			Timestamp memApprovalDate, String role) {
+			boolean isBan, String role) {
 		super();
 		this.memId = memId;
 		this.memPw = memPw;
@@ -131,7 +129,7 @@ public class MemberDTO {
 		this.memClubNum = memClubNum;
 		this.memTierId = memTierId;
 		this.memJoinDate = memJoinDate;
-		this.memApprovalDate = memApprovalDate;
+		this.isBan = isBan;
 		this.role = role;
 	}
 }
