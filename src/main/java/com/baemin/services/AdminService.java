@@ -110,7 +110,14 @@ public class AdminService {
 		member.setIsBan(false);
 		mRepo.save(member);
 	}
-
+	
+	//회원관리 > 회원 정보 일부 수정
+	public void updateMemberInfo(String memId,MemberDTO member) {
+		Member mem = mRepo.findByMemId(memId);
+		mem.setMemClubNum(member.getMemClubNum());
+		mem.setMemTierId(member.getMemTierId());
+		mRepo.save(mem);
+	}
 
 	//관리자 관리 > 전체조회
 	public List<AdminDTO> getAdminAll() {
@@ -136,9 +143,9 @@ public class AdminService {
 		aRepo.deleteById(adminId);
 	}
 	
-	//관리자관리 > 관리자 정보 수정
+	//관리자관리 > 관리자 정보 일부 수정
 	@Transactional
-	public void updateMemberInfo(String adminId,Map<String, Object> updateFields) {
+	public void updateAdminInfo(String adminId,Map<String, Object> updateFields) {
 		System.out.println(updateFields);
 		Map<String, Object> adminTypeMap = (Map<String, Object>) updateFields.get("adminType");
 		String adminTypeName = (String) adminTypeMap.get("adminTypeName");

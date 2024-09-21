@@ -63,7 +63,14 @@ public class AdminController {
 		aServ.banCancelMember(memId);
 		return ResponseEntity.ok().build();
 	}
-
+	
+	//회원관리 > 화원 정보 수정
+	@PutMapping("/management/member/updateInfo/{memId}")
+	public ResponseEntity<Void> updateMemberInfo(@PathVariable String memId, @RequestBody MemberDTO member) {
+		aServ.updateMemberInfo(memId, member);
+		return ResponseEntity.ok().build();
+	}
+		
 	//관리자관리 > 전체조회
 	@GetMapping("/management/admin/getAll")
 	public ResponseEntity<List<AdminDTO>> getAdminAll() {
@@ -80,10 +87,10 @@ public class AdminController {
 
 	//관리자관리 > 관리자 정보 수정
 	@PutMapping("/management/admin/updateInfo/{adminId}")
-	public ResponseEntity<Void> banCancelMember(@PathVariable String adminId, @RequestBody Map<String, Object> updateFields) {
+	public ResponseEntity<Void> updateAdminInfo(@PathVariable String adminId, @RequestBody Map<String, Object> updateFields) {
 		System.out.println(adminId);
 		System.out.println(updateFields);
-		aServ.updateMemberInfo(adminId, updateFields);
+		aServ.updateAdminInfo(adminId, updateFields);
 		return ResponseEntity.ok().build();
 	}
 
