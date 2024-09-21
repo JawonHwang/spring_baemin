@@ -49,8 +49,8 @@ public class Member {
    @Column(name="MEM_JOIN_DATE", columnDefinition = "TIMESTAMP")
    private Timestamp memJoinDate;
    
-   @Column(name="MEM_APPROVAL_DATE", columnDefinition = "TIMESTAMP")
-   private Timestamp memApprovalDate;
+   @Column(name="IS_BAN")
+   private boolean isBan;
    
    @Column(name="ROLE")
    private String role;
@@ -151,17 +151,17 @@ public class Member {
       this.memJoinDate = memJoinDate;
    }
 
-   public Timestamp getMemApprovalDate() {
-      return memApprovalDate;
-   }
+	public boolean getIsBan() {
+		return isBan;
+	}
+	
+	public void setIsBan(boolean isBan) {
+		this.isBan = isBan;
+	}
 
-   public void setMemApprovalDate(Timestamp memApprovalDate) {
-      this.memApprovalDate = memApprovalDate;
-   }
-
-   public String getRole() {
-      return role;
-   }
+	public String getRole() {
+		return role;
+	}
 
 	public void setRole(String role) {
 		this.role = role;
@@ -170,24 +170,23 @@ public class Member {
 	public Member() {
 	}
 
-   public Member(String memId, String memPw, String memName, String memContact, String memEmail, LocalDate memBirth,
-         String memDept, String memStuId, String memGender, int memClubNum, int memTierId, Timestamp memJoinDate,
-         Timestamp memApprovalDate, String role) {
-      super();
-      this.memId = memId;
-      this.memPw = memPw;
-      this.memName = memName;
-      this.memContact = memContact;
-      this.memEmail = memEmail;
-      this.memBirth = memBirth;
-      this.memDept = memDept;
-      this.memStuId = memStuId;
-      this.memGender = memGender;
-      this.memClubNum = memClubNum;
-      this.memTierId = memTierId;
-      this.memJoinDate = memJoinDate;
-      this.memApprovalDate = memApprovalDate;
-      this.role = role;
-   }
-   
+	public Member(String memId, String memPw, String memName, String memContact, String memEmail, LocalDate memBirth,
+			String memDept, String memStuId, String memGender, int memClubNum, int memTierId, Timestamp memJoinDate,
+			boolean isBan, String role) {
+		super();
+		this.memId = memId;
+		this.memPw = memPw;
+		this.memName = memName;
+		this.memContact = memContact;
+		this.memEmail = memEmail;
+		this.memBirth = memBirth;
+		this.memDept = memDept;
+		this.memStuId = memStuId;
+		this.memGender = memGender;
+		this.memClubNum = memClubNum;
+		this.memTierId = memTierId;
+		this.memJoinDate = memJoinDate;
+		this.isBan = isBan;
+		this.role = role;
+	}
 }
