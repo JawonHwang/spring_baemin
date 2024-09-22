@@ -2,6 +2,7 @@ package com.baemin.dto;
 
 import java.time.LocalDate;
 
+import com.baemin.domain.entity.MemberTier;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class MemberDTO {
@@ -17,7 +18,7 @@ public class MemberDTO {
     private String memStuId;
     private String memGender;
     private int memClubNum;
-    private int memTierId;
+    private MemberTierDTO memberTier;
     private boolean isBan;
 	private String role;
 	
@@ -82,11 +83,11 @@ public class MemberDTO {
 	public void setMemClubNum(int memClubNum) {
 		this.memClubNum = memClubNum;
 	}
-	public int getMemTierId() {
-		return memTierId;
+	public MemberTierDTO getMemberTier() {
+		return memberTier;
 	}
-	public void setMemTierId(int memTierId) {
-		this.memTierId = memTierId;
+	public void setMemberTier(MemberTierDTO memberTier) {
+		this.memberTier = memberTier;
 	}
 	public boolean isBan() {
 		return isBan;
@@ -105,7 +106,7 @@ public class MemberDTO {
 		super();
 	}
 	public MemberDTO(String memId, String memPw, String memName, String memContact, String memEmail, LocalDate memBirth,
-			String memDept, String memStuId, String memGender, int memClubNum, int memTierId, boolean isBan,
+			String memDept, String memStuId, String memGender, int memClubNum, MemberTierDTO memberTier, boolean isBan,
 			String role) {
 		super();
 		this.memId = memId;
@@ -118,7 +119,7 @@ public class MemberDTO {
 		this.memStuId = memStuId;
 		this.memGender = memGender;
 		this.memClubNum = memClubNum;
-		this.memTierId = memTierId;
+		this.memberTier = memberTier;
 		this.isBan = isBan;
 		this.role = role;
 	}

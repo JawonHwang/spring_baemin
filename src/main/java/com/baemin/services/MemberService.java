@@ -1,7 +1,5 @@
 package com.baemin.services;
 
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -24,6 +22,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import com.baemin.controllers.MemberController;
 import com.baemin.domain.entity.Member;
 import com.baemin.dto.MemberDTO;
+import com.baemin.dto.MemberTierDTO;
 import com.baemin.mappers.MemberMapper;
 import com.baemin.repositories.MemberRepository;
 import com.baemin.security.SecurityUser;
@@ -256,7 +255,12 @@ public class MemberService implements UserDetailsService{
 	public void register(MemberDTO dto) throws Exception {
 		dto.setMemPw(new BCryptPasswordEncoder().encode(dto.getMemPw()));
 		//dto.setMemJoinDate(Timestamp.from(Instant.now()));
-		dto.setMemTierId(6);;
+		//dto.setMemTierId(6); 찬양 - 에러나서 주석 아래 --부분 코드 수정 나중에 주석 지워줘
+		//-----------
+		MemberTierDTO tier = new MemberTierDTO();
+		tier.setMemTierId(Long.valueOf(6));
+		dto.setMemberTier(tier);
+		//-----------
 		dto.setRole("ROLE_MEMBER");
 		
 		Member m = mMapper.toEntity(dto);

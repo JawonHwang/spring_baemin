@@ -13,6 +13,7 @@ import com.baemin.domain.entity.Admin;
 import com.baemin.domain.entity.AdminType;
 import com.baemin.domain.entity.Member;
 import com.baemin.domain.entity.MemberShipFee;
+import com.baemin.domain.entity.MemberTier;
 import com.baemin.domain.entity.NoticeTag;
 import com.baemin.dto.AdminDTO;
 import com.baemin.dto.MemberDTO;
@@ -22,11 +23,13 @@ import com.baemin.mappers.AdminMapper;
 import com.baemin.mappers.AdminTypeMapper;
 import com.baemin.mappers.MemberMapper;
 import com.baemin.mappers.MemberShipFeeMapper;
+import com.baemin.mappers.MemberTierMapper;
 import com.baemin.mappers.NoticeTagMapper;
 import com.baemin.repositories.AdminRepository;
 import com.baemin.repositories.AdminTypeRepository;
 import com.baemin.repositories.MemberRepository;
 import com.baemin.repositories.MemberShipFeeRepository;
+import com.baemin.repositories.MemberTierRepository;
 import com.baemin.repositories.NoticeTagRepository;
 
 import jakarta.transaction.Transactional;
@@ -64,6 +67,12 @@ public class AdminService {
 
 	@Autowired
 	private MemberShipFeeMapper fMapper;
+	
+	@Autowired
+	private MemberTierRepository tiRepo;
+	
+	@Autowired
+	private MemberTierMapper tiMapper;
 
 	//회원 관리 > 전체조회
 	public List<MemberDTO> getByMember() {
@@ -115,7 +124,8 @@ public class AdminService {
 	public void updateMemberInfo(String memId,MemberDTO member) {
 		Member mem = mRepo.findByMemId(memId);
 		mem.setMemClubNum(member.getMemClubNum());
-		mem.setMemTierId(member.getMemTierId());
+		MemberTier memberTier = tiRepo.findByMemTier(member.getMemberTier().getMemTier());
+		mem.setMemberTier(memberTier);
 		mRepo.save(mem);
 	}
 
@@ -157,11 +167,11 @@ public class AdminService {
 		Member member = new Member();
 		Integer memClubNum = Integer.parseInt(memberMap.get("memClubNum").toString());
 		member.setMemClubNum(memClubNum);
-		Integer memTierId = Integer.parseInt(memberMap.get("memTierId").toString());
-		member.setMemTierId(memTierId);
-		
+		String memTier = memberMap.get("memTier").toString();
+		MemberTier memberTier = tiRepo.findByMemTier(memTier);
+		member.setMemberTier(memberTier);
 		System.out.println(memClubNum);
-		System.out.println(memTierId);
+		System.out.println(memberTier);
 
 		updateMemberByAdminId(adminId, member);
 	}
@@ -178,7 +188,8 @@ public class AdminService {
 	public void updateMemberByAdminId(String adminId, Member member) {
 		Member mem = mRepo.findByMemId(adminId);
 		mem.setMemClubNum(member.getMemClubNum());
-		mem.setMemTierId(member.getMemTierId());
+		MemberTier memberTier = tiRepo.findByMemTier(member.getMemberTier().getMemTier());
+		mem.setMemberTier(memberTier);
 		mRepo.save(mem);
 	}
 

@@ -20,9 +20,8 @@ import com.baemin.dto.MemberDTO;
 import com.baemin.dto.MemberShipFeeDTO;
 import com.baemin.dto.NoticeTagDTO;
 import com.baemin.services.AdminService;
+import com.baemin.services.CommonService;
 import com.baemin.services.MemberService;
-
-import jakarta.transaction.Transactional;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -40,6 +39,9 @@ public class AdminController {
 	@GetMapping("/management/member/getAll")
 	public ResponseEntity<List<MemberDTO>> getMemberAll() {
 		List<MemberDTO> list = aServ.getByMember();
+		System.out.println("확인!!!!!");
+		System.out.println(list.get(0).getMemberTier().getMemTier());
+		System.out.println(list.get(0).getMemId());
 		return ResponseEntity.ok(list);
 	}
 
