@@ -167,7 +167,9 @@ public class AdminService {
 		Member member = new Member();
 		Integer memClubNum = Integer.parseInt(memberMap.get("memClubNum").toString());
 		member.setMemClubNum(memClubNum);
-		String memTier = memberMap.get("memTier").toString();
+		
+		Map<String, Object> memberTierMap = (Map<String, Object>) memberMap.get("memberTier");
+		String memTier = (String) memberTierMap.get("memTier");
 		MemberTier memberTier = tiRepo.findByMemTier(memTier);
 		member.setMemberTier(memberTier);
 		System.out.println(memClubNum);
