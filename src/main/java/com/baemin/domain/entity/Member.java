@@ -1,155 +1,139 @@
 package com.baemin.domain.entity;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "MEMBERS")
 public class Member {
 
-   @Id
-   @Column(name="MEM_ID")
-   private String memId;
-   
-   @Column(name="MEM_PW")
-   private String memPw;
-   
-   @Column(name="MEM_NAME")
-   private String memName;
-   
-   @Column(name="MEM_CONTACT")
-   private String memContact;
-   
-   @Column(name="MEM_EMAIL")
-   private String memEmail;
-   
-   @Column(name="MEM_BIRTH", columnDefinition = "TIMESTAMP")
-   private LocalDate memBirth;
-   
-   @Column(name="MEM_DEPT")
-   private String memDept;
-   
-   @Column(name="MEM_STU_ID")
-   private String memStuId;
-   
-   @Column(name="MEM_GENDER")
-   private String memGender;
-   
-   @Column(name="MEM_CLUB_NUM")
-   private int memClubNum;
-   
-   @Column(name="MEM_TIER_ID")
-   private int memTierId;
-   
-   @Column(name="MEM_JOIN_DATE", columnDefinition = "TIMESTAMP")
-   private Timestamp memJoinDate;
-   
-   @Column(name="IS_BAN")
-   private boolean isBan;
-   
-   @Column(name="ROLE")
-   private String role;
+	@Id
+	@Column(name="MEM_ID")
+	private String memId;
 
-   public String getMemId() {
-      return memId;
-   }
+	@Column(name="MEM_PW")
+	private String memPw;
 
-   public void setMemId(String memId) {
-      this.memId = memId;
-   }
+	@Column(name="MEM_NAME")
+	private String memName;
 
-   public String getMemPw() {
-      return memPw;
-   }
+	@Column(name="MEM_CONTACT")
+	private String memContact;
 
-   public void setMemPw(String memPw) {
-      this.memPw = memPw;
-   }
+	@Column(name="MEM_EMAIL")
+	private String memEmail;
 
-   public String getMemName() {
-      return memName;
-   }
+	@Column(name="MEM_BIRTH", columnDefinition = "TIMESTAMP")
+	private LocalDate memBirth;
 
-   public void setMemName(String memName) {
-      this.memName = memName;
-   }
+	@Column(name="MEM_DEPT")
+	private String memDept;
 
-   public String getMemContact() {
-      return memContact;
-   }
+	@Column(name="MEM_STU_ID")
+	private String memStuId;
 
-   public void setMemContact(String memContact) {
-      this.memContact = memContact;
-   }
+	@Column(name="MEM_GENDER")
+	private String memGender;
 
-   public String getMemEmail() {
-      return memEmail;
-   }
+	@Column(name="MEM_CLUB_NUM")
+	private int memClubNum;
 
-   public void setMemEmail(String memEmail) {
-      this.memEmail = memEmail;
-   }
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "MEM_TIER_ID")
+	private MemberTier memberTier;
 
-   public LocalDate getMemBirth() {
-      return memBirth;
-   }
+	@Column(name="IS_BAN")
+	private boolean isBan;
 
-   public void setMemBirth(LocalDate memBirth) {
-      this.memBirth = memBirth;
-   }
+	@Column(name="ROLE")
+	private String role;
 
-   public String getMemDept() {
-      return memDept;
-   }
+	public String getMemId() {
+		return memId;
+	}
 
-   public void setMemDept(String memDept) {
-      this.memDept = memDept;
-   }
+	public void setMemId(String memId) {
+		this.memId = memId;
+	}
 
-   public String getMemStuId() {
-      return memStuId;
-   }
+	public String getMemPw() {
+		return memPw;
+	}
 
-   public void setMemStuId(String memStuId) {
-      this.memStuId = memStuId;
-   }
+	public void setMemPw(String memPw) {
+		this.memPw = memPw;
+	}
 
-   public String getMemGender() {
-      return memGender;
-   }
+	public String getMemName() {
+		return memName;
+	}
 
-   public void setMemGender(String memGender) {
-      this.memGender = memGender;
-   }
+	public void setMemName(String memName) {
+		this.memName = memName;
+	}
 
-   public int getMemClubNum() {
-      return memClubNum;
-   }
+	public String getMemContact() {
+		return memContact;
+	}
 
-   public void setMemClubNum(int memClubNum) {
-      this.memClubNum = memClubNum;
-   }
+	public void setMemContact(String memContact) {
+		this.memContact = memContact;
+	}
 
-   public int getMemTierId() {
-      return memTierId;
-   }
+	public String getMemEmail() {
+		return memEmail;
+	}
 
-   public void setMemTierId(int memTierId) {
-      this.memTierId = memTierId;
-   }
+	public void setMemEmail(String memEmail) {
+		this.memEmail = memEmail;
+	}
 
-   public Timestamp getMemJoinDate() {
-      return memJoinDate;
-   }
+	public LocalDate getMemBirth() {
+		return memBirth;
+	}
 
-   public void setMemJoinDate(Timestamp memJoinDate) {
-      this.memJoinDate = memJoinDate;
-   }
+	public void setMemBirth(LocalDate memBirth) {
+		this.memBirth = memBirth;
+	}
+
+	public String getMemDept() {
+		return memDept;
+	}
+
+	public void setMemDept(String memDept) {
+		this.memDept = memDept;
+	}
+
+	public String getMemStuId() {
+		return memStuId;
+	}
+
+	public void setMemStuId(String memStuId) {
+		this.memStuId = memStuId;
+	}
+
+	public String getMemGender() {
+		return memGender;
+	}
+
+	public void setMemGender(String memGender) {
+		this.memGender = memGender;
+	}
+
+	public int getMemClubNum() {
+		return memClubNum;
+	}
+
+	public void setMemClubNum(int memClubNum) {
+		this.memClubNum = memClubNum;
+	}
 
 	public boolean getIsBan() {
 		return isBan;
@@ -166,13 +150,21 @@ public class Member {
 	public void setRole(String role) {
 		this.role = role;
 	}
-	
+
+	public MemberTier getMemberTier() {
+		return memberTier;
+	}
+
+	public void setMemberTier(MemberTier memberTier) {
+		this.memberTier = memberTier;
+	}
+
 	public Member() {
 	}
 
 	public Member(String memId, String memPw, String memName, String memContact, String memEmail, LocalDate memBirth,
-			String memDept, String memStuId, String memGender, int memClubNum, int memTierId, Timestamp memJoinDate,
-			boolean isBan, String role) {
+			String memDept, String memStuId, String memGender, int memClubNum, MemberTier memberTier, boolean isBan,
+			String role) {
 		super();
 		this.memId = memId;
 		this.memPw = memPw;
@@ -184,9 +176,9 @@ public class Member {
 		this.memStuId = memStuId;
 		this.memGender = memGender;
 		this.memClubNum = memClubNum;
-		this.memTierId = memTierId;
-		this.memJoinDate = memJoinDate;
+		this.memberTier = memberTier;
 		this.isBan = isBan;
 		this.role = role;
 	}
+
 }

@@ -8,4 +8,6 @@ import com.baemin.domain.entity.Admin;
 
 public interface AdminRepository extends JpaRepository<Admin, String> {
 	List<Admin> findAll();
+	
+	Admin findByAdminId(String adminId);
 }
