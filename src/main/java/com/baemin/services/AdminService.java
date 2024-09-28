@@ -1,5 +1,7 @@
 package com.baemin.services;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -202,8 +204,37 @@ public class AdminService {
 	}
 
 	//회비관리 > 전체조회
-	public List<MemberShipFeeDTO> getMemberShipFeeAll() {
-		List<MemberShipFee> list = fRepo.findAll();
-		return fMapper.toDtoList(list);
+	public List<MemberShipFeeDTO> getMemberShipFeeAllByCreAt(String currentMonth) {
+        // currentMonth 예시: "2024-09"
+
+        // 날짜 포맷터 설정
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
+
+        // currentMonth를 LocalDateTime으로 변환
+        LocalDateTime startDate = LocalDateTime.parse(currentMonth + "-01T00:00:00"); // 시작 날짜
+        LocalDateTime endDate = startDate.plusMonths(1); // 다음 달의 시작 날짜로 설정
+
+        // endDate에서 하루를 빼서 그 달의 마지막 날을 설정
+        endDate = endDate.minusNanos(1); // 2024-09-30 23:59:59.999999999로 설정
+        /*LocalDateTime startDate = LocalDateTime.parse(currentMonth + "-01T00:00:00"); // 2024-09-01 00:00:00
+        LocalDateTime endDate = LocalDateTime.parse(currentMonth + "-30T23:59:59");*/
+        // 데이터 조회
+        List<MemberShipFee> list = fRepo.findByCreAtBetween(startDate, endDate);
+        return fMapper.toDtoList(list);
+    }
+	
+	//회비관리 > 회비 정보 수정
+	public void updateFeeInfo(Long feeId,MemberShipFeeDTO fee) {
+		MemberShipFee mfee = fRepo.findByFeeId(feeId);
+		mfee.setMonthlyFee(fee.getMonthlyFee());
+		mfee.setPayMethod(fee.getPayMethod());
+		mfee.setAmount(fee.getAmount());
+		mfee.setIsPaid(fee.getIsPaid());
+		mfee.setPayDate(fee.getPayDate());
+		mfee.setRemarks(fee.getRemarks());
+		mfee.setUptAt(LocalDateTime.now());
+		Admin admin = aRepo.findByAdminId(fee.getAdmin().getAdminId());//?? 이게 문제인가
+		mfee.setAdmin(admin);
+		fRepo.save(mfee);
 	}
 }

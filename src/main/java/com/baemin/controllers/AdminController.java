@@ -1,5 +1,6 @@
 package com.baemin.controllers;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +21,6 @@ import com.baemin.dto.MemberDTO;
 import com.baemin.dto.MemberShipFeeDTO;
 import com.baemin.dto.NoticeTagDTO;
 import com.baemin.services.AdminService;
-import com.baemin.services.CommonService;
 import com.baemin.services.MemberService;
 
 @RestController
@@ -104,11 +104,17 @@ public class AdminController {
 	}
 	
 	//회비관리 > 전체조회
-	@GetMapping("/management/memberShipFee/getAll")
-	public ResponseEntity<List<MemberShipFeeDTO>> getMemberShipFeeAll() {
-		List<MemberShipFeeDTO> list = aServ.getMemberShipFeeAll();
-		System.out.println("list : " + list.get(0).getPayMethod().getPayMthName());
-		System.out.println("list : " + list.get(0).getMember().getMemId());
-		return ResponseEntity.ok(list);
+	@GetMapping("/management/memberShipFee/getAll/{currentMonth}")
+	public ResponseEntity<List<MemberShipFeeDTO>> getMemberShipFeeAllByCreAt(@PathVariable String currentMonth) {
+        List<MemberShipFeeDTO> list = aServ.getMemberShipFeeAllByCreAt(currentMonth);
+        return ResponseEntity.ok(list);
+    }
+	//await axios.put(`/api/admin/management/fee/updateInfo/${newData.feeId}`, fee);
+	
+	//회비관리 > 회비 정보 수정
+	@PutMapping("/management/fee/updateInfo/{feeId}")
+	public ResponseEntity<Void> updateFeeInfo(@PathVariable Long feeId, @RequestBody MemberShipFeeDTO fee) {
+		aServ.updateFeeInfo(feeId, fee);
+		return ResponseEntity.ok().build();
 	}
 }

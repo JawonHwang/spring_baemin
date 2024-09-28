@@ -1,6 +1,7 @@
 package com.baemin.domain.entity;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
@@ -29,18 +30,19 @@ public class MemberShipFee {
 	private Long monthlyFee;
 
 	@Column(name = "AMOUNT")
-	private Long amount;
+	private int amount;
 	
+	@Column(name = "PAY_METHOD")
 	private String payMethod;
 
 	@Column(name = "IS_PAID")
-	private boolean isPaid;
+	private String isPaid;
 
 	@Column(name = "REMARKS")
 	private String remarks;
 
 	@Column(name = "PAY_DATE")
-	private Date payDate;
+	private LocalDate payDate;
 
 	@Column(name = "CRE_AT")
 	private LocalDateTime creAt;
@@ -56,8 +58,8 @@ public class MemberShipFee {
 		super();
 	}
 
-	public MemberShipFee(Long feeId, Member member, Long monthlyFee, Long amount, String payMethod, boolean isPaid,
-			String remarks, Date payDate, LocalDateTime creAt, LocalDateTime uptAt, Admin admin) {
+	public MemberShipFee(Long feeId, Member member, Long monthlyFee, int amount, String payMethod, String isPaid,
+			String remarks, LocalDate payDate, LocalDateTime creAt, LocalDateTime uptAt, Admin admin) {
 		super();
 		this.feeId = feeId;
 		this.member = member;
@@ -96,11 +98,11 @@ public class MemberShipFee {
 		this.monthlyFee = monthlyFee;
 	}
 
-	public Long getAmount() {
+	public int getAmount() {
 		return amount;
 	}
 
-	public void setAmount(Long amount) {
+	public void setAmount(int amount) {
 		this.amount = amount;
 	}
 
@@ -112,11 +114,11 @@ public class MemberShipFee {
 		this.payMethod = payMethod;
 	}
 
-	public boolean isPaid() {
+	public String isPaid() {
 		return isPaid;
 	}
 
-	public void setPaid(boolean isPaid) {
+	public void setPaid(String isPaid) {
 		this.isPaid = isPaid;
 	}
 
@@ -128,11 +130,11 @@ public class MemberShipFee {
 		this.remarks = remarks;
 	}
 
-	public Date getPayDate() {
+	public LocalDate getPayDate() {
 		return payDate;
 	}
 
-	public void setPayDate(Date payDate) {
+	public void setPayDate(LocalDate payDate) {
 		this.payDate = payDate;
 	}
 
@@ -146,6 +148,14 @@ public class MemberShipFee {
 
 	public LocalDateTime getUptAt() {
 		return uptAt;
+	}
+
+	public String getIsPaid() {
+		return isPaid;
+	}
+
+	public void setIsPaid(String isPaid) {
+		this.isPaid = isPaid;
 	}
 
 	public void setUptAt(LocalDateTime uptAt) {
