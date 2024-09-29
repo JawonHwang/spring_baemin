@@ -1,14 +1,16 @@
 package com.baemin.domain.entity;
 
-import java.sql.Timestamp;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -16,55 +18,60 @@ import jakarta.persistence.Table;
 @Table(name = "MEMBER_SHIP_FEES")
 public class MemberShipFee {
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "FEE_ID")
 	private Long feeId;
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "MEM_ID")
 	private Member member;
-	
+
 	@Column(name = "MONTHLY_FEE")
 	private Long monthlyFee;
-	
-	@Column(name = "AMOUNT")
-	private Long amount;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "PAY_MTH_ID")
-	private PayMethod payMethod;
 
-	@Column(name = "IS_FEE")
-	private boolean isFee;
+	@Column(name = "AMOUNT")
+	private int amount;
 	
+	@Column(name = "PAY_METHOD")
+	private String payMethod;
+
+	@Column(name = "IS_PAID")
+	private String isPaid;
+
 	@Column(name = "REMARKS")
 	private String remarks;
-	
-	@Column(name = "PAY_AT")
-	private Timestamp payAt;
-	
+
+	@Column(name = "PAY_DATE")
+	private LocalDate payDate;
+
 	@Column(name = "CRE_AT")
-	private Timestamp creAt;
+	private LocalDateTime creAt;
+
+	@Column(name = "UPT_AT")
+	private LocalDateTime uptAt;
 	
-	@Column(name = "FEE_DTAIL_ID")
-	private Long feeDtailId;
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "ADMIN_ID")
+	private Admin admin;
 
 	public MemberShipFee() {
 		super();
 	}
 
-	public MemberShipFee(Long feeId, Member member, Long monthlyFee, Long amount, PayMethod payMethod, boolean isFee,
-			String remarks, Timestamp payAt, Timestamp creAt, Long feeDtailId) {
+	public MemberShipFee(Long feeId, Member member, Long monthlyFee, int amount, String payMethod, String isPaid,
+			String remarks, LocalDate payDate, LocalDateTime creAt, LocalDateTime uptAt, Admin admin) {
 		super();
 		this.feeId = feeId;
 		this.member = member;
 		this.monthlyFee = monthlyFee;
 		this.amount = amount;
 		this.payMethod = payMethod;
-		this.isFee = isFee;
+		this.isPaid = isPaid;
 		this.remarks = remarks;
-		this.payAt = payAt;
+		this.payDate = payDate;
 		this.creAt = creAt;
-		this.feeDtailId = feeDtailId;
+		this.uptAt = uptAt;
+		this.admin = admin;
 	}
 
 	public Long getFeeId() {
@@ -91,28 +98,28 @@ public class MemberShipFee {
 		this.monthlyFee = monthlyFee;
 	}
 
-	public Long getAmount() {
+	public int getAmount() {
 		return amount;
 	}
 
-	public void setAmount(Long amount) {
+	public void setAmount(int amount) {
 		this.amount = amount;
 	}
 
-	public PayMethod getPayMethod() {
+	public String getPayMethod() {
 		return payMethod;
 	}
 
-	public void setPayMethod(PayMethod payMethod) {
+	public void setPayMethod(String payMethod) {
 		this.payMethod = payMethod;
 	}
 
-	public boolean isFee() {
-		return isFee;
+	public String isPaid() {
+		return isPaid;
 	}
 
-	public void setFee(boolean isFee) {
-		this.isFee = isFee;
+	public void setPaid(String isPaid) {
+		this.isPaid = isPaid;
 	}
 
 	public String getRemarks() {
@@ -123,29 +130,44 @@ public class MemberShipFee {
 		this.remarks = remarks;
 	}
 
-	public Timestamp getPayAt() {
-		return payAt;
+	public LocalDate getPayDate() {
+		return payDate;
 	}
 
-	public void setPayAt(Timestamp payAt) {
-		this.payAt = payAt;
+	public void setPayDate(LocalDate payDate) {
+		this.payDate = payDate;
 	}
 
-	public Timestamp getCreAt() {
+	public LocalDateTime getCreAt() {
 		return creAt;
 	}
 
-	public void setCreAt(Timestamp creAt) {
+	public void setCreAt(LocalDateTime creAt) {
 		this.creAt = creAt;
 	}
 
-	public Long getFeeDtailId() {
-		return feeDtailId;
+	public LocalDateTime getUptAt() {
+		return uptAt;
 	}
 
-	public void setFeeDtailId(Long feeDtailId) {
-		this.feeDtailId = feeDtailId;
+	public String getIsPaid() {
+		return isPaid;
 	}
-	
-	
+
+	public void setIsPaid(String isPaid) {
+		this.isPaid = isPaid;
+	}
+
+	public void setUptAt(LocalDateTime uptAt) {
+		this.uptAt = uptAt;
+	}
+
+	public Admin getAdmin() {
+		return admin;
+	}
+
+	public void setAdmin(Admin admin) {
+		this.admin = admin;
+	}
+
 }

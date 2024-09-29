@@ -17,4 +17,6 @@ public interface MemberRepository extends JpaRepository<Member, String> {
 	Member findByMemId(String MemId);
 
 	List<Member> findAll();
+
+	List<Member> findByRole(String role);
 }

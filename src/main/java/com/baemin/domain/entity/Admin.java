@@ -13,36 +13,28 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "ADMINS")
 public class Admin {
-	
 	@Id
 	@Column(name = "ADMIN_ID")
-	private String adminId;
-
+	private String adminId; 
+	
 	@OneToOne(fetch = FetchType.LAZY)
 	@MapsId
-	@JoinColumn(name = "ADMIN_ID", insertable = false, updatable = false)
+	@JoinColumn(name = "ADMIN_ID")
 	private Member member;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "ADMIN_TYPE_ID", insertable = false, updatable = false)
+	@JoinColumn(name = "ADMIN_TYPE_ID", nullable = true)
 	private AdminType adminType;
 
 	public Admin() {
 		super();
 	}
 
-	public Admin(Member member, AdminType adminType) {
+	public Admin(String adminId, Member member, AdminType adminType) {
 		super();
+		this.adminId = adminId;
 		this.member = member;
 		this.adminType = adminType;
-	}
-
-	public String getAdminId() {
-		return adminId;
-	}
-
-	public void setAdminId(String adminId) {
-		this.adminId = adminId;
 	}
 
 	public Member getMember() {
@@ -59,5 +51,13 @@ public class Admin {
 
 	public void setAdminType(AdminType adminType) {
 		this.adminType = adminType;
+	}
+
+	public String getAdminId() {
+		return adminId;
+	}
+
+	public void setAdminId(String adminId) {
+		this.adminId = adminId;
 	}
 }
