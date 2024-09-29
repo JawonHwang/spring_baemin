@@ -3,6 +3,7 @@ package com.baemin.services;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.baemin.controllers.JoinController;
 import com.baemin.mappers.ActivityDateMapper;
@@ -12,6 +13,7 @@ import com.baemin.repositories.ActivityDateRepository;
 import com.baemin.repositories.InterviewRepository;
 import com.baemin.repositories.JoinClubRepository;
 
+@Service
 public class JoinService {
 
 private static final Logger logger = LoggerFactory.getLogger(JoinController.class);
