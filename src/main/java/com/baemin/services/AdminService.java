@@ -38,7 +38,7 @@ import jakarta.transaction.Transactional;
 
 @Service
 public class AdminService {
-	private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
+	private static final Logger logger = LoggerFactory.getLogger(AdminService.class);
 
 	@Autowired
 	private AdminRepository aRepo;

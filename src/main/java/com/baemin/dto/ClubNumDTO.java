@@ -1,19 +1,20 @@
 package com.baemin.dto;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 
 public class ClubNumDTO {
 	private Long clubNumId;
-	private String startYear;
-	private String semester;
-	private Long clubNum;
-	private Timestamp creAt;
+	private int startYear;
+	private int semester;
+	private int clubNum;
+	private LocalDate creAt;
 	
 	public ClubNumDTO() {
 		super();
 	}
 
-	public ClubNumDTO(Long clubNumId, String startYear, String semester, Long clubNum, Timestamp creAt) {
+	public ClubNumDTO(Long clubNumId, int startYear, int semester, int clubNum, LocalDate creAt) {
 		super();
 		this.clubNumId = clubNumId;
 		this.startYear = startYear;
@@ -30,35 +31,35 @@ public class ClubNumDTO {
 		this.clubNumId = clubNumId;
 	}
 
-	public String getStartYear() {
+	public int getStartYear() {
 		return startYear;
 	}
 
-	public void setStartYear(String startYear) {
+	public void setStartYear(int startYear) {
 		this.startYear = startYear;
 	}
 
-	public String getSemester() {
+	public int getSemester() {
 		return semester;
 	}
 
-	public void setSemester(String semester) {
+	public void setSemester(int semester) {
 		this.semester = semester;
 	}
 
-	public Long getClubNum() {
+	public int getClubNum() {
 		return clubNum;
 	}
 
-	public void setClubNum(Long clubNum) {
+	public void setClubNum(int clubNum) {
 		this.clubNum = clubNum;
 	}
 
-	public Timestamp getCreAt() {
+	public LocalDate getCreAt() {
 		return creAt;
 	}
 
-	public void setCreAt(Timestamp creAt) {
+	public void setCreAt(LocalDate creAt) {
 		this.creAt = creAt;
 	}
 }

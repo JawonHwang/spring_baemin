@@ -1,9 +1,12 @@
 package com.baemin.domain.entity;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
@@ -11,26 +14,27 @@ import jakarta.persistence.Table;
 @Table(name = "CLUB_NUM")
 public class ClubNum {
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "CLUB_NUM_ID")
 	private Long clubNumId;
 
 	@Column(name = "START_YEAR")
-	private String startYear;
+	private int startYear;
 	
 	@Column(name = "SEMESTER")
-	private String semester;
+	private int semester;
 	
 	@Column(name = "CLUB_NUM")
-	private Long clubNum;
+	private int clubNum;
 	
 	@Column(name = "CRE_AT")
-	private Timestamp creAt;
+	private LocalDate creAt;
 
 	public ClubNum() {
 		super();
 	}
 
-	public ClubNum(Long clubNumId, String startYear, String semester, Long clubNum, Timestamp creAt) {
+	public ClubNum(Long clubNumId, int startYear, int semester, int clubNum, LocalDate creAt) {
 		super();
 		this.clubNumId = clubNumId;
 		this.startYear = startYear;
@@ -47,35 +51,35 @@ public class ClubNum {
 		this.clubNumId = clubNumId;
 	}
 
-	public String getStartYear() {
+	public int getStartYear() {
 		return startYear;
 	}
 
-	public void setStartYear(String startYear) {
+	public void setStartYear(int startYear) {
 		this.startYear = startYear;
 	}
 
-	public String getSemester() {
+	public int getSemester() {
 		return semester;
 	}
 
-	public void setSemester(String semester) {
+	public void setSemester(int semester) {
 		this.semester = semester;
 	}
 
-	public Long getClubNum() {
+	public int getClubNum() {
 		return clubNum;
 	}
 
-	public void setClubNum(Long clubNum) {
+	public void setClubNum(int clubNum) {
 		this.clubNum = clubNum;
 	}
 
-	public Timestamp getCreAt() {
+	public LocalDate getCreAt() {
 		return creAt;
 	}
 
-	public void setCreAt(Timestamp creAt) {
+	public void setCreAt(LocalDate creAt) {
 		this.creAt = creAt;
 	}
 	
