@@ -13,9 +13,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.baemin.domain.entity.Attendance;
 import com.baemin.dto.AdminDTO;
+import com.baemin.dto.AttendanceDTO;
+import com.baemin.dto.FeeDetailDTO;
 import com.baemin.dto.MemberDTO;
 import com.baemin.dto.MemberShipFeeDTO;
 import com.baemin.dto.NoticeTagDTO;
@@ -108,7 +112,6 @@ public class AdminController {
         List<MemberShipFeeDTO> list = aServ.getMemberShipFeeAllByCreAt(currentMonth);
         return ResponseEntity.ok(list);
     }
-	//await axios.put(`/api/admin/management/fee/updateInfo/${newData.feeId}`, fee);
 	
 	//회비관리 > 회비 정보 수정
 	@PutMapping("/management/fee/updateInfo/{feeId}")
@@ -116,4 +119,34 @@ public class AdminController {
 		aServ.updateFeeInfo(feeId, fee);
 		return ResponseEntity.ok().build();
 	}
+	
+	//회비세부사항관리 > 전체조회
+	@GetMapping("/management/feeDetail/getAll")
+	public ResponseEntity<List<FeeDetailDTO>> getFeeDetailAll() {
+		List<FeeDetailDTO> list = aServ.getFeeDetailAll();
+		return ResponseEntity.ok(list);
+	}
+	
+	//공통 > 정지 안된 회원만 조회
+	@GetMapping("/management/common/getMemberbyIsBan")
+	public ResponseEntity<List<MemberDTO>> getMemberByIsBan() {
+		List<MemberDTO> list = mServ.getMemberByIsBan();
+		return ResponseEntity.ok(list);
+	}
+	
+	//출석관리 > 회원출석 정보 수정
+	@PostMapping("/management/attendance/saveAll")
+	public ResponseEntity<Void> updateAttInfo(@RequestBody List<AttendanceDTO> attendanceDataList) {
+		System.out.println(attendanceDataList.get(0).getAttAt());
+		aServ.updateAttInfo(attendanceDataList);
+		return ResponseEntity.ok().build();
+	}
+	
+	//출석관리 > 해당월 전체조회
+	@GetMapping("/management/attendance/monthGetAll")
+	public List<Attendance> getAttendanceByMonth(@RequestParam int year, @RequestParam int month) {
+		System.out.println("year" + year);
+		System.out.println("month" + month);
+        return aServ.getAttendanceByMonth(year, month);
+    }
 }

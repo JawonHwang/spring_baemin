@@ -1,13 +1,14 @@
 package com.baemin.dto;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 
 public class AttendanceDTO {
 	
 	private Long attId;			//출석ID
-	private String memId;		//회원ID
-	private Boolean isAtt;		//출석여부
-	private Timestamp attAt;	//출석날짜
+	private MemberDTO member;		//회원ID
+	private String attState;	//출석상태
+	private LocalDate attAt;	//출석날짜
 	private Timestamp creAt;	//생성일
 	private Timestamp uptAt;	//수정일
 	
@@ -15,11 +16,12 @@ public class AttendanceDTO {
 		super();
 	}
 
-	public AttendanceDTO(Long attId, String memId, Boolean isAtt, Timestamp attAt, Timestamp creAt, Timestamp uptAt) {
+	public AttendanceDTO(Long attId, MemberDTO member, String attState, LocalDate attAt, Timestamp creAt,
+			Timestamp uptAt) {
 		super();
 		this.attId = attId;
-		this.memId = memId;
-		this.isAtt = isAtt;
+		this.member = member;
+		this.attState = attState;
 		this.attAt = attAt;
 		this.creAt = creAt;
 		this.uptAt = uptAt;
@@ -33,27 +35,27 @@ public class AttendanceDTO {
 		this.attId = attId;
 	}
 
-	public String getMemId() {
-		return memId;
+	public MemberDTO getMember() {
+		return member;
 	}
 
-	public void setMemId(String memId) {
-		this.memId = memId;
+	public void setMember(MemberDTO member) {
+		this.member = member;
 	}
 
-	public Boolean getIsAtt() {
-		return isAtt;
+	public String getAttState() {
+		return attState;
 	}
 
-	public void setIsAtt(Boolean isAtt) {
-		this.isAtt = isAtt;
+	public void setAttState(String attState) {
+		this.attState = attState;
 	}
 
-	public Timestamp getAttAt() {
+	public LocalDate getAttAt() {
 		return attAt;
 	}
 
-	public void setAttAt(Timestamp attAt) {
+	public void setAttAt(LocalDate attAt) {
 		this.attAt = attAt;
 	}
 

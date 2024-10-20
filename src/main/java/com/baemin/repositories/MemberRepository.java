@@ -19,4 +19,6 @@ public interface MemberRepository extends JpaRepository<Member, String> {
 	List<Member> findAll();
 
 	List<Member> findByRole(String role);
+	
+	List<Member> findByIsBan(boolean isBan);
 }

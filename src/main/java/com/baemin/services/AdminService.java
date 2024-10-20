@@ -1,6 +1,9 @@
 package com.baemin.services;
 
+import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
@@ -10,25 +13,32 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.baemin.controllers.AdminController;
 import com.baemin.domain.entity.Admin;
 import com.baemin.domain.entity.AdminType;
+import com.baemin.domain.entity.Attendance;
+import com.baemin.domain.entity.FeeDetail;
 import com.baemin.domain.entity.Member;
 import com.baemin.domain.entity.MemberShipFee;
 import com.baemin.domain.entity.MemberTier;
 import com.baemin.domain.entity.NoticeTag;
 import com.baemin.dto.AdminDTO;
+import com.baemin.dto.AttendanceDTO;
+import com.baemin.dto.FeeDetailDTO;
 import com.baemin.dto.MemberDTO;
 import com.baemin.dto.MemberShipFeeDTO;
 import com.baemin.dto.NoticeTagDTO;
 import com.baemin.mappers.AdminMapper;
 import com.baemin.mappers.AdminTypeMapper;
+import com.baemin.mappers.AttendanceMapper;
+import com.baemin.mappers.FeeDetailMapper;
 import com.baemin.mappers.MemberMapper;
 import com.baemin.mappers.MemberShipFeeMapper;
 import com.baemin.mappers.MemberTierMapper;
 import com.baemin.mappers.NoticeTagMapper;
 import com.baemin.repositories.AdminRepository;
 import com.baemin.repositories.AdminTypeRepository;
+import com.baemin.repositories.AttendanceRepository;
+import com.baemin.repositories.FeeDetailRepository;
 import com.baemin.repositories.MemberRepository;
 import com.baemin.repositories.MemberShipFeeRepository;
 import com.baemin.repositories.MemberTierRepository;
@@ -75,6 +85,18 @@ public class AdminService {
 	
 	@Autowired
 	private MemberTierMapper tiMapper;
+	
+	@Autowired
+	private FeeDetailRepository fdRepo;
+	
+	@Autowired
+	private FeeDetailMapper fdMapper;
+	
+	@Autowired
+	private AttendanceRepository attRepo;
+	
+	@Autowired
+	private AttendanceMapper attMapper;
 
 	//회원 관리 > 전체조회
 	public List<MemberDTO> getByMember() {
@@ -237,4 +259,56 @@ public class AdminService {
 		mfee.setAdmin(admin);
 		fRepo.save(mfee);
 	}
+	
+	//회비세부사항관리 > 전체조회
+	public List<FeeDetailDTO> getFeeDetailAll() {
+		List<FeeDetail> list = fdRepo.findAll();
+		return fdMapper.toDtoList(list);
+	}
+	
+	//출석관리 > 회원출석 정보 수정 - TODO : 수정자 입력
+	public void updateAttInfo(List<AttendanceDTO> attendanceDataList) {
+	    LocalDate today = LocalDate.now(); // 예: 2024-09-29
+	    LocalDateTime todayDateTime = today.atStartOfDay(); // 시간은 00:00:00으로 설정
+	    Timestamp timestamp = Timestamp.valueOf(todayDateTime);
+	    
+	    for (AttendanceDTO attendanceData : attendanceDataList) {
+	    	Member m = mRepo.findAllByMemId(attendanceData.getMember().getMemId());
+	        Attendance att = attRepo.findByAttAtAndMember(attendanceData.getAttAt(), m);
+	        System.out.println(m.getMemId());
+	        
+	        if (att == null) {
+	            // 존재하지 않으면 새로 생성하여 insert 합니다.
+	            att = new Attendance();
+	            att.setAttAt(attendanceData.getAttAt());
+	            att.setMember(m);
+	            att.setAttState(attendanceData.getAttState());
+	            att.setCreAt(timestamp);
+	            att.setUptAt(timestamp);
+	            try {
+	                attRepo.save(att);
+	                logger.info(attendanceData.getMember().getMemId() + "님의 " + attendanceData.getAttAt() + " " + attendanceData.getAttState() + " 출석 정보가 추가되었습니다.");
+	            } catch (Exception e) {
+	                System.err.println("Error saving Attendance: " + e.getMessage());
+	            }
+	        } else {
+	            // 존재하면 기존 객체를 업데이트합니다.
+	            att.setAttState(attendanceData.getAttState());
+	            att.setUptAt(timestamp);
+	            attRepo.save(att);
+
+	            logger.info(attendanceData.getMember().getMemId() + "님의 " + attendanceData.getAttAt() + " " + attendanceData.getAttState() + " 출석 정보가 업데이트되었습니다.");
+	        }
+	    }
+	}
+	
+	//출석관리 > 해당월 전체조회
+	public List<Attendance> getAttendanceByMonth(int year, int month) {
+        // 특정 월의 시작일과 종료일 계산
+		LocalDate startDate = LocalDate.of(year, month, 1);
+	    LocalDate endDate = startDate.plusMonths(1).minusDays(1); // 해당 월의 마지막 날
+        
+        return attRepo.findAllByAttAtBetween(startDate, endDate);
+    }
+
 }
