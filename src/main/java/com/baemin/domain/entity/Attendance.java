@@ -10,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -37,12 +38,18 @@ public class Attendance {
 
 	@Column(name="UPT_AT")		//수정일
 	private Timestamp uptAt;
+	
+	@ManyToOne(fetch = FetchType.EAGER) // 수정자
+	@JoinColumn(name = "UPT_ADMIN")
+	private Admin admin;
+
 
 	public Attendance() {
 		super();
 	}
 
-	public Attendance(Long attId, Member member, String attState, LocalDate attAt, Timestamp creAt, Timestamp uptAt) {
+	public Attendance(Long attId, Member member, String attState, LocalDate attAt, Timestamp creAt, Timestamp uptAt,
+			Admin admin) {
 		super();
 		this.attId = attId;
 		this.member = member;
@@ -50,6 +57,7 @@ public class Attendance {
 		this.attAt = attAt;
 		this.creAt = creAt;
 		this.uptAt = uptAt;
+		this.admin = admin;
 	}
 
 	public Long getAttId() {
@@ -98,5 +106,13 @@ public class Attendance {
 
 	public void setUptAt(Timestamp uptAt) {
 		this.uptAt = uptAt;
+	}
+
+	public Admin getAdmin() {
+		return admin;
+	}
+
+	public void setAdmin(Admin admin) {
+		this.admin = admin;
 	}
 }

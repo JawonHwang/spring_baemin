@@ -269,10 +269,8 @@ public class AdminService {
 		mfee.setPayDate(fee.getPayDate());
 		mfee.setRemarks(fee.getRemarks());
 		mfee.setUptAt(LocalDateTime.now());
-		System.out.println("???" + getUser().getUsername());
 		Admin admin = aRepo.findByAdminId(getUser().getUsername());//수정자
 		mfee.setAdmin(admin);
-		System.out.println("???" + getUser().getUsername());
 		fRepo.save(mfee);
 	}
 	
@@ -282,7 +280,7 @@ public class AdminService {
 		return fdMapper.toDtoList(list);
 	}
 	
-	//출석관리 > 회원출석 정보 수정 - TODO : 수정자 입력
+	//출석관리 > 회원출석 정보 수정
 	public void updateAttInfo(List<AttendanceDTO> attendanceDataList) {
 	    LocalDate today = LocalDate.now(); // 예: 2024-09-29
 	    LocalDateTime todayDateTime = today.atStartOfDay(); // 시간은 00:00:00으로 설정
@@ -291,7 +289,6 @@ public class AdminService {
 	    for (AttendanceDTO attendanceData : attendanceDataList) {
 	    	Member m = mRepo.findAllByMemId(attendanceData.getMember().getMemId());
 	        Attendance att = attRepo.findByAttAtAndMember(attendanceData.getAttAt(), m);
-	        System.out.println(m.getMemId());
 	        
 	        if (att == null) {
 	            // 존재하지 않으면 새로 생성하여 insert 합니다.
@@ -300,7 +297,6 @@ public class AdminService {
 	            att.setMember(m);
 	            att.setAttState(attendanceData.getAttState());
 	            att.setCreAt(timestamp);
-	            att.setUptAt(timestamp);
 	            try {
 	                attRepo.save(att);
 	                logger.info(attendanceData.getMember().getMemId() + "님의 " + attendanceData.getAttAt() + " " + attendanceData.getAttState() + " 출석 정보가 추가되었습니다.");
@@ -311,6 +307,8 @@ public class AdminService {
 	            // 존재하면 기존 객체를 업데이트합니다.
 	            att.setAttState(attendanceData.getAttState());
 	            att.setUptAt(timestamp);
+	            Admin admin = aRepo.findByAdminId(getUser().getUsername());//수정자
+	            att.setAdmin(admin);
 	            attRepo.save(att);
 
 	            logger.info(attendanceData.getMember().getMemId() + "님의 " + attendanceData.getAttAt() + " " + attendanceData.getAttState() + " 출석 정보가 업데이트되었습니다.");

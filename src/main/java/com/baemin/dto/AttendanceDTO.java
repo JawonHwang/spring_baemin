@@ -11,13 +11,14 @@ public class AttendanceDTO {
 	private LocalDate attAt;	//출석날짜
 	private Timestamp creAt;	//생성일
 	private Timestamp uptAt;	//수정일
+	private AdminDTO admin; //수정자
 	
 	public AttendanceDTO() {
 		super();
 	}
 
 	public AttendanceDTO(Long attId, MemberDTO member, String attState, LocalDate attAt, Timestamp creAt,
-			Timestamp uptAt) {
+			Timestamp uptAt, AdminDTO admin) {
 		super();
 		this.attId = attId;
 		this.member = member;
@@ -25,6 +26,7 @@ public class AttendanceDTO {
 		this.attAt = attAt;
 		this.creAt = creAt;
 		this.uptAt = uptAt;
+		this.admin = admin;
 	}
 
 	public Long getAttId() {
@@ -74,4 +76,13 @@ public class AttendanceDTO {
 	public void setUptAt(Timestamp uptAt) {
 		this.uptAt = uptAt;
 	}
+
+	public AdminDTO getAdmin() {
+		return admin;
+	}
+
+	public void setAdmin(AdminDTO admin) {
+		this.admin = admin;
+	}
+
 }
