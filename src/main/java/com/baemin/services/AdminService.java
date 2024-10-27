@@ -11,7 +11,10 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import com.baemin.security.SecurityUser;
 
 import com.baemin.domain.entity.Admin;
 import com.baemin.domain.entity.AdminType;
@@ -43,6 +46,7 @@ import com.baemin.repositories.MemberRepository;
 import com.baemin.repositories.MemberShipFeeRepository;
 import com.baemin.repositories.MemberTierRepository;
 import com.baemin.repositories.NoticeTagRepository;
+import com.baemin.security.SecurityUser;
 
 import jakarta.transaction.Transactional;
 
@@ -97,7 +101,17 @@ public class AdminService {
 	
 	@Autowired
 	private AttendanceMapper attMapper;
+	
+	private SecurityUser getUser() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
+		if(auth!=null && auth.getPrincipal() instanceof SecurityUser) {
+			SecurityUser su = (SecurityUser)auth.getPrincipal();
+			return su;
+		}
+		return null;//getUser().getUsername()
+	}
+	
 	//회원 관리 > 전체조회
 	public List<MemberDTO> getByMember() {
 		List<Member> list = mRepo.findByRole("ROLE_MEMBER");
@@ -255,8 +269,10 @@ public class AdminService {
 		mfee.setPayDate(fee.getPayDate());
 		mfee.setRemarks(fee.getRemarks());
 		mfee.setUptAt(LocalDateTime.now());
-		Admin admin = aRepo.findByAdminId(fee.getAdmin().getAdminId());//?? 이게 문제인가
+		System.out.println("???" + getUser().getUsername());
+		Admin admin = aRepo.findByAdminId(getUser().getUsername());//수정자
 		mfee.setAdmin(admin);
+		System.out.println("???" + getUser().getUsername());
 		fRepo.save(mfee);
 	}
 	

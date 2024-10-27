@@ -36,15 +36,14 @@ public class AdminController {
 
 	@Autowired
 	private MemberService mServ;
+	
+	
 
 	//관리
 	//회원관리 > 전체조회
 	@GetMapping("/management/member/getAll")
 	public ResponseEntity<List<MemberDTO>> getMemberAll() {
 		List<MemberDTO> list = aServ.getByMember();
-		System.out.println("확인!!!!!");
-		System.out.println(list.get(0).getMemberTier().getMemTier());
-		System.out.println(list.get(0).getMemId());
 		return ResponseEntity.ok(list);
 	}
 
