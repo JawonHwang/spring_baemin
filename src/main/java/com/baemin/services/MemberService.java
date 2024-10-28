@@ -261,9 +261,6 @@ public class MemberService implements UserDetailsService{
 	
 	public void register(MemberDTO dto) throws Exception {
 		dto.setMemPw(new BCryptPasswordEncoder().encode(dto.getMemPw()));
-		//dto.setMemJoinDate(Timestamp.from(Instant.now()));
-		//dto.setMemTierId(6); 찬양 - 에러나서 주석 아래 --부분 코드 수정 나중에 주석 지워줘
-		//-----------
 		MemberTierDTO tier = new MemberTierDTO();
 		tier.setMemTierId(Long.valueOf(6));
 		dto.setMemberTier(tier);
