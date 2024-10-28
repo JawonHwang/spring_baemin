@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -92,18 +93,46 @@ public class AdminController {
 	//관리자관리 > 관리자 정보 수정
 	@PutMapping("/management/admin/updateInfo/{adminId}")
 	public ResponseEntity<Void> updateAdminInfo(@PathVariable String adminId, @RequestBody Map<String, Object> updateFields) {
-		System.out.println(adminId);
-		System.out.println(updateFields);
 		aServ.updateAdminInfo(adminId, updateFields);
 		return ResponseEntity.ok().build();
 	}
 
-	//대회관리 > 태그 > 전체조회
+	//공지사항관리 > 태그 > 전체조회
 	@GetMapping("/management/noticeTag/getAll")
 	public ResponseEntity<List<NoticeTagDTO>> getNoticeTagAll() {
 		List<NoticeTagDTO> list = aServ.getNoticeTagAll();
 		return ResponseEntity.ok(list);
 	}
+	
+	//공지사항관리 > 태그 > 등록
+	@PostMapping("/management/noticeTag/insert")
+	public ResponseEntity<Void> noticeTagInsert(@RequestBody NoticeTagDTO noticeTagDTO) {
+		String notTagName = noticeTagDTO.getNotTagName();
+		aServ.noticeTagInsert(notTagName);
+		return ResponseEntity.ok().build();
+	}
+	
+	//공지사항관리 > 태그 > 수정
+	@PutMapping("/management/noticeTag/update/{notTagId}")
+	public ResponseEntity<Void> updateByNotTagId(@PathVariable Long notTagId, @RequestBody NoticeTagDTO noticeTagDTO) {
+		aServ.updateByNotTagId(notTagId, noticeTagDTO);
+		return ResponseEntity.ok().build();
+	}
+	
+	//공지사항관리 > 태그 > 순서수정
+	@PutMapping("/management/noticeTag/updateOrder")
+	public ResponseEntity<Void> updateOrder( @RequestBody List<NoticeTagDTO> noticeTagDTOList) {
+		aServ.updateOrder(noticeTagDTOList);
+		return ResponseEntity.ok().build();
+	}
+	
+	//공지사항관리 > 태그 > 삭제
+	@DeleteMapping("/management/noticeTag/delete/{notTagId}")
+	public ResponseEntity<Void> deleteByNotTagId(@PathVariable Long notTagId) {
+	    aServ.deleteByNotTagId(notTagId); // 서비스 메서드 호출
+	    return ResponseEntity.ok().build(); // 성공 시 빈 응답 반환
+	}
+
 	
 	//회비관리 > 전체조회
 	@GetMapping("/management/memberShipFee/getAll/{currentMonth}")
@@ -136,7 +165,6 @@ public class AdminController {
 	//출석관리 > 회원출석 정보 수정
 	@PostMapping("/management/attendance/saveAll")
 	public ResponseEntity<Void> updateAttInfo(@RequestBody List<AttendanceDTO> attendanceDataList) {
-		System.out.println(attendanceDataList.get(0).getAttAt());
 		aServ.updateAttInfo(attendanceDataList);
 		return ResponseEntity.ok().build();
 	}
@@ -144,8 +172,6 @@ public class AdminController {
 	//출석관리 > 해당월 전체조회
 	@GetMapping("/management/attendance/monthGetAll")
 	public List<Attendance> getAttendanceByMonth(@RequestParam int year, @RequestParam int month) {
-		System.out.println("year" + year);
-		System.out.println("month" + month);
         return aServ.getAttendanceByMonth(year, month);
     }
 }

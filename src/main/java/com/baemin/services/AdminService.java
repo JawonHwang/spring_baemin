@@ -194,14 +194,11 @@ public class AdminService {
 	//관리자관리 > 관리자 정보 일부 수정
 	@Transactional
 	public void updateAdminInfo(String adminId,Map<String, Object> updateFields) {
-		System.out.println(updateFields);
 		Map<String, Object> adminTypeMap = (Map<String, Object>) updateFields.get("adminType");
 		String adminTypeName = (String) adminTypeMap.get("adminTypeName");
-		System.out.println(adminTypeName);
 		updateTypeByAdminId(adminId, adminTypeName);
 
 		Map<String, Object> memberMap = (Map<String, Object>) updateFields.get("member");
-		System.out.println(memberMap);
 		Member member = new Member();
 		Integer memClubNum = Integer.parseInt(memberMap.get("memClubNum").toString());
 		member.setMemClubNum(memClubNum);
@@ -209,9 +206,6 @@ public class AdminService {
 		Map<String, Object> memberTierMap = (Map<String, Object>) memberMap.get("memberTier");
 		String memTier = (String) memberTierMap.get("memTier");
 		MemberTier memberTier = tiRepo.findByMemTier(memTier);
-		member.setMemberTier(memberTier);
-		System.out.println(memClubNum);
-		System.out.println(memberTier);
 
 		updateMemberByAdminId(adminId, member);
 	}
@@ -233,12 +227,79 @@ public class AdminService {
 		mRepo.save(mem);
 	}
 
-	//대회관리 > 태그 > 전체조회
+	//공지사항관리 > 태그 > 전체조회
 	public List<NoticeTagDTO> getNoticeTagAll() {
-		List<NoticeTag> list = ntRepo.findAll();
+		List<NoticeTag> list = ntRepo.findAllByOrderByOrderAsc();
 		return ntMapper.toDtoList(list);
 	}
-
+	
+	//공지사항관리 > 태그 > 등록
+	public void noticeTagInsert(String notTagName) {
+	    LocalDate today = LocalDate.now(); // 예: 2024-09-29
+	    LocalDateTime todayDateTime = today.atStartOfDay(); // 시간은 00:00:00으로 설정
+	    Timestamp timestamp = Timestamp.valueOf(todayDateTime);
+	    
+	    // 기존 태그 조회
+	    NoticeTag tag = ntRepo.findByNotTagName(notTagName);
+	    
+	    // 태그가 존재하지 않는 경우
+	    if (tag == null) { // 존재하지 않음 -> 새로 생성
+	        tag = new NoticeTag(); // 여기서 객체를 초기화
+	        tag.setNotTagName(notTagName);
+	        tag.setCreAt(timestamp);
+	        tag.setOrder(ntRepo.findMaxOrder()+1);
+	        Admin admin = aRepo.findByAdminId(getUser().getUsername()); // 생성자
+	        
+	        if (admin != null) { // null 체크
+	            tag.setCreAdmin(admin);
+	        } else {
+	            throw new RuntimeException("Admin not found");
+	        }
+	        
+	        ntRepo.save(tag);
+	    } else { // 태그가 존재하는 경우
+	        tag.setNotTagName(notTagName);
+	        Admin admin = aRepo.findByAdminId(getUser().getUsername()); // 수정자
+	       
+	        if (admin != null) { // null 체크
+	            tag.setUptAdmin(admin);
+	        } else {
+	            throw new RuntimeException("Admin not found");
+	        }
+	        
+	        ntRepo.save(tag);
+	    }
+	}
+	
+	//공지사항관리 > 태그 > 수정
+	public void updateByNotTagId(Long notTagId,NoticeTagDTO noticeTagDTO) {
+		NoticeTag tag = ntRepo.findByNotTagId(notTagId);
+		tag.setNotTagName(noticeTagDTO.getNotTagName());
+        Admin admin = aRepo.findByAdminId(getUser().getUsername()); // 수정자
+        
+        if (admin != null) { // null 체크
+            tag.setUptAdmin(admin);
+        } else {
+            throw new RuntimeException("Admin not found");
+        }
+        
+        ntRepo.save(tag);
+	}
+	
+	//공지사항관리 > 태그 > 순서수정
+	public void updateOrder(List<NoticeTagDTO> noticeTagDTOList) {
+		for (NoticeTagDTO noticeTagDTO : noticeTagDTOList) {
+			NoticeTag entity = ntRepo.findByNotTagId(noticeTagDTO.getNotTagId());
+			entity.setOrder(noticeTagDTO.getOrder());
+			ntRepo.save(entity);
+		}
+	}
+	
+	//공지사항관리 > 태그 > 삭제
+	public void deleteByNotTagId(Long notTagId) {
+		ntRepo.deleteById(notTagId);
+    }
+	
 	//회비관리 > 전체조회
 	public List<MemberShipFeeDTO> getMemberShipFeeAllByCreAt(String currentMonth) {
         // currentMonth 예시: "2024-09"
