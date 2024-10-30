@@ -3,7 +3,6 @@ package com.baemin.services;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
@@ -14,12 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import com.baemin.security.SecurityUser;
 
 import com.baemin.domain.entity.Admin;
 import com.baemin.domain.entity.AdminType;
 import com.baemin.domain.entity.Attendance;
 import com.baemin.domain.entity.FeeDetail;
+import com.baemin.domain.entity.JoinClub;
 import com.baemin.domain.entity.Member;
 import com.baemin.domain.entity.MemberShipFee;
 import com.baemin.domain.entity.MemberTier;
@@ -27,6 +26,7 @@ import com.baemin.domain.entity.NoticeTag;
 import com.baemin.dto.AdminDTO;
 import com.baemin.dto.AttendanceDTO;
 import com.baemin.dto.FeeDetailDTO;
+import com.baemin.dto.JoinClubDTO;
 import com.baemin.dto.MemberDTO;
 import com.baemin.dto.MemberShipFeeDTO;
 import com.baemin.dto.NoticeTagDTO;
@@ -34,6 +34,7 @@ import com.baemin.mappers.AdminMapper;
 import com.baemin.mappers.AdminTypeMapper;
 import com.baemin.mappers.AttendanceMapper;
 import com.baemin.mappers.FeeDetailMapper;
+import com.baemin.mappers.JoinClubMapper;
 import com.baemin.mappers.MemberMapper;
 import com.baemin.mappers.MemberShipFeeMapper;
 import com.baemin.mappers.MemberTierMapper;
@@ -42,6 +43,7 @@ import com.baemin.repositories.AdminRepository;
 import com.baemin.repositories.AdminTypeRepository;
 import com.baemin.repositories.AttendanceRepository;
 import com.baemin.repositories.FeeDetailRepository;
+import com.baemin.repositories.JoinClubRepository;
 import com.baemin.repositories.MemberRepository;
 import com.baemin.repositories.MemberShipFeeRepository;
 import com.baemin.repositories.MemberTierRepository;
@@ -102,6 +104,12 @@ public class AdminService {
 	@Autowired
 	private AttendanceMapper attMapper;
 	
+	@Autowired
+	private JoinClubRepository joinRepo;//가입신청
+	
+	@Autowired
+	private JoinClubMapper joinMapper;
+	
 	private SecurityUser getUser() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
@@ -110,6 +118,12 @@ public class AdminService {
 			return su;
 		}
 		return null;//getUser().getUsername()
+	}
+	
+	//비회원 관리 > 전체조회
+	public List<JoinClubDTO> getNonMemberAll() {
+		List<JoinClub> list = joinRepo.findAll();
+		return joinMapper.toDtoList(list);
 	}
 	
 	//회원 관리 > 전체조회

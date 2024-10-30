@@ -67,7 +67,7 @@ private static final Logger logger = LoggerFactory.getLogger(JoinController.clas
 		return dtos;
 	}
 
-	public JoinClubDTO getJoStuId(Long joId) throws Exception{
+	public JoinClubDTO getJoStuId(int joId) throws Exception{
 		JoinClub JoinClub = jRepo.findById(joId).get();
 		JoinClubDTO dto = jMapper.toDto(JoinClub);
 		return dto;

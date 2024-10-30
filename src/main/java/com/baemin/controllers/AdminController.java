@@ -21,6 +21,7 @@ import com.baemin.domain.entity.Attendance;
 import com.baemin.dto.AdminDTO;
 import com.baemin.dto.AttendanceDTO;
 import com.baemin.dto.FeeDetailDTO;
+import com.baemin.dto.JoinClubDTO;
 import com.baemin.dto.MemberDTO;
 import com.baemin.dto.MemberShipFeeDTO;
 import com.baemin.dto.NoticeTagDTO;
@@ -38,9 +39,15 @@ public class AdminController {
 	@Autowired
 	private MemberService mServ;
 	
-	
-
 	//관리
+	
+	//비회원관리 > 전체조회
+	@GetMapping("/management/nonMember/getAll")
+	public ResponseEntity<List<JoinClubDTO>> getNonMemberAll() {
+		List<JoinClubDTO> list = aServ.getNonMemberAll();
+		return ResponseEntity.ok(list);
+	}
+	
 	//회원관리 > 전체조회
 	@GetMapping("/management/member/getAll")
 	public ResponseEntity<List<MemberDTO>> getMemberAll() {

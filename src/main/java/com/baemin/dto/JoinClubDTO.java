@@ -1,7 +1,6 @@
 package com.baemin.dto;
 
 import java.sql.Timestamp;
-import java.time.LocalDate;
 
 public class JoinClubDTO {
 
@@ -13,8 +12,8 @@ public class JoinClubDTO {
 	private String joGender;
 	private Timestamp joApprDate;
 	private String joSkill;
-	private String joIvIds;
-	private String joAdIds;
+	private InterviewDTO interview;
+	private ActivityDateDTO activityDate;
 	private boolean isApp;
 	private ClubNumDTO clubNumId;
 
@@ -82,20 +81,20 @@ public class JoinClubDTO {
 		this.joSkill = joSkill;
 	}
 
-	public String getJoIvIds() {
-		return joIvIds;
+	public InterviewDTO getInterview() {
+		return interview;
 	}
 
-	public void setJoIvIds(String joIvIds) {
-		this.joIvIds = joIvIds;
+	public void setInterview(InterviewDTO interview) {
+		this.interview = interview;
 	}
 
-	public String getJoAdIds() {
-		return joAdIds;
+	public ActivityDateDTO getActivityDate() {
+		return activityDate;
 	}
 
-	public void setJoAdIds(String joAdIds) {
-		this.joAdIds = joAdIds;
+	public void setActivityDate(ActivityDateDTO activityDate) {
+		this.activityDate = activityDate;
 	}
 
 	public boolean isApp() {
@@ -115,7 +114,8 @@ public class JoinClubDTO {
 	}
 
 	public JoinClubDTO(int joId, String joName, String joContact, String joDept, String joStuId, String joGender,
-			Timestamp joApprDate, String joSkill, String joIvIds, String joAdIds, boolean isApp, ClubNumDTO clubNumId) {
+			Timestamp joApprDate, String joSkill, InterviewDTO interview, ActivityDateDTO activityDate, boolean isApp,
+			ClubNumDTO clubNumId) {
 		super();
 		this.joId = joId;
 		this.joName = joName;
@@ -125,8 +125,8 @@ public class JoinClubDTO {
 		this.joGender = joGender;
 		this.joApprDate = joApprDate;
 		this.joSkill = joSkill;
-		this.joIvIds = joIvIds;
-		this.joAdIds = joAdIds;
+		this.interview = interview;
+		this.activityDate = activityDate;
 		this.isApp = isApp;
 		this.clubNumId = clubNumId;
 	}
