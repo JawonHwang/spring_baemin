@@ -1,10 +1,17 @@
 package com.baemin.domain.entity;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -12,36 +19,45 @@ import jakarta.persistence.Table;
 public class Attendance {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="ATT_ID")		//출석ID
 	private Long attId;
 
-	@Column(name="MEM_ID")		//회원ID
-	private String memId;
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "MEM_ID")
+	private Member member;
 
-	@Column(name="IS_ATT")		//출석여부
-	private Boolean isAtt;
+	@Column(name="ATT_STATE")	//출석상태
+	private String attState;
 
 	@Column(name="ATT_AT")		//출석날짜
-	private Timestamp attAt;
+	private LocalDate attAt;
 
 	@Column(name="CRE_AT")		//생성일
 	private Timestamp creAt;
 
 	@Column(name="UPT_AT")		//수정일
 	private Timestamp uptAt;
+	
+	@ManyToOne(fetch = FetchType.EAGER) // 수정자
+	@JoinColumn(name = "UPT_ADMIN")
+	private Admin admin;
+
 
 	public Attendance() {
 		super();
 	}
 
-	public Attendance(Long attId, String memId, Boolean isAtt, Timestamp attAt, Timestamp creAt, Timestamp uptAt) {
+	public Attendance(Long attId, Member member, String attState, LocalDate attAt, Timestamp creAt, Timestamp uptAt,
+			Admin admin) {
 		super();
 		this.attId = attId;
-		this.memId = memId;
-		this.isAtt = isAtt;
+		this.member = member;
+		this.attState = attState;
 		this.attAt = attAt;
 		this.creAt = creAt;
 		this.uptAt = uptAt;
+		this.admin = admin;
 	}
 
 	public Long getAttId() {
@@ -52,27 +68,27 @@ public class Attendance {
 		this.attId = attId;
 	}
 
-	public String getMemId() {
-		return memId;
+	public Member getMember() {
+		return member;
 	}
 
-	public void setMemId(String memId) {
-		this.memId = memId;
+	public void setMember(Member member) {
+		this.member = member;
 	}
 
-	public Boolean getIsAtt() {
-		return isAtt;
+	public String getAttState() {
+		return attState;
 	}
 
-	public void setIsAtt(Boolean isAtt) {
-		this.isAtt = isAtt;
+	public void setAttState(String attState) {
+		this.attState = attState;
 	}
 
-	public Timestamp getAttAt() {
+	public LocalDate getAttAt() {
 		return attAt;
 	}
 
-	public void setAttAt(Timestamp attAt) {
+	public void setAttAt(LocalDate attAt) {
 		this.attAt = attAt;
 	}
 
@@ -90,5 +106,13 @@ public class Attendance {
 
 	public void setUptAt(Timestamp uptAt) {
 		this.uptAt = uptAt;
+	}
+
+	public Admin getAdmin() {
+		return admin;
+	}
+
+	public void setAdmin(Admin admin) {
+		this.admin = admin;
 	}
 }

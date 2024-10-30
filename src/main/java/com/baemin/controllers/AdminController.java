@@ -7,15 +7,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.baemin.domain.entity.Attendance;
 import com.baemin.dto.AdminDTO;
+import com.baemin.dto.AttendanceDTO;
+import com.baemin.dto.FeeDetailDTO;
+import com.baemin.dto.JoinClubDTO;
 import com.baemin.dto.MemberDTO;
 import com.baemin.dto.MemberShipFeeDTO;
 import com.baemin.dto.NoticeTagDTO;
@@ -32,15 +38,20 @@ public class AdminController {
 
 	@Autowired
 	private MemberService mServ;
-
+	
 	//관리
+	
+	//비회원관리 > 전체조회
+	@GetMapping("/management/nonMember/getAll")
+	public ResponseEntity<List<JoinClubDTO>> getNonMemberAll() {
+		List<JoinClubDTO> list = aServ.getNonMemberAll();
+		return ResponseEntity.ok(list);
+	}
+	
 	//회원관리 > 전체조회
 	@GetMapping("/management/member/getAll")
 	public ResponseEntity<List<MemberDTO>> getMemberAll() {
 		List<MemberDTO> list = aServ.getByMember();
-		System.out.println("확인!!!!!");
-		System.out.println(list.get(0).getMemberTier().getMemTier());
-		System.out.println(list.get(0).getMemId());
 		return ResponseEntity.ok(list);
 	}
 
@@ -89,18 +100,46 @@ public class AdminController {
 	//관리자관리 > 관리자 정보 수정
 	@PutMapping("/management/admin/updateInfo/{adminId}")
 	public ResponseEntity<Void> updateAdminInfo(@PathVariable String adminId, @RequestBody Map<String, Object> updateFields) {
-		System.out.println(adminId);
-		System.out.println(updateFields);
 		aServ.updateAdminInfo(adminId, updateFields);
 		return ResponseEntity.ok().build();
 	}
 
-	//대회관리 > 태그 > 전체조회
+	//공지사항관리 > 태그 > 전체조회
 	@GetMapping("/management/noticeTag/getAll")
 	public ResponseEntity<List<NoticeTagDTO>> getNoticeTagAll() {
 		List<NoticeTagDTO> list = aServ.getNoticeTagAll();
 		return ResponseEntity.ok(list);
 	}
+	
+	//공지사항관리 > 태그 > 등록
+	@PostMapping("/management/noticeTag/insert")
+	public ResponseEntity<Void> noticeTagInsert(@RequestBody NoticeTagDTO noticeTagDTO) {
+		String notTagName = noticeTagDTO.getNotTagName();
+		aServ.noticeTagInsert(notTagName);
+		return ResponseEntity.ok().build();
+	}
+	
+	//공지사항관리 > 태그 > 수정
+	@PutMapping("/management/noticeTag/update/{notTagId}")
+	public ResponseEntity<Void> updateByNotTagId(@PathVariable Long notTagId, @RequestBody NoticeTagDTO noticeTagDTO) {
+		aServ.updateByNotTagId(notTagId, noticeTagDTO);
+		return ResponseEntity.ok().build();
+	}
+	
+	//공지사항관리 > 태그 > 순서수정
+	@PutMapping("/management/noticeTag/updateOrder")
+	public ResponseEntity<Void> updateOrder( @RequestBody List<NoticeTagDTO> noticeTagDTOList) {
+		aServ.updateOrder(noticeTagDTOList);
+		return ResponseEntity.ok().build();
+	}
+	
+	//공지사항관리 > 태그 > 삭제
+	@DeleteMapping("/management/noticeTag/delete/{notTagId}")
+	public ResponseEntity<Void> deleteByNotTagId(@PathVariable Long notTagId) {
+	    aServ.deleteByNotTagId(notTagId); // 서비스 메서드 호출
+	    return ResponseEntity.ok().build(); // 성공 시 빈 응답 반환
+	}
+
 	
 	//회비관리 > 전체조회
 	@GetMapping("/management/memberShipFee/getAll/{currentMonth}")
@@ -108,7 +147,6 @@ public class AdminController {
         List<MemberShipFeeDTO> list = aServ.getMemberShipFeeAllByCreAt(currentMonth);
         return ResponseEntity.ok(list);
     }
-	//await axios.put(`/api/admin/management/fee/updateInfo/${newData.feeId}`, fee);
 	
 	//회비관리 > 회비 정보 수정
 	@PutMapping("/management/fee/updateInfo/{feeId}")
@@ -116,4 +154,31 @@ public class AdminController {
 		aServ.updateFeeInfo(feeId, fee);
 		return ResponseEntity.ok().build();
 	}
+	
+	//회비세부사항관리 > 전체조회
+	@GetMapping("/management/feeDetail/getAll")
+	public ResponseEntity<List<FeeDetailDTO>> getFeeDetailAll() {
+		List<FeeDetailDTO> list = aServ.getFeeDetailAll();
+		return ResponseEntity.ok(list);
+	}
+	
+	//공통 > 정지 안된 회원만 조회
+	@GetMapping("/management/common/getMemberbyIsBan")
+	public ResponseEntity<List<MemberDTO>> getMemberByIsBan() {
+		List<MemberDTO> list = mServ.getMemberByIsBan();
+		return ResponseEntity.ok(list);
+	}
+	
+	//출석관리 > 회원출석 정보 수정
+	@PostMapping("/management/attendance/saveAll")
+	public ResponseEntity<Void> updateAttInfo(@RequestBody List<AttendanceDTO> attendanceDataList) {
+		aServ.updateAttInfo(attendanceDataList);
+		return ResponseEntity.ok().build();
+	}
+	
+	//출석관리 > 해당월 전체조회
+	@GetMapping("/management/attendance/monthGetAll")
+	public List<Attendance> getAttendanceByMonth(@RequestParam int year, @RequestParam int month) {
+        return aServ.getAttendanceByMonth(year, month);
+    }
 }

@@ -52,6 +52,13 @@ public class MemberService implements UserDetailsService{
 		return dtos;
 	}
 	
+	//정지 안된 회원 조회
+	public List<MemberDTO> getMemberByIsBan() {
+		List<Member> list = mRepo.findByIsBan(false);
+		List<MemberDTO> dtos = mMapper.toDtoList(list);
+		return dtos;
+	}
+	
 	@Override
 	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
 	    Member m = mRepo.findByMemId(userName);

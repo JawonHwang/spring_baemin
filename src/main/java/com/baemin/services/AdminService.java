@@ -1,5 +1,7 @@
 package com.baemin.services;
 
+import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -8,31 +10,45 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import com.baemin.controllers.AdminController;
 import com.baemin.domain.entity.Admin;
 import com.baemin.domain.entity.AdminType;
+import com.baemin.domain.entity.Attendance;
+import com.baemin.domain.entity.FeeDetail;
+import com.baemin.domain.entity.JoinClub;
 import com.baemin.domain.entity.Member;
 import com.baemin.domain.entity.MemberShipFee;
 import com.baemin.domain.entity.MemberTier;
 import com.baemin.domain.entity.NoticeTag;
 import com.baemin.dto.AdminDTO;
+import com.baemin.dto.AttendanceDTO;
+import com.baemin.dto.FeeDetailDTO;
+import com.baemin.dto.JoinClubDTO;
 import com.baemin.dto.MemberDTO;
 import com.baemin.dto.MemberShipFeeDTO;
 import com.baemin.dto.NoticeTagDTO;
 import com.baemin.mappers.AdminMapper;
 import com.baemin.mappers.AdminTypeMapper;
+import com.baemin.mappers.AttendanceMapper;
+import com.baemin.mappers.FeeDetailMapper;
+import com.baemin.mappers.JoinClubMapper;
 import com.baemin.mappers.MemberMapper;
 import com.baemin.mappers.MemberShipFeeMapper;
 import com.baemin.mappers.MemberTierMapper;
 import com.baemin.mappers.NoticeTagMapper;
 import com.baemin.repositories.AdminRepository;
 import com.baemin.repositories.AdminTypeRepository;
+import com.baemin.repositories.AttendanceRepository;
+import com.baemin.repositories.FeeDetailRepository;
+import com.baemin.repositories.JoinClubRepository;
 import com.baemin.repositories.MemberRepository;
 import com.baemin.repositories.MemberShipFeeRepository;
 import com.baemin.repositories.MemberTierRepository;
 import com.baemin.repositories.NoticeTagRepository;
+import com.baemin.security.SecurityUser;
 
 import jakarta.transaction.Transactional;
 
@@ -75,7 +91,41 @@ public class AdminService {
 	
 	@Autowired
 	private MemberTierMapper tiMapper;
+	
+	@Autowired
+	private FeeDetailRepository fdRepo;
+	
+	@Autowired
+	private FeeDetailMapper fdMapper;
+	
+	@Autowired
+	private AttendanceRepository attRepo;
+	
+	@Autowired
+	private AttendanceMapper attMapper;
+	
+	@Autowired
+	private JoinClubRepository joinRepo;//가입신청
+	
+	@Autowired
+	private JoinClubMapper joinMapper;
+	
+	private SecurityUser getUser() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
+		if(auth!=null && auth.getPrincipal() instanceof SecurityUser) {
+			SecurityUser su = (SecurityUser)auth.getPrincipal();
+			return su;
+		}
+		return null;//getUser().getUsername()
+	}
+	
+	//비회원 관리 > 전체조회
+	public List<JoinClubDTO> getNonMemberAll() {
+		List<JoinClub> list = joinRepo.findAll();
+		return joinMapper.toDtoList(list);
+	}
+	
 	//회원 관리 > 전체조회
 	public List<MemberDTO> getByMember() {
 		List<Member> list = mRepo.findByRole("ROLE_MEMBER");
@@ -158,14 +208,11 @@ public class AdminService {
 	//관리자관리 > 관리자 정보 일부 수정
 	@Transactional
 	public void updateAdminInfo(String adminId,Map<String, Object> updateFields) {
-		System.out.println(updateFields);
 		Map<String, Object> adminTypeMap = (Map<String, Object>) updateFields.get("adminType");
 		String adminTypeName = (String) adminTypeMap.get("adminTypeName");
-		System.out.println(adminTypeName);
 		updateTypeByAdminId(adminId, adminTypeName);
 
 		Map<String, Object> memberMap = (Map<String, Object>) updateFields.get("member");
-		System.out.println(memberMap);
 		Member member = new Member();
 		Integer memClubNum = Integer.parseInt(memberMap.get("memClubNum").toString());
 		member.setMemClubNum(memClubNum);
@@ -173,9 +220,6 @@ public class AdminService {
 		Map<String, Object> memberTierMap = (Map<String, Object>) memberMap.get("memberTier");
 		String memTier = (String) memberTierMap.get("memTier");
 		MemberTier memberTier = tiRepo.findByMemTier(memTier);
-		member.setMemberTier(memberTier);
-		System.out.println(memClubNum);
-		System.out.println(memberTier);
 
 		updateMemberByAdminId(adminId, member);
 	}
@@ -197,12 +241,79 @@ public class AdminService {
 		mRepo.save(mem);
 	}
 
-	//대회관리 > 태그 > 전체조회
+	//공지사항관리 > 태그 > 전체조회
 	public List<NoticeTagDTO> getNoticeTagAll() {
-		List<NoticeTag> list = ntRepo.findAll();
+		List<NoticeTag> list = ntRepo.findAllByOrderByOrderAsc();
 		return ntMapper.toDtoList(list);
 	}
-
+	
+	//공지사항관리 > 태그 > 등록
+	public void noticeTagInsert(String notTagName) {
+	    LocalDate today = LocalDate.now(); // 예: 2024-09-29
+	    LocalDateTime todayDateTime = today.atStartOfDay(); // 시간은 00:00:00으로 설정
+	    Timestamp timestamp = Timestamp.valueOf(todayDateTime);
+	    
+	    // 기존 태그 조회
+	    NoticeTag tag = ntRepo.findByNotTagName(notTagName);
+	    
+	    // 태그가 존재하지 않는 경우
+	    if (tag == null) { // 존재하지 않음 -> 새로 생성
+	        tag = new NoticeTag(); // 여기서 객체를 초기화
+	        tag.setNotTagName(notTagName);
+	        tag.setCreAt(timestamp);
+	        tag.setOrder(ntRepo.findMaxOrder()+1);
+	        Admin admin = aRepo.findByAdminId(getUser().getUsername()); // 생성자
+	        
+	        if (admin != null) { // null 체크
+	            tag.setCreAdmin(admin);
+	        } else {
+	            throw new RuntimeException("Admin not found");
+	        }
+	        
+	        ntRepo.save(tag);
+	    } else { // 태그가 존재하는 경우
+	        tag.setNotTagName(notTagName);
+	        Admin admin = aRepo.findByAdminId(getUser().getUsername()); // 수정자
+	       
+	        if (admin != null) { // null 체크
+	            tag.setUptAdmin(admin);
+	        } else {
+	            throw new RuntimeException("Admin not found");
+	        }
+	        
+	        ntRepo.save(tag);
+	    }
+	}
+	
+	//공지사항관리 > 태그 > 수정
+	public void updateByNotTagId(Long notTagId,NoticeTagDTO noticeTagDTO) {
+		NoticeTag tag = ntRepo.findByNotTagId(notTagId);
+		tag.setNotTagName(noticeTagDTO.getNotTagName());
+        Admin admin = aRepo.findByAdminId(getUser().getUsername()); // 수정자
+        
+        if (admin != null) { // null 체크
+            tag.setUptAdmin(admin);
+        } else {
+            throw new RuntimeException("Admin not found");
+        }
+        
+        ntRepo.save(tag);
+	}
+	
+	//공지사항관리 > 태그 > 순서수정
+	public void updateOrder(List<NoticeTagDTO> noticeTagDTOList) {
+		for (NoticeTagDTO noticeTagDTO : noticeTagDTOList) {
+			NoticeTag entity = ntRepo.findByNotTagId(noticeTagDTO.getNotTagId());
+			entity.setOrder(noticeTagDTO.getOrder());
+			ntRepo.save(entity);
+		}
+	}
+	
+	//공지사항관리 > 태그 > 삭제
+	public void deleteByNotTagId(Long notTagId) {
+		ntRepo.deleteById(notTagId);
+    }
+	
 	//회비관리 > 전체조회
 	public List<MemberShipFeeDTO> getMemberShipFeeAllByCreAt(String currentMonth) {
         // currentMonth 예시: "2024-09"
@@ -233,8 +344,60 @@ public class AdminService {
 		mfee.setPayDate(fee.getPayDate());
 		mfee.setRemarks(fee.getRemarks());
 		mfee.setUptAt(LocalDateTime.now());
-		Admin admin = aRepo.findByAdminId(fee.getAdmin().getAdminId());//?? 이게 문제인가
+		Admin admin = aRepo.findByAdminId(getUser().getUsername());//수정자
 		mfee.setAdmin(admin);
 		fRepo.save(mfee);
 	}
+	
+	//회비세부사항관리 > 전체조회
+	public List<FeeDetailDTO> getFeeDetailAll() {
+		List<FeeDetail> list = fdRepo.findAll();
+		return fdMapper.toDtoList(list);
+	}
+	
+	//출석관리 > 회원출석 정보 수정
+	public void updateAttInfo(List<AttendanceDTO> attendanceDataList) {
+	    LocalDate today = LocalDate.now(); // 예: 2024-09-29
+	    LocalDateTime todayDateTime = today.atStartOfDay(); // 시간은 00:00:00으로 설정
+	    Timestamp timestamp = Timestamp.valueOf(todayDateTime);
+	    
+	    for (AttendanceDTO attendanceData : attendanceDataList) {
+	    	Member m = mRepo.findAllByMemId(attendanceData.getMember().getMemId());
+	        Attendance att = attRepo.findByAttAtAndMember(attendanceData.getAttAt(), m);
+	        
+	        if (att == null) {
+	            // 존재하지 않으면 새로 생성하여 insert 합니다.
+	            att = new Attendance();
+	            att.setAttAt(attendanceData.getAttAt());
+	            att.setMember(m);
+	            att.setAttState(attendanceData.getAttState());
+	            att.setCreAt(timestamp);
+	            try {
+	                attRepo.save(att);
+	                logger.info(attendanceData.getMember().getMemId() + "님의 " + attendanceData.getAttAt() + " " + attendanceData.getAttState() + " 출석 정보가 추가되었습니다.");
+	            } catch (Exception e) {
+	                System.err.println("Error saving Attendance: " + e.getMessage());
+	            }
+	        } else {
+	            // 존재하면 기존 객체를 업데이트합니다.
+	            att.setAttState(attendanceData.getAttState());
+	            att.setUptAt(timestamp);
+	            Admin admin = aRepo.findByAdminId(getUser().getUsername());//수정자
+	            att.setAdmin(admin);
+	            attRepo.save(att);
+
+	            logger.info(attendanceData.getMember().getMemId() + "님의 " + attendanceData.getAttAt() + " " + attendanceData.getAttState() + " 출석 정보가 업데이트되었습니다.");
+	        }
+	    }
+	}
+	
+	//출석관리 > 해당월 전체조회
+	public List<Attendance> getAttendanceByMonth(int year, int month) {
+        // 특정 월의 시작일과 종료일 계산
+		LocalDate startDate = LocalDate.of(year, month, 1);
+	    LocalDate endDate = startDate.plusMonths(1).minusDays(1); // 해당 월의 마지막 날
+        
+        return attRepo.findAllByAttAtBetween(startDate, endDate);
+    }
+
 }

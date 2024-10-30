@@ -56,7 +56,7 @@ private static final Logger logger = LoggerFactory.getLogger(MemberController.cl
 	
 	// Detail 로
 	@GetMapping("/contents/{joId}")
-	public ResponseEntity<JoinClubDTO> getJoStuId(@PathVariable Long joId) throws Exception{
+	public ResponseEntity<JoinClubDTO> getJoStuId(@PathVariable int joId) throws Exception{
 		JoinClubDTO dto = jServ.getJoStuId(joId);
 		return ResponseEntity.ok(dto);
 	}

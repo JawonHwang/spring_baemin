@@ -5,8 +5,11 @@ import java.sql.Timestamp;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -14,6 +17,7 @@ import jakarta.persistence.Table;
 @Table(name = "NOTICE_TAGS")
 public class NoticeTag {
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="NOT_TAG_ID")		//태그ID
 	private Long notTagId;
 
@@ -30,9 +34,12 @@ public class NoticeTag {
 	@Column(name="UPT_AT")			//최종수정일
 	private Timestamp uptAt;
 
-	@OneToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "UPT_ADMIN") //최종수정자
 	private Admin uptAdmin;
+	
+	@Column(name="TAG_ORDER")			//순번
+	private int order;
 
 	public Long getNotTagId() {
 		return notTagId;
@@ -82,8 +89,16 @@ public class NoticeTag {
 		this.uptAdmin = uptAdmin;
 	}
 
-	public NoticeTag(Long notTagId, String notTagName, Timestamp creAt, Admin creAdmin, Timestamp uptAt,
-			Admin uptAdmin) {
+	public int getOrder() {
+		return order;
+	}
+
+	public void setOrder(int order) {
+		this.order = order;
+	}
+
+	public NoticeTag(Long notTagId, String notTagName, Timestamp creAt, Admin creAdmin, Timestamp uptAt, Admin uptAdmin,
+			int order) {
 		super();
 		this.notTagId = notTagId;
 		this.notTagName = notTagName;
@@ -91,6 +106,7 @@ public class NoticeTag {
 		this.creAdmin = creAdmin;
 		this.uptAt = uptAt;
 		this.uptAdmin = uptAdmin;
+		this.order = order;
 	}
 
 	public NoticeTag() {

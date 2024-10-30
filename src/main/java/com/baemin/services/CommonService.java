@@ -17,7 +17,7 @@ import com.baemin.repositories.ClubNumRepository;
 public class CommonService {
 	private static final Logger logger = LoggerFactory.getLogger(CommonService.class);
 	
-	@Autowired
+	/*@Autowired
 	private ClubNumRepository cRepo;
 	
 	@Autowired
@@ -85,7 +85,7 @@ public class CommonService {
 	    cRepo.save(clubnum);
 
 	    logger.info(year + " 2학기 기수 " + newClubNum + " 생성되었습니다.");
-    }
+    }*/
 
 
 }

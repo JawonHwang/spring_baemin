@@ -45,7 +45,7 @@ public class Member {
 	@Column(name="MEM_CLUB_NUM")
 	private int memClubNum;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "MEM_TIER_ID")
 	private MemberTier memberTier;
 

@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -39,11 +40,13 @@ public class JoinClub {
 	@Column(name = "JO_SKILL")
 	private String joSkill;
 
-	@Column(name = "JO_IV_IDS")
-	private String joIvIds;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "JO_IV_IDS")
+	private Interview interview;
 
-	@Column(name = "JO_AD_IDS")
-	private String joAdIds;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "JO_AD_IDS")
+	private ActivityDate activityDate;
 
 	@Column(name = "IS_APP")
 	private boolean isApp;
@@ -57,7 +60,8 @@ public class JoinClub {
 	}
 
 	public JoinClub(int joId, String joName, String joContact, String joDept, String joStuId, String joGender,
-			Timestamp joApprDate, String joSkill, String joIvIds, String joAdIds, boolean isApp, ClubNum clubNumId) {
+			Timestamp joApprDate, String joSkill, Interview interview, ActivityDate activityDate, boolean isApp,
+			ClubNum clubNumId) {
 		super();
 		this.joId = joId;
 		this.joName = joName;
@@ -67,8 +71,8 @@ public class JoinClub {
 		this.joGender = joGender;
 		this.joApprDate = joApprDate;
 		this.joSkill = joSkill;
-		this.joIvIds = joIvIds;
-		this.joAdIds = joAdIds;
+		this.interview = interview;
+		this.activityDate = activityDate;
 		this.isApp = isApp;
 		this.clubNumId = clubNumId;
 	}
@@ -137,20 +141,20 @@ public class JoinClub {
 		this.joSkill = joSkill;
 	}
 
-	public String getJoIvIds() {
-		return joIvIds;
+	public Interview getInterview() {
+		return interview;
 	}
 
-	public void setJoIvIds(String joIvIds) {
-		this.joIvIds = joIvIds;
+	public void setInterview(Interview interview) {
+		this.interview = interview;
 	}
 
-	public String getJoAdIds() {
-		return joAdIds;
+	public ActivityDate getActivityDate() {
+		return activityDate;
 	}
 
-	public void setJoAdIds(String joAdIds) {
-		this.joAdIds = joAdIds;
+	public void setActivityDate(ActivityDate activityDate) {
+		this.activityDate = activityDate;
 	}
 
 	public boolean isApp() {
