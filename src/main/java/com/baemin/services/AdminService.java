@@ -14,10 +14,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com.baemin.domain.entity.ActivityDate;
 import com.baemin.domain.entity.Admin;
 import com.baemin.domain.entity.AdminType;
 import com.baemin.domain.entity.Attendance;
+import com.baemin.domain.entity.ClubNum;
 import com.baemin.domain.entity.FeeDetail;
+import com.baemin.domain.entity.Interview;
 import com.baemin.domain.entity.JoinClub;
 import com.baemin.domain.entity.Member;
 import com.baemin.domain.entity.MemberShipFee;
@@ -39,10 +42,13 @@ import com.baemin.mappers.MemberMapper;
 import com.baemin.mappers.MemberShipFeeMapper;
 import com.baemin.mappers.MemberTierMapper;
 import com.baemin.mappers.NoticeTagMapper;
+import com.baemin.repositories.ActivityDateRepository;
 import com.baemin.repositories.AdminRepository;
 import com.baemin.repositories.AdminTypeRepository;
 import com.baemin.repositories.AttendanceRepository;
+import com.baemin.repositories.ClubNumRepository;
 import com.baemin.repositories.FeeDetailRepository;
+import com.baemin.repositories.InterviewRepository;
 import com.baemin.repositories.JoinClubRepository;
 import com.baemin.repositories.MemberRepository;
 import com.baemin.repositories.MemberShipFeeRepository;
@@ -105,11 +111,22 @@ public class AdminService {
 	private AttendanceMapper attMapper;
 	
 	@Autowired
-	private JoinClubRepository joinRepo;//가입신청
+	private JoinClubRepository joinRepo; //가입신청
 	
 	@Autowired
 	private JoinClubMapper joinMapper;
 	
+	@Autowired
+	private InterviewRepository interviewRepo;
+
+	@Autowired
+	private ActivityDateRepository activityRepo;
+
+	@Autowired
+	private ClubNumRepository clubNunRepo;
+	
+	
+	//사용자 정보
 	private SecurityUser getUser() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
@@ -120,12 +137,41 @@ public class AdminService {
 		return null;//getUser().getUsername()
 	}
 	
-	//비회원 관리 > 전체조회
+	//비회원 관리 > 전체조회 TODO:하드코어 제회하고 MANYTOONE으로 변경해보기
 	public List<JoinClubDTO> getNonMemberAll() {
-		List<JoinClub> list = joinRepo.findAll();
-		return joinMapper.toDtoList(list);
+	    List<JoinClub> list = joinRepo.findAll();
+	    for (JoinClub jc : list) {
+	        if (jc.getJoIvIds() != null && jc.getJoAdIds() != null) {
+	            Interview interview = interviewRepo.findByIvId(Integer.parseInt(jc.getJoIvIds()));
+	            jc.setJoIvIds(interview.getIvDate());
+
+	            ActivityDate activityDate = activityRepo.findByAdId(Integer.parseInt(jc.getJoAdIds()));
+	            jc.setJoAdIds(activityDate.getAdDate());
+	        }
+	    }
+	    return joinMapper.toDtoList(list);
 	}
 	
+	// 비회원 관리 > 신청폼 > 가입 승인여부 True and 기수 등록 and 
+	public void nonMemberApprove(int joId) {
+		ClubNum clubNum = clubNunRepo.findFirstByOrderByClubNumIdDesc();
+		
+		JoinClub jc = joinRepo.findById(joId).get();
+		jc.setClubNumId(clubNum);//기수 등록
+		jc.setApp(true);//승인
+
+		joinRepo.save(jc);
+	}
+	
+	// 비회원 관리 > 신청폼 > 반려
+	public void nonMemberDisApprove(int joId) {
+		JoinClub jc = joinRepo.findById(joId).get();
+		jc.setClubNumId(null);
+		jc.setApp(false);//반려
+		
+		joinRepo.save(jc);
+	}
+
 	//회원 관리 > 전체조회
 	public List<MemberDTO> getByMember() {
 		List<Member> list = mRepo.findByRole("ROLE_MEMBER");

@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.baemin.dto.ActivityDateDTO;
-import com.baemin.dto.BoardDTO;
 import com.baemin.dto.InterviewDTO;
 import com.baemin.dto.JoinClubDTO;
 import com.baemin.services.JoinService;

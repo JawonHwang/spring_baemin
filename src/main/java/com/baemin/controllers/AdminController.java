@@ -48,6 +48,23 @@ public class AdminController {
 		return ResponseEntity.ok(list);
 	}
 	
+	//비회원관리 > 신청폼 > 승인
+	@PutMapping("/management/nonMember/form/approve/{joId}")
+		public ResponseEntity<Void> nonMemberApprove(@PathVariable int joId) {
+		aServ.nonMemberApprove(joId);
+		return ResponseEntity.ok().build();
+	}
+	
+	//비회원관리 > 신청폼 > 반려
+	@PutMapping("/management/nonMember/form/disApprove/{joId}")
+		public ResponseEntity<Void> nonMemberDisApprove(@PathVariable int joId) {
+		aServ.nonMemberDisApprove(joId);
+		return ResponseEntity.ok().build();
+	}
+	
+	
+	//비회원관리 > 신청폼 > 반려
+	
 	//회원관리 > 전체조회
 	@GetMapping("/management/member/getAll")
 	public ResponseEntity<List<MemberDTO>> getMemberAll() {
@@ -136,8 +153,8 @@ public class AdminController {
 	//공지사항관리 > 태그 > 삭제
 	@DeleteMapping("/management/noticeTag/delete/{notTagId}")
 	public ResponseEntity<Void> deleteByNotTagId(@PathVariable Long notTagId) {
-	    aServ.deleteByNotTagId(notTagId); // 서비스 메서드 호출
-	    return ResponseEntity.ok().build(); // 성공 시 빈 응답 반환
+	    aServ.deleteByNotTagId(notTagId);
+	    return ResponseEntity.ok().build();
 	}
 
 	
