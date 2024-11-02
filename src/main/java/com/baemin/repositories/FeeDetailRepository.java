@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.baemin.domain.entity.FeeDetail;
 
 public interface FeeDetailRepository extends JpaRepository<FeeDetail, Long> {
-
+	FeeDetail findByFeeDetailId(Long id);
 }

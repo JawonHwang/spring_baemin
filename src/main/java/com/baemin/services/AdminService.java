@@ -401,6 +401,44 @@ public class AdminService {
 		return fdMapper.toDtoList(list);
 	}
 	
+	//회비세부사항관리 > 등록
+	public void insertFeeDetailInfo(FeeDetailDTO feeDatail) {
+	    LocalDate today = LocalDate.now(); // 예: 2024-09-29
+	    
+    	FeeDetail fee = new FeeDetail();
+    	fee.setContent(feeDatail.getContent());
+    	fee.setDdate(feeDatail.getDdate());
+    	fee.setExpend(feeDatail.getExpend());
+    	fee.setIncome(feeDatail.getIncome());
+    	fee.setTotalMoney(feeDatail.getTotalMoney());
+        
+        fee.setCreAdmin(getUser().getUsername());
+        fee.setCreDate(today);
+        fee.setUptAdmin(getUser().getUsername());
+        fee.setUptDate(today);
+        
+        fdRepo.save(fee);
+    
+	}
+	
+	//회비세부사항관리 > 수정
+	public void feeDetailInfo(Long feeDetailId, FeeDetailDTO feeDatail) {
+	    LocalDate today = LocalDate.now(); // 예: 2024-09-29
+	    
+	    FeeDetail fee = fdRepo.findByFeeDetailId(feeDatail.getFeeDetailId());
+	    fee.setContent(feeDatail.getContent());
+		fee.setDdate(feeDatail.getDdate());
+		fee.setExpend(feeDatail.getExpend());
+		fee.setIncome(feeDatail.getIncome());
+		fee.setTotalMoney(feeDatail.getTotalMoney());
+	   
+	    fee.setCreAdmin(getUser().getUsername());
+	    fee.setUptAdmin(getUser().getUsername());
+	    fee.setUptDate(today);
+	    
+	    fdRepo.save(fee);
+	}
+	
 	//출석관리 > 회원출석 정보 수정
 	public void updateAttInfo(List<AttendanceDTO> attendanceDataList) {
 	    LocalDate today = LocalDate.now(); // 예: 2024-09-29

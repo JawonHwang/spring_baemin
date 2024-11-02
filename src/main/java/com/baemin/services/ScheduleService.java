@@ -13,12 +13,14 @@ import org.springframework.stereotype.Service;
 import com.baemin.domain.entity.ClubNum;
 import com.baemin.domain.entity.Member;
 import com.baemin.domain.entity.MemberShipFee;
+import com.baemin.domain.entity.TotalFee;
 import com.baemin.mappers.ClubNumMapper;
 import com.baemin.mappers.MemberMapper;
 import com.baemin.mappers.MemberShipFeeMapper;
 import com.baemin.repositories.ClubNumRepository;
 import com.baemin.repositories.MemberRepository;
 import com.baemin.repositories.MemberShipFeeRepository;
+import com.baemin.repositories.TotalFeeRepository;
 
 @Service
 public class ScheduleService {
@@ -42,6 +44,9 @@ private static final Logger logger = LoggerFactory.getLogger(ScheduleService.cla
 	@Autowired
 	private ClubNumMapper cMapper;
 	
+	@Autowired
+	private TotalFeeRepository tfRepo;
+	
 	
 	// 회비관리 > 전체 회원에 대한 매달 데이터 생성
 	@Scheduled(cron = "0 0 0 1 * ?") // 매달 1일 00:00에 실행
@@ -49,7 +54,8 @@ private static final Logger logger = LoggerFactory.getLogger(ScheduleService.cla
 		List<Member> members = mRepo.findByIsBan(false);//정지 안된 사람만
 		for (Member member : members) {
 			MemberShipFee fee = new MemberShipFee();
-			fee.setMonthlyFee(10000L); //TODO : 김승엽
+			TotalFee totalFee = tfRepo.findFirstByOrderByTotalFeeIdDesc();
+			fee.setMonthlyFee(totalFee.getPredictFee()); //TODO : 김승엽
 			fee.setCreAt(LocalDateTime.now());
 			fee.setMember(member);
 			fRepo.save(fee);

@@ -179,6 +179,20 @@ public class AdminController {
 		return ResponseEntity.ok(list);
 	}
 	
+	//회비세부사항관리 > 등록
+	@PostMapping("/management/feeDetail/insert")
+	public ResponseEntity<Void> insert(@RequestBody FeeDetailDTO feeDatail) {
+		aServ.insertFeeDetailInfo(feeDatail);
+		return ResponseEntity.ok().build();
+	}
+	
+	//회비세부사항관리 > 수정
+	@PutMapping("/management/feeDetail/feeDetailInfo/{feeDetailId}")
+	public ResponseEntity<Void> feeDetailInfo(@PathVariable Long feeDetailId, @RequestBody FeeDetailDTO feeDatail) {
+		aServ.feeDetailInfo(feeDetailId, feeDatail);
+		return ResponseEntity.ok().build();
+	}
+	
 	//공통 > 정지 안된 회원만 조회
 	@GetMapping("/management/common/getMemberbyIsBan")
 	public ResponseEntity<List<MemberDTO>> getMemberByIsBan() {
