@@ -10,4 +10,6 @@ public interface ClubNumRepository extends JpaRepository<ClubNum, Integer> {
 	List<ClubNum> findByStartYear(int year);
 	ClubNum findBySemester(int semester);
 	ClubNum findByStartYearAndSemester(int startYear, int semester);
+	
+	ClubNum findFirstByOrderByClubNumIdDesc();
 }
