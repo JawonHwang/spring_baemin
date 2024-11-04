@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -139,19 +140,64 @@ public class AdminService {
 	
 	//비회원 관리 > 전체조회 TODO:하드코어 제회하고 MANYTOONE으로 변경해보기
 	public List<JoinClubDTO> getNonMemberAll() {
+	    // 모든 JoinClub 엔티티를 가져옵니다.
 	    List<JoinClub> list = joinRepo.findAll();
-	    for (JoinClub jc : list) {
-	        if (jc.getJoIvIds() != null && jc.getJoAdIds() != null) {
-	            Interview interview = interviewRepo.findByIvId(Integer.parseInt(jc.getJoIvIds()));
-	            jc.setJoIvIds(interview.getIvDate());
+	    
+	    // 결과를 담을 DTO 리스트
+	    List<JoinClubDTO> resultList = new ArrayList<>();
 
-	            ActivityDate activityDate = activityRepo.findByAdId(Integer.parseInt(jc.getJoAdIds()));
-	            jc.setJoAdIds(activityDate.getAdDate());
+	    for (JoinClub joinClub : list) {
+	        // joIvIds에서 ID를 분리합니다.
+	        String joIvIds = joinClub.getJoIvIds(); // 예: "1,2,3"
+	        String[] ivIdsArray = joIvIds.split(","); // ID들을 분리하여 배열에 담습니다.
+
+	        // 각 ID에 대해 INTERVIEW 테이블에서 ivDate를 조회합니다.
+	        List<String> ivDates = new ArrayList<>();
+	        for (String ivId : ivIdsArray) {
+	            // INTERVIEW 테이블에서 ivDate를 가져옵니다.
+	        	Interview ivDate = interviewRepo.findByIvId(Integer.parseInt(ivId)); // id를 Integer로 변환하여 조회
+	            
+	            // ivDate가 null이 아닌 경우에만 추가
+	            if (ivDate != null) {
+	                ivDates.add(ivDate.getIvDate());
+	            }
 	        }
+
+	        // ivDates를 문자열로 변환 (예: "2024-11-01,2024-11-02")
+	        String joinedIvDates = String.join(",", ivDates);
+
+	        // joAdIds에서 ID를 분리합니다.
+	        String joAdIds = joinClub.getJoAdIds(); // 예: "1,3"
+	        String[] adIdsArray = joAdIds.split(","); // ID들을 분리하여 배열에 담습니다.
+
+	        // 각 ID에 대해 ACTIVITY_DATE 테이블에서 adDate를 조회합니다.
+	        List<String> adDates = new ArrayList<>();
+	        for (String adId : adIdsArray) {
+	            // ACTIVITY_DATE 테이블에서 adDate를 가져옵니다.
+	            ActivityDate activityDate = activityRepo.findByAdId(Integer.parseInt(adId)); // id를 Integer로 변환하여 조회
+	            
+	            // activityDate가 null이 아닌 경우에만 추가
+	            if (activityDate != null) {
+	                adDates.add(activityDate.getAdDate()); // ActivityDate에서 adDate 필드를 추출하여 추가
+	            }
+	        }
+
+	        // adDates를 문자열로 변환 (예: "2024-11-01,2024-11-02")
+	        String joinedAdDates = String.join(",", adDates);
+
+	        // DTO로 변환
+	        JoinClubDTO dto = joinMapper.toDto(joinClub);
+	        dto.setJoIvIds(joinedIvDates); // ivDates를 DTO에 설정
+	        dto.setJoAdIds(joinedAdDates); // adDates를 DTO에 설정
+
+	        // 결과 리스트에 추가
+	        resultList.add(dto);
 	    }
-	    return joinMapper.toDtoList(list);
+
+	    return resultList; // 최종 결과 리스트 반환
 	}
-	
+
+
 	// 비회원 관리 > 신청폼 > 가입 승인여부 True and 기수 등록 and 
 	public void nonMemberApprove(int joId) {
 		ClubNum clubNum = clubNunRepo.findFirstByOrderByClubNumIdDesc();

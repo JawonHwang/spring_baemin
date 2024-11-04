@@ -1,7 +1,6 @@
 package com.baemin.dto;
 
 import java.sql.Timestamp;
-import java.time.LocalDate;
 
 public class JoinClubDTO {
 
