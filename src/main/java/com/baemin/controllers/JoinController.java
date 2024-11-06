@@ -28,6 +28,7 @@ private static final Logger logger = LoggerFactory.getLogger(MemberController.cl
 	@Autowired
 	private JoinService jServ;
 	
+	//가입신청 등록
 	@PostMapping("/club")
 	public ResponseEntity<Void> register(@RequestBody JoinClubDTO dto) {
 		try {
