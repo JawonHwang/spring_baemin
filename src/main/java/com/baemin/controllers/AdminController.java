@@ -26,6 +26,7 @@ import com.baemin.dto.FeeDetailDTO;
 import com.baemin.dto.JoinClubDTO;
 import com.baemin.dto.MemberDTO;
 import com.baemin.dto.MemberShipFeeDTO;
+import com.baemin.dto.NoticeDTO;
 import com.baemin.dto.NoticeTagDTO;
 import com.baemin.dto.VisitorDTO;
 import com.baemin.services.AdminService;
@@ -166,6 +167,27 @@ public class AdminController {
 		return ResponseEntity.ok().build();
 	}
 
+	//공지사항관리 > 전체조회
+	@GetMapping("/management/notice/getAll")
+	public ResponseEntity<List<NoticeDTO>> getNoticeAll() {
+		List<NoticeDTO> list = aServ.getNoticeAll();
+		return ResponseEntity.ok(list);
+	}
+	
+	//공지사항관리 > 제목으로 해당 추가된 내용 수정 또는 조회 기능
+	@GetMapping("/management/notice/{notId}")
+	public ResponseEntity<NoticeDTO> getNotId(@PathVariable Long notId) throws Exception{
+		NoticeDTO dto = aServ.getNotId(notId);
+		return ResponseEntity.ok(dto);
+	}
+	
+	//공지사항관리 > 추가 > 등록
+	@PostMapping("/management/notice/add")
+	public ResponseEntity<Void> noticeTagInsert(@RequestBody NoticeDTO noticeDTO) {
+		aServ.noticeAdd(noticeDTO);
+		return ResponseEntity.ok().build();
+	}
+	
 	//공지사항관리 > 태그 > 전체조회
 	@GetMapping("/management/noticeTag/getAll")
 	public ResponseEntity<List<NoticeTagDTO>> getNoticeTagAll() {

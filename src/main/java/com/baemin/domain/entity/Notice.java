@@ -4,7 +4,12 @@ import java.sql.Timestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -12,6 +17,7 @@ import jakarta.persistence.Table;
 public class Notice {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="NOT_ID")		//공지사항ID
 	private Long notId;
 
@@ -21,14 +27,12 @@ public class Notice {
 	@Column(name="CONTENT")		//내용
 	private String content;
 	
-	@Column(name="NOT_TAG_ID")	//태그ID
-	private Long notTagId;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="NOT_TAG_ID")
+	private NoticeTag tag;
 	
 	@Column(name="VIEWS")		//조회수
 	private Long views;
-	
-	@Column(name="NOT_STE_ID")	//상태ID
-	private Long notSteId;
 	
 	@Column(name="ADMIN_ID")	//작성자(관리자)ID
 	private String adminId;
@@ -46,15 +50,14 @@ public class Notice {
 		super();
 	}
 
-	public Notice(Long notId, String title, String content, Long notTagId, Long views, Long notSteId, String adminId,
-			Timestamp creAt, Timestamp uptAt, Timestamp delAt) {
+	public Notice(Long notId, String title, String content, NoticeTag tag, Long views, String adminId, Timestamp creAt,
+			Timestamp uptAt, Timestamp delAt) {
 		super();
 		this.notId = notId;
 		this.title = title;
 		this.content = content;
-		this.notTagId = notTagId;
+		this.tag = tag;
 		this.views = views;
-		this.notSteId = notSteId;
 		this.adminId = adminId;
 		this.creAt = creAt;
 		this.uptAt = uptAt;
@@ -85,12 +88,12 @@ public class Notice {
 		this.content = content;
 	}
 
-	public Long getNotTagId() {
-		return notTagId;
+	public NoticeTag getTag() {
+		return tag;
 	}
 
-	public void setNotTagId(Long notTagId) {
-		this.notTagId = notTagId;
+	public void setTag(NoticeTag tag) {
+		this.tag = tag;
 	}
 
 	public Long getViews() {
@@ -99,14 +102,6 @@ public class Notice {
 
 	public void setViews(Long views) {
 		this.views = views;
-	}
-
-	public Long getNotSteId() {
-		return notSteId;
-	}
-
-	public void setNotSteId(Long notSteId) {
-		this.notSteId = notSteId;
 	}
 
 	public String getAdminId() {

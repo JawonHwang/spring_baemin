@@ -26,6 +26,7 @@ import com.baemin.domain.entity.JoinClub;
 import com.baemin.domain.entity.Member;
 import com.baemin.domain.entity.MemberShipFee;
 import com.baemin.domain.entity.MemberTier;
+import com.baemin.domain.entity.Notice;
 import com.baemin.domain.entity.NoticeTag;
 import com.baemin.dto.AdminDTO;
 import com.baemin.dto.AttendanceDTO;
@@ -33,6 +34,7 @@ import com.baemin.dto.FeeDetailDTO;
 import com.baemin.dto.JoinClubDTO;
 import com.baemin.dto.MemberDTO;
 import com.baemin.dto.MemberShipFeeDTO;
+import com.baemin.dto.NoticeDTO;
 import com.baemin.dto.NoticeTagDTO;
 import com.baemin.mappers.AdminMapper;
 import com.baemin.mappers.AdminTypeMapper;
@@ -42,6 +44,7 @@ import com.baemin.mappers.JoinClubMapper;
 import com.baemin.mappers.MemberMapper;
 import com.baemin.mappers.MemberShipFeeMapper;
 import com.baemin.mappers.MemberTierMapper;
+import com.baemin.mappers.NoticeMapper;
 import com.baemin.mappers.NoticeTagMapper;
 import com.baemin.repositories.ActivityDateRepository;
 import com.baemin.repositories.AdminRepository;
@@ -54,6 +57,7 @@ import com.baemin.repositories.JoinClubRepository;
 import com.baemin.repositories.MemberRepository;
 import com.baemin.repositories.MemberShipFeeRepository;
 import com.baemin.repositories.MemberTierRepository;
+import com.baemin.repositories.NoticeRepository;
 import com.baemin.repositories.NoticeTagRepository;
 import com.baemin.security.SecurityUser;
 
@@ -81,6 +85,12 @@ public class AdminService {
 	@Autowired
 	private MemberMapper mMapper;
 
+	@Autowired
+	private NoticeRepository nRepo;
+	
+	@Autowired
+	private NoticeMapper nMapper;
+	
 	@Autowired
 	private NoticeTagRepository ntRepo;
 
@@ -331,6 +341,43 @@ public class AdminService {
 		MemberTier memberTier = tiRepo.findByMemTier(member.getMemberTier().getMemTier());
 		mem.setMemberTier(memberTier);
 		mRepo.save(mem);
+	}
+	
+	//공지사항관리 > 전체조회
+	public List<NoticeDTO> getNoticeAll() {
+		List<Notice> list = nRepo.findAll();
+		return nMapper.toDtoList(list);
+	}
+	
+	//공지사항관리 > 제목으로 해당 추가된 내용 수정 또는 조회 기능
+	public NoticeDTO getNotId(Long notId) throws Exception{
+		Notice JoinClub = nRepo.findByNotId(notId);
+		NoticeDTO dto = nMapper.toDto(JoinClub);
+		return dto;
+	}
+	
+	//공지사항관리 > 추가 > 등록
+	public void noticeAdd(NoticeDTO noticeDTO) {
+	    LocalDate today = LocalDate.now(); // 예: 2024-09-29
+	    LocalDateTime todayDateTime = today.atStartOfDay(); // 시간은 00:00:00으로 설정
+	    Timestamp timestamp = Timestamp.valueOf(todayDateTime);
+	    NoticeTag tag = ntRepo.findByNotTagId(noticeDTO.getTag().getNotTagId());
+	    
+	    Notice not = new Notice();
+	    not.setContent(noticeDTO.getContent());
+	    not.setTitle(noticeDTO.getTitle());
+	    not.setTag(tag);
+	    not.setCreAt(timestamp);
+	    not.setViews(Long.valueOf(0));
+        Admin admin = aRepo.findByAdminId(getUser().getUsername()); // 생성자
+        
+        if (admin != null) { // null 체크
+        	not.setAdminId(admin.getAdminId());
+        } else {
+            throw new RuntimeException("Admin not found");
+        }
+        
+        nRepo.save(not);
 	}
 
 	//공지사항관리 > 태그 > 전체조회
