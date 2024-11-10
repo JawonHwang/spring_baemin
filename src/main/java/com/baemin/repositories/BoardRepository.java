@@ -6,4 +6,6 @@ import com.baemin.domain.entity.Board;
 
 public interface BoardRepository extends JpaRepository<Board, Long>{
 
+	Board findByBoardId(Long boardId);
+	
 }

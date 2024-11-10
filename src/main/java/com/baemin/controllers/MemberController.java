@@ -30,6 +30,12 @@ public class MemberController {
 	private MemberService mServ;
 	
 	// 아이디를 기준으로 Member 정보를 뽑아내는
+	@GetMapping("/getmem/{loginId}")
+	public ResponseEntity<MemberDTO> getMember(@PathVariable String loginId) {
+		MemberDTO dto = mServ.findMemberById(loginId);
+		return ResponseEntity.ok(dto);
+	}
+	
 	@PostMapping("/{loginId}")
 	public ResponseEntity<MemberDTO> selectMember(@PathVariable String loginId) {
 		MemberDTO dto = mServ.findMemberById(loginId);
