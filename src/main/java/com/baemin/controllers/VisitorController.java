@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.baemin.dto.VisitorDTO;
-import com.baemin.services.VisitorService;
+import com.baemin.services.SataticService;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,7 +23,7 @@ public class VisitorController {
 	private static final Logger logger = LoggerFactory.getLogger(VisitorController.class);
 	
 	@Autowired
-	private VisitorService vServ;
+	private SataticService vServ;
 	
 	//방문자수
 	@GetMapping("/visitor")

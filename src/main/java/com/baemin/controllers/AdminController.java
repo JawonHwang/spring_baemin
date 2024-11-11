@@ -7,6 +7,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.baemin.domain.entity.Attendance;
+import com.baemin.domain.entity.NewMember;
 import com.baemin.domain.entity.Visitor;
 import com.baemin.dto.AdminDTO;
 import com.baemin.dto.AttendanceDTO;
@@ -26,12 +28,13 @@ import com.baemin.dto.FeeDetailDTO;
 import com.baemin.dto.JoinClubDTO;
 import com.baemin.dto.MemberDTO;
 import com.baemin.dto.MemberShipFeeDTO;
+import com.baemin.dto.NewMemberDTO;
 import com.baemin.dto.NoticeDTO;
 import com.baemin.dto.NoticeTagDTO;
 import com.baemin.dto.VisitorDTO;
 import com.baemin.services.AdminService;
 import com.baemin.services.MemberService;
-import com.baemin.services.VisitorService;
+import com.baemin.services.SataticService;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -45,14 +48,24 @@ public class AdminController {
 	private MemberService mServ;
 	
 	@Autowired
-	private VisitorService vServ;
+	private SataticService vServ;
+	
+	
 	//관리자 대시보드
 	
-	//관리자 대시보드 > 오늘 방문자수
+	//총 회원수
+	@GetMapping("/count/member")
+	public ResponseEntity<Integer> countMember() {
+		int num = vServ.countMember();
+		return ResponseEntity.ok(num);
+	}
+	
+	// 오늘 방문자수
 	@GetMapping("/dailyVisitors")
 	public ResponseEntity<Visitor> getDailyVisitors() {
 		LocalDate today = LocalDate.now();
 		Visitor dailyVisitors = vServ.getDailyVisitors(today);
+
 		return ResponseEntity.ok(dailyVisitors);
 	}
 	//어제 방문자수
@@ -85,8 +98,59 @@ public class AdminController {
 		return ResponseEntity.ok(monthlyVisitors);
 	}
 	
-	//관리
+	//가입 인원
+	//신규회원 등록 수
+    @GetMapping("/todayNewMember")
+    public ResponseEntity<NewMemberDTO> getTodayNewMamber() {
+    	try {
+    		NewMemberDTO dto = vServ.getTodayNewMamber();
+            return ResponseEntity.ok(dto);
+        } catch (Exception e) {
+            // 예외가 발생한 경우 처리
+        	logger.error(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+    @PostMapping("/createNewMember")
+    public ResponseEntity<Void> createNewMember() {
+    	vServ.createNewMamber();
+        return ResponseEntity.ok().build();
+    }
+    @PutMapping("/incrementNewMember/{id}")
+    public ResponseEntity<Void> incrementNewMember(@PathVariable Long id) {
+        try {
+        	vServ.incrementNewMember(id);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            // 예외 처리
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 	
+	@GetMapping("/newMember/getAll")
+	public ResponseEntity<List<NewMemberDTO>> newMemberGetAll() {
+		List<NewMemberDTO> list = vServ.getAllNm();
+		return ResponseEntity.ok(list);
+	}
+
+	@GetMapping("/dailyMember")
+	public ResponseEntity<NewMember> getDailyMember() {
+		LocalDate today = LocalDate.now();
+		NewMember dailyNewMember = vServ.getDailyNewMember(today);
+		return ResponseEntity.ok(dailyNewMember);
+	}
+
+	@GetMapping("/getYesterdayMember")
+	public ResponseEntity<NewMember> getYesterdayMember() {
+		LocalDate yesterday = LocalDate.now().minusDays(1);
+		NewMember dailyNewMember = vServ.getYesterdayMember(yesterday);
+		return ResponseEntity.ok(dailyNewMember);
+	}
+	
+	
+	
+	
+	//관리
 	//비회원관리 > 전체조회
 	@GetMapping("/management/nonMember/getAll")
 	public ResponseEntity<List<JoinClubDTO>> getNonMemberAll() {
