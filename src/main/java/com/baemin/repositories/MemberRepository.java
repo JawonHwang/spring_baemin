@@ -3,6 +3,7 @@ package com.baemin.repositories;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import com.baemin.domain.entity.Member;
 
@@ -21,4 +22,7 @@ public interface MemberRepository extends JpaRepository<Member, String> {
 	List<Member> findByRole(String role);
 	
 	List<Member> findByIsBan(boolean isBan);
+	
+	@Query("SELECT COUNT(v) FROM Member v")
+    Integer countMember();
 }
