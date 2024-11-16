@@ -7,8 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.baemin.controllers.BoardFileController;
-import com.baemin.domain.entity.Board;
 import com.baemin.domain.entity.BoardFile;
 import com.baemin.dto.BoardFileDTO;
 import com.baemin.mappers.BoardFileMapper;
@@ -17,7 +15,7 @@ import com.baemin.repositories.BoardFileRepository;
 @Service
 public class BoardFileService {
 
-	private static final Logger logger = LoggerFactory.getLogger(BoardFileController.class);
+	private static final Logger logger = LoggerFactory.getLogger(BoardFileService.class);
 
 	@Autowired
 	private BoardFileRepository bRepo;
