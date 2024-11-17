@@ -245,11 +245,32 @@ public class AdminController {
 		return ResponseEntity.ok(dto);
 	}
 	
+	//공지사항관리 > 조회수 업데이트
+	@PutMapping("/management/notice/incrementView/{notId}")
+	public ResponseEntity<Void> incrementView(@PathVariable Long notId) {
+		aServ.incrementView(notId);
+		return ResponseEntity.ok().build();
+	}
+	
+	//공지사항관리 > 업데이트
+	@PutMapping("/management/notice/update/{notId}")
+	public ResponseEntity<Void> updateByNotId(@PathVariable Long notId, @RequestBody NoticeDTO noticeDTO) {
+		aServ.updateByNotId(notId, noticeDTO);
+		return ResponseEntity.ok().build();
+	}
+	
 	//공지사항관리 > 추가 > 등록
 	@PostMapping("/management/notice/add")
-	public ResponseEntity<Void> noticeTagInsert(@RequestBody NoticeDTO noticeDTO) {
-		aServ.noticeAdd(noticeDTO);
+	public ResponseEntity<Void> noticeInsert(@RequestBody NoticeDTO noticeDTO) {
+		aServ.noticeInsert(noticeDTO);
 		return ResponseEntity.ok().build();
+	}
+	
+	//공지사항관리 > 삭제
+	@DeleteMapping("/management/notice/delete/{notId}")
+	public ResponseEntity<Void> deleteByNotId(@PathVariable Long notId) {
+	    aServ.deleteByNotId(notId);
+	    return ResponseEntity.ok().build();
 	}
 	
 	//공지사항관리 > 태그 > 전체조회

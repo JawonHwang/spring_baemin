@@ -351,16 +351,42 @@ public class AdminService {
 	
 	//공지사항관리 > 제목으로 해당 추가된 내용 수정 또는 조회 기능
 	public NoticeDTO getNotId(Long notId) throws Exception{
-		Notice JoinClub = nRepo.findByNotId(notId);
-		NoticeDTO dto = nMapper.toDto(JoinClub);
+		Notice notice = nRepo.findByNotId(notId);
+		NoticeDTO dto = nMapper.toDto(notice);
 		return dto;
 	}
 	
+	//공지사항관리 > 내용 수정
+	public void incrementView(Long notId) {
+		Notice notice = nRepo.findByNotId(notId);
+		notice.setViews(notice.getViews()+1);
+		nRepo.save(notice);
+	}
+	
+	//공지사항관리 > 내용 수정
+	public void updateByNotId(Long notId, NoticeDTO noticeDTO) {
+		LocalDateTime now = LocalDateTime.now(); // 현재 날짜와 시간 (YYYY-MM-DDTHH:mm:ss)
+		Timestamp timestamp = Timestamp.valueOf(now); // 현재 시각의 Timestamp 생성
+		Notice notice = nRepo.findByNotId(notId);
+		notice.setUptAt(timestamp);
+		notice.setTitle(noticeDTO.getTitle());
+		notice.setContent(noticeDTO.getContent());
+		Admin admin = aRepo.findByAdminId(getUser().getUsername());
+		notice.setAdminId(admin.getAdminId());
+		NoticeTag tag = ntRepo.findByNotTagId(noticeDTO.getTag().getNotTagId());
+		notice.setTag(tag);
+		nRepo.save(notice);
+	}
+	
+	//공지사항관리 > 삭제
+	public void deleteByNotId(Long notId) {
+		ntRepo.deleteById(notId);
+    }
+	
 	//공지사항관리 > 추가 > 등록
-	public void noticeAdd(NoticeDTO noticeDTO) {
-	    LocalDate today = LocalDate.now(); // 예: 2024-09-29
-	    LocalDateTime todayDateTime = today.atStartOfDay(); // 시간은 00:00:00으로 설정
-	    Timestamp timestamp = Timestamp.valueOf(todayDateTime);
+	public void noticeInsert(NoticeDTO noticeDTO) {
+		LocalDateTime now = LocalDateTime.now(); // 현재 날짜와 시간 (YYYY-MM-DDTHH:mm:ss)
+		Timestamp timestamp = Timestamp.valueOf(now); // 현재 시각의 Timestamp 생성
 	    NoticeTag tag = ntRepo.findByNotTagId(noticeDTO.getTag().getNotTagId());
 	    
 	    Notice not = new Notice();
@@ -388,9 +414,8 @@ public class AdminService {
 	
 	//공지사항관리 > 태그 > 등록
 	public void noticeTagInsert(String notTagName) {
-	    LocalDate today = LocalDate.now(); // 예: 2024-09-29
-	    LocalDateTime todayDateTime = today.atStartOfDay(); // 시간은 00:00:00으로 설정
-	    Timestamp timestamp = Timestamp.valueOf(todayDateTime);
+		LocalDateTime now = LocalDateTime.now(); // 현재 날짜와 시간 (YYYY-MM-DDTHH:mm:ss)
+		Timestamp timestamp = Timestamp.valueOf(now); // 현재 시각의 Timestamp 생성
 	    
 	    // 기존 태그 조회
 	    NoticeTag tag = ntRepo.findByNotTagName(notTagName);
@@ -534,9 +559,8 @@ public class AdminService {
 	
 	//출석관리 > 회원출석 정보 수정
 	public void updateAttInfo(List<AttendanceDTO> attendanceDataList) {
-	    LocalDate today = LocalDate.now(); // 예: 2024-09-29
-	    LocalDateTime todayDateTime = today.atStartOfDay(); // 시간은 00:00:00으로 설정
-	    Timestamp timestamp = Timestamp.valueOf(todayDateTime);
+		LocalDateTime now = LocalDateTime.now(); // 현재 날짜와 시간 (YYYY-MM-DDTHH:mm:ss)
+		Timestamp timestamp = Timestamp.valueOf(now); // 현재 시각의 Timestamp 생성
 	    
 	    for (AttendanceDTO attendanceData : attendanceDataList) {
 	    	Member m = mRepo.findAllByMemId(attendanceData.getMember().getMemId());
