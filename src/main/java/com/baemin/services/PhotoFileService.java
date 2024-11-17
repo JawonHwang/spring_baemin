@@ -22,6 +22,12 @@ public class PhotoFileService {
 
 	@Autowired
 	private PhotoFileMapper pMapper;
+	
+	public List<PhotoFileDTO> selectAll() {
+		List<PhotoFile> list = pRepo.findAll();
+		List<PhotoFileDTO> dtos = pMapper.toDtoList(list);
+		return dtos;
+	}
 
 	public List<PhotoFileDTO> selectByParentId(Long photoId) {
 		List<PhotoFile> list = pRepo.findByPhotoFileParentId(photoId);

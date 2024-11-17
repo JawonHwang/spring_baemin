@@ -55,7 +55,7 @@ public class PhotoController {
 		Photo photo = pService.insertPhoto(dto);
 		long photoParentId = photo.getPhotoId(); // 생성된 photoId 가져오기
 
-		String upload = "C:/uploads";
+		String upload = "C:/uploads/photo";
 		File uploadPath = new File(upload);
 
 		if (!uploadPath.exists()) {
@@ -110,7 +110,7 @@ public class PhotoController {
 
 		pService.updatePhoto(photoId, photoTitle, photoContents);
 
-		String upload = "C:/uploads";
+		String upload = "C:/uploads/photo";
 		File uploadPath = new File(upload);
 
 		if (!uploadPath.exists()) {

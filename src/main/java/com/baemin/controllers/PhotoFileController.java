@@ -24,6 +24,13 @@ public class PhotoFileController {
 	@Autowired
 	PhotoFileService fservice;
 
+	// Photo 리스트
+	@GetMapping
+	public ResponseEntity<List<PhotoFileDTO>> selectAll() {
+		List<PhotoFileDTO> list = fservice.selectAll();
+		return ResponseEntity.ok(list);
+	}
+
 	@GetMapping("/{photoId}")
 	public ResponseEntity<List<PhotoFileDTO>> selectById(@PathVariable Long photoId) {
 		List<PhotoFileDTO> files = fservice.selectByParentId(photoId);
@@ -32,7 +39,7 @@ public class PhotoFileController {
 
 	@GetMapping("/download/{sys_name}")
 	public ResponseEntity<Resource> download(@PathVariable String sys_name) {
-		String filePath = "C:/uploads/" + sys_name;
+		String filePath = "C:/uploads/photo" + sys_name;
 
 		byte[] fileContent;
 		try (InputStream inputStream = new FileInputStream(new File(filePath))) {
