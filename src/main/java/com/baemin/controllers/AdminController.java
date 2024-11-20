@@ -132,6 +132,13 @@ public class AdminController {
 		List<NewMemberDTO> list = vServ.getAllNm();
 		return ResponseEntity.ok(list);
 	}
+	
+	//누적 신규가입자수
+	@GetMapping("/newMember/sum")
+	public ResponseEntity<Integer> sumNM() {
+		int num = vServ.sumNM();
+		return ResponseEntity.ok(num);
+	}
 
 	@GetMapping("/dailyMember")
 	public ResponseEntity<NewMember> getDailyMember() {
@@ -172,8 +179,6 @@ public class AdminController {
 		return ResponseEntity.ok().build();
 	}
 	
-	
-	//비회원관리 > 신청폼 > 반려
 	
 	//회원관리 > 전체조회
 	@GetMapping("/management/member/getAll")

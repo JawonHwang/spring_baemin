@@ -96,6 +96,10 @@ public class SataticService {
 		NewMemberDTO dto = nMapper.toDto(v);
 		return dto;
 	}
+	
+	public int sumNM() {
+		return nRepo.sumNewMemberCount();
+	}
 
 	public void createNewMamber() {
 		NewMember newMember = new NewMember();
