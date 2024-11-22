@@ -90,6 +90,9 @@ public class BoardController {
 	@GetMapping("/contents/{boardId}")
 	public ResponseEntity<BoardDTO> getContents(@PathVariable Long boardId) throws Exception{
 		BoardDTO dto = bService.getContents(boardId);
+		
+		bService.incrementViewCount(boardId);
+		
 		return ResponseEntity.ok(dto);
 	}
 

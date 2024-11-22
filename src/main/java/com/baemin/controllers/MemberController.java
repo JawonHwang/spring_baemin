@@ -74,9 +74,16 @@ public class MemberController {
 		return ResponseEntity.ok(list);
 	}
 
-	@PostMapping("/checkID")
-	public ResponseEntity<Boolean> checkID(@RequestBody MemberDTO dto) {
-		return ResponseEntity.ok(mServ.isDupleID(dto.getMemId()));
+	// 중복 아이디 체크
+	@GetMapping("/checkID")
+	public ResponseEntity<Boolean> checkID(@RequestParam String memId) {
+		return ResponseEntity.ok(mServ.isDupleID(memId));
+	}
+	
+	// 중복 학번 체크
+	@GetMapping("/checkStuID")
+	public ResponseEntity<Boolean> checkStuID(@RequestParam String memStuId) {
+		return ResponseEntity.ok(mServ.isDupleStuID(memStuId));
 	}
 
 	@PostMapping("/register")
@@ -105,80 +112,6 @@ public class MemberController {
 			}
 		}
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-	}
-	
-//	@PutMapping("/changeID")
-//	public ResponseEntity<Void> changeID(@RequestBody String newID) {
-//		String userID = "";
-//		
-//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//		
-//		if (authentication != null && authentication.isAuthenticated() && !authentication.getPrincipal().equals("anonymousUser")) {
-//			Object principal = authentication.getPrincipal();
-//
-//			if (principal instanceof UserDetails) {
-//				userID = ((UserDetails) principal).getUsername();
-//			} else {
-//				userID = principal.toString(); 
-//			}
-//		}
-//		
-//		if (userID == "") {
-//			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-//		}
-//		mServ.changeID(userID, newID);
-//		return ResponseEntity.ok().build();
-//	}
-//	
-//	@PostMapping("/changePW")
-//	public ResponseEntity<Void> changePW(@RequestBody PasswordDTO dto) {
-//
-//		String userID = "";
-//		
-//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//		
-//		if (authentication != null && authentication.isAuthenticated() && !authentication.getPrincipal().equals("anonymousUser")) {
-//			Object principal = authentication.getPrincipal();
-//
-//			if (principal instanceof UserDetails) {
-//				userID = ((UserDetails) principal).getUsername();
-//			} else {
-//				userID = principal.toString(); 
-//			}
-//		}
-//		
-//		if (userID == "") {
-//			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-//		}
-//		if(!mServ.checkPW(userID, dto.getPassword()))
-//			return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
-//		mServ.changePassword(userID, dto.getNewPassword());
-//		return ResponseEntity.ok().build();
-//	}
-
-	@PostMapping("/changeUserInfo")
-	public ResponseEntity<Void> changeUserInfo(@RequestBody MemberDTO dto) {
-		
-		String userID = "";
-		
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		
-		if (authentication != null && authentication.isAuthenticated() && !authentication.getPrincipal().equals("anonymousUser")) {
-			Object principal = authentication.getPrincipal();
-
-			if (principal instanceof UserDetails) {
-				userID = ((UserDetails) principal).getUsername();
-			} else {
-				userID = principal.toString(); 
-			}
-		}
-		
-		if (userID == "") {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-		}
-		
-		mServ.changeUserInfo(userID, dto);
-		return ResponseEntity.ok().build();
 	}
 	
 }

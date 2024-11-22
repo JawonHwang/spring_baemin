@@ -56,5 +56,11 @@ public class PhotoService {
 		// Post Delete
 		pRepo.delete(Photo);
 	}
+	
+	public void incrementViewCount(Long photoId) throws Exception {
+	    Photo photo = pRepo.findById(photoId).orElseThrow(() -> new Exception("게시물 없음"));
+	    photo.setPhotoViewCount(photo.getPhotoViewCount() + 1); // 조회수 증가
+	    pRepo.save(photo); // 변경 사항 저장
+	}
 
 }

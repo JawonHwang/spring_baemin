@@ -32,11 +32,8 @@ public class SecurityConfig {
 		
 		http.authorizeHttpRequests()
 //		설정하는 부분
-//		.requestMatchers(new AntPathRequestMatcher("/manager/only")).hasAnyRole("MANAGER")
-//		.requestMatchers(new AntPathRequestMatcher("/admin/manage")).hasAnyRole("MANAGER","ADMIN")
-//		.requestMatchers(new AntPathRequestMatcher("/member/**")).authenticated()
-//		.requestMatchers(new AntPathRequestMatcher("/manager/**")).hasAnyRole("MANAGER","ADMIN")
-//		.requestMatchers(new AntPathRequestMatcher("/admin/**")).hasRole("ADMIN")
+		.requestMatchers(new AntPathRequestMatcher("/baemin/**")).authenticated()
+		.requestMatchers(new AntPathRequestMatcher("/admin/**")).hasRole("ADMIN")
 		.requestMatchers(new AntPathRequestMatcher("/**")).permitAll();
 		
 		http.formLogin().loginProcessingUrl("/api/member/login")

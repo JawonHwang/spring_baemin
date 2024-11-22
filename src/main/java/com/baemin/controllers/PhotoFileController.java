@@ -37,9 +37,9 @@ public class PhotoFileController {
 		return ResponseEntity.ok(files);
 	}
 
-	@GetMapping("/download/{sys_name}")
-	public ResponseEntity<Resource> download(@PathVariable String sys_name) {
-		String filePath = "C:/uploads/photo" + sys_name;
+	@GetMapping("/download/{photoFileSysName}")
+	public ResponseEntity<Resource> download(@PathVariable String photoFileSysName) {
+		String filePath = "C:/uploads/photo" + photoFileSysName;
 
 		byte[] fileContent;
 		try (InputStream inputStream = new FileInputStream(new File(filePath))) {

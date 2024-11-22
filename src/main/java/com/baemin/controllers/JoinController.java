@@ -23,42 +23,56 @@ import com.baemin.services.JoinService;
 @RequestMapping("/api/join")
 public class JoinController {
 
-private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
-	
+	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
+
 	@Autowired
 	private JoinService jServ;
-	
-	//가입신청 등록
+
+	// 가입신청 등록
 	@PostMapping("/club")
 	public ResponseEntity<Void> register(@RequestBody JoinClubDTO dto) {
 		try {
 			jServ.joinClub(dto);
 		} catch (Exception e) {
-			logger.error(e.getMessage());;
+			logger.error(e.getMessage());
+			;
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
 		return ResponseEntity.ok().build();
 	}
-	
+
 	// ActivityDate 리스트
 	@GetMapping("/activityDate")
-	public ResponseEntity <List<ActivityDateDTO>> selectDateAll() {
+	public ResponseEntity<List<ActivityDateDTO>> selectDateAll() {
 		List<ActivityDateDTO> list = jServ.selectDateAll();
 		return ResponseEntity.ok(list);
 	}
-	
+
 	// Interview 리스트
 	@GetMapping("/interview")
-	public ResponseEntity <List<InterviewDTO>> selectInterAll() {
+	public ResponseEntity<List<InterviewDTO>> selectInterAll() {
 		List<InterviewDTO> list = jServ.selectInterAll();
 		return ResponseEntity.ok(list);
 	}
-	
+
 	// Detail 로
 	@GetMapping("/contents/{joId}")
-	public ResponseEntity<JoinClubDTO> getJoStuId(@PathVariable int joId) throws Exception{
+	public ResponseEntity<JoinClubDTO> getJoStuId(@PathVariable int joId) throws Exception {
 		JoinClubDTO dto = jServ.getJoStuId(joId);
 		return ResponseEntity.ok(dto);
 	}
-	
+
+	// 승인된 학번확인
+	@GetMapping("/isApp/{memStuId}")
+	public ResponseEntity<Boolean> checkJoIsApp(@PathVariable String memStuId) throws Exception {
+		// 승인된 학번 리스트 조회
+		List<String> approvedJoStuIds = jServ.getApprovedJoStuIds(); // 승인된 학번들의 리스트를 가져오는 메서드 호출
+
+		// 입력받은 MemStuId가 승인된 학번 리스트에 있는지 확인
+		boolean isApproved = approvedJoStuIds.contains(memStuId);
+
+		// 결과 반환
+		return ResponseEntity.ok(isApproved);
+	}
+
 }

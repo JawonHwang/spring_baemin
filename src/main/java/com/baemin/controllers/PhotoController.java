@@ -92,6 +92,9 @@ public class PhotoController {
 	@GetMapping("/contents/{photoId}")
 	public ResponseEntity<PhotoDTO> getContents(@PathVariable Long photoId) throws Exception {
 		PhotoDTO dto = pService.getContents(photoId);
+		
+		pService.incrementViewCount(photoId);
+		
 		return ResponseEntity.ok(dto);
 	}
 
