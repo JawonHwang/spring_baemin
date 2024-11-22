@@ -30,9 +30,9 @@ public class BoardFileController {
 		return ResponseEntity.ok(files);
 	}
 
-	@GetMapping("/download/{sys_name}")
-	public ResponseEntity<Resource> download(@PathVariable String sys_name) {
-		String filePath = "C:/uploads/" + sys_name;
+	@GetMapping("/download/{boardFileSysName}")
+	public ResponseEntity<Resource> download(@PathVariable String boardFileSysName) {
+		String filePath = "C:/uploads/" + boardFileSysName;
 
 		byte[] fileContent;
 		try (InputStream inputStream = new FileInputStream(new File(filePath))) {

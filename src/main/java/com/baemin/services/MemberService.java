@@ -32,50 +32,44 @@ import jakarta.mail.internet.MimeMessage;
 import jakarta.mail.internet.MimeMessage.RecipientType;
 
 @Service
-public class MemberService implements UserDetailsService{
+public class MemberService implements UserDetailsService {
 
 	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
-	
+
 	@Autowired
 	private MemberRepository mRepo;
-	
+
 	@Autowired
 	private MemberMapper mMapper;
-	
+
 	@Autowired
 	private JavaMailSender javaMailSender;
 
-	//전체 조회
+	// 전체 조회
 	public List<MemberDTO> getMemberAll() {
 		List<Member> list = mRepo.findAll();
 		List<MemberDTO> dtos = mMapper.toDtoList(list);
 		return dtos;
 	}
-	
-	//정지 안된 회원 조회
+
+	// 정지 안된 회원 조회
 	public List<MemberDTO> getMemberByIsBan() {
 		List<Member> list = mRepo.findByIsBan(false);
 		List<MemberDTO> dtos = mMapper.toDtoList(list);
 		return dtos;
 	}
-	
+
 	@Override
 	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-	    Member m = mRepo.findByMemId(userName);
-	    if (m == null) {
-	        throw new UsernameNotFoundException("User not found: " + userName);
-	    }
-	    SecurityUser su = new SecurityUser(m);
-	    su.setMemName(m.getMemName());
-	    return su;
+		Member m = mRepo.findByMemId(userName);
+		if (m == null) {
+			throw new UsernameNotFoundException("User not found: " + userName);
+		}
+		SecurityUser su = new SecurityUser(m);
+		su.setMemName(m.getMemName());
+		return su;
 	}
 
-//	public UserDetails loadUserByUsername(String userName) {
-//	    return mRepo.findByMemName(userName)
-//	        .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
-//	}
-
-	
 	@Transactional
 	public void sendVerificationEmail(String email) {
 		// 인증 코드 생성
@@ -106,13 +100,15 @@ public class MemberService implements UserDetailsService{
 
 	// 세션에 인증 코드 저장
 	private void saveVerificationCodeInSession(String verificationCode) {
-		ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+		ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder
+				.currentRequestAttributes();
 		attributes.getRequest().getSession(true).setAttribute("verificationCode", verificationCode);
 	}
 
 	// 세션에서 인증 코드 가져오기
 	private String getVerificationCodeFromSession() {
-		ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+		ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder
+				.currentRequestAttributes();
 		return (String) attributes.getRequest().getSession(true).getAttribute("verificationCode");
 	}
 
@@ -122,23 +118,23 @@ public class MemberService implements UserDetailsService{
 			MimeMessage message = javaMailSender.createMimeMessage();
 
 			message.addRecipients(RecipientType.TO, email);
-			message.setFrom(new InternetAddress("kdtgroovy@gmail.com","BAEMIN"));
+			message.setFrom(new InternetAddress("kdtgroovy@gmail.com", "BAEMIN"));
 			message.setSubject("BAEMIN 인증코드");
-			String msgg="";
-			msgg+= "<div style='margin:20px;'>";
-			msgg+= "<h1> BAEMIN에 오신것을 환영합니다. </h1>";
-			msgg+= "<br>";
-			msgg+= "<p>아래 코드를 복사해 입력해주세요<p>";
-			msgg+= "<br>";
-			msgg+= "<div align='center' style='border:1px solid black; font-family:verdana;'>";
-			msgg+= "<h3 style='color:blue;'>인증 코드입니다.</h3>";
-			msgg+= "<div style='font-size:130%'>";
-			msgg+= "CODE : <strong>";
-			msgg+= verificationCode+"</strong></div><br/> ";
-			msgg+= "</div>";
-			msgg+= "</div>";
+			String msgg = "";
+			msgg += "<div style='margin:20px;'>";
+			msgg += "<h1> BAEMIN에 오신것을 환영합니다. </h1>";
+			msgg += "<br>";
+			msgg += "<p>아래 코드를 복사해 입력해주세요<p>";
+			msgg += "<br>";
+			msgg += "<div align='center' style='border:1px solid black; font-family:verdana;'>";
+			msgg += "<h3 style='color:blue;'>인증 코드입니다.</h3>";
+			msgg += "<div style='font-size:130%'>";
+			msgg += "CODE : <strong>";
+			msgg += verificationCode + "</strong></div><br/> ";
+			msgg += "</div>";
+			msgg += "</div>";
 
-			message.setText(msgg,"utf-8", "html");
+			message.setText(msgg, "utf-8", "html");
 
 			javaMailSender.send(message);
 
@@ -187,16 +183,16 @@ public class MemberService implements UserDetailsService{
 		// 이메일 전송
 		sendPasswordEmail(email, temporaryPassword);
 	}
-	
+
 	// 임시 비밀번호로 비밀번호 변경 메서드
 	@Transactional
 	public void changePassword(String id, String temporaryPassword) {
-	    Member member = mRepo.findById(id).orElseThrow(() -> new RuntimeException("Member not found with id: " + id));
+		Member member = mRepo.findById(id).orElseThrow(() -> new RuntimeException("Member not found with id: " + id));
 
-	    // 비밀번호를 발급 받은 임시비밀번호로 변경
-	    String encodedPassword = new BCryptPasswordEncoder().encode(temporaryPassword);
-	    member.setMemPw(encodedPassword);
-	    mRepo.save(member);
+		// 비밀번호를 발급 받은 임시비밀번호로 변경
+		String encodedPassword = new BCryptPasswordEncoder().encode(temporaryPassword);
+		member.setMemPw(encodedPassword);
+		mRepo.save(member);
 	}
 
 	// 임시 비밀번호 전송 메서드
@@ -232,70 +228,64 @@ public class MemberService implements UserDetailsService{
 			logger.error(e.getMessage());
 		}
 	}
-	
-	public MemberDTO findMemberById(String id){
+
+	public MemberDTO findMemberById(String id) {
 		Member m = mRepo.findAllByMemId(id);
 		MemberDTO dto = mMapper.toDto(m);
 		return dto;
 	}
-	
-	public List<MemberDTO> findId(String name, String email){
-		List<Member> list = mRepo.findByMemNameAndMemEmail(name,email);
+
+	public List<MemberDTO> findId(String name, String email) {
+		List<Member> list = mRepo.findByMemNameAndMemEmail(name, email);
 		List<MemberDTO> dtos = mMapper.toDtoList(list);
 		return dtos;
 	}
-	
-	public MemberDTO findEmail(String id){
+
+	public MemberDTO findEmail(String id) {
 		Member m = mRepo.findAllByMemId(id);
 		MemberDTO dto = mMapper.toDto(m);
 		return dto;
 	}
-	
-	public boolean isDupleID(String id) {
-		Optional<Member> m = mRepo.findById(id);
-		if(m.isEmpty())
-			return false;
-		else 
-			return true;
+
+	// 중복 아이디 체크
+	public boolean isDupleID(String memId) {
+		Member m = mRepo.findByMemId(memId); // 기존 메서드 사용
+		return m != null; // 값이 존재하면 true 반환
 	}
-	
+
+	// 중복 학번 체크
+	public boolean isDupleStuID(String memStuId) {
+		Optional<Member> m = mRepo.findByMemStuId(memStuId);
+		return m.isPresent(); // 값이 존재하면 true 반환
+	}
+
 	public void register(MemberDTO dto) throws Exception {
 		dto.setMemPw(new BCryptPasswordEncoder().encode(dto.getMemPw()));
 		MemberTierDTO tier = new MemberTierDTO();
 		tier.setMemTierId(Long.valueOf(6));
 		dto.setMemberTier(tier);
-		//-----------
+		// -----------
 		dto.setRole("ROLE_MEMBER");
-		
+
 		Member m = mMapper.toEntity(dto);
 		mRepo.save(m);
 	}
-//	public void changeID(String id, String newID) {
-//		memberdao.updateId(id, newID);
-//	}
-	
+
 	public boolean checkPW(String id, String password) {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		Member m = mRepo.findById(id).get();
-		if(encoder.matches(password, m.getMemPw())) {
+		if (encoder.matches(password, m.getMemPw())) {
 			return true;
 		} else {
 			return false;
 		}
 	}
-	
+
 	public void changePW(String id, String newPassword) {
 		newPassword = new BCryptPasswordEncoder().encode(newPassword);
 		Member m = mRepo.findById(id).get();
 		m.setMemPw(newPassword);
 		mRepo.save(m);
 	}
-	
-	public void changeUserInfo(String id, MemberDTO dto) {
-		Member m = mRepo.findById(id).get();
-		m.setMemName(dto.getMemName());
-		m.setMemBirth(dto.getMemBirth());
-		m.setMemContact(dto.getMemContact());
-		mRepo.save(m);
-	}
+
 }

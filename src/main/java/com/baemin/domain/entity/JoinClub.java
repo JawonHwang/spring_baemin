@@ -172,4 +172,9 @@ public class JoinClub {
 		this.clubNumId = clubNumId;
 	}
 
+	public JoinClub get() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

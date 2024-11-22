@@ -56,5 +56,12 @@ public class BoardService {
 		// Post Delete
 		bRepo.delete(Board);
 	}
+	
+	public void incrementViewCount(Long boardId) throws Exception {
+	    Board board = bRepo.findById(boardId).orElseThrow(() -> new Exception("게시물 없음"));
+	    board.setBoardViewCount(board.getBoardViewCount() + 1); // 조회수 증가
+	    bRepo.save(board); // 변경 사항 저장
+	}
+
 
 }

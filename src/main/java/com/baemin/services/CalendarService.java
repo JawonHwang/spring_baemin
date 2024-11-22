@@ -8,9 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.baemin.domain.entity.Calendar;
+import com.baemin.domain.entity.CalendarType;
 import com.baemin.dto.CalendarDTO;
+import com.baemin.dto.CalendarTypeDTO;
 import com.baemin.mappers.CalendarMapper;
+import com.baemin.mappers.CalendarTypeMapper;
 import com.baemin.repositories.CalendarRepository;
+import com.baemin.repositories.CalendarTypeRepository;
 
 @Service
 public class CalendarService {
@@ -22,6 +26,12 @@ public class CalendarService {
 
 	@Autowired
 	private CalendarMapper cMapper;
+	
+	@Autowired
+	private CalendarTypeRepository cTRepo;
+
+	@Autowired
+	private CalendarTypeMapper cTMapper;
 
 	public Calendar insert(CalendarDTO dto) {
 		Calendar ab = cMapper.toEntity(dto);
@@ -33,16 +43,20 @@ public class CalendarService {
 		List<CalendarDTO> dtos = cMapper.toDtoList(list);
 		return dtos;
 	}
+	
+	public List<CalendarTypeDTO> getType() {
+		List<CalendarType> list = cTRepo.findAll();
+		List<CalendarTypeDTO> dtos = cTMapper.toDtoList(list);
+		return dtos;
+	}
 
 	public void delete(Long calId) throws Exception {
 		Calendar Calendar = cRepo.findById(calId).get();
-		// Post Delete
 		cRepo.delete(Calendar);
 	}
 
-	public void update(Long calId, String boardTitle) {
+	public void update(Long calId, CalendarDTO dto) {
 		Calendar c = cRepo.findById(calId).get();
-		c.setCalTitle(boardTitle);
 		cRepo.save(c);
 	}
 }

@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import com.baemin.domain.entity.JoinClub;
+import com.baemin.domain.entity.Member;
 
 public interface JoinClubRepository extends JpaRepository<JoinClub, Integer> {
 	/*@Query(value = """
@@ -40,5 +41,9 @@ public interface JoinClubRepository extends JpaRepository<JoinClub, Integer> {
 	
 	
 	JoinClub findByJoStuId(String stuId);*/
+	
+	JoinClub findByJoId(long JoId);
+	
+	List<JoinClub> findByIsApp(boolean isApp); // JoIsApp이 true인 모든 JoinClub 반환
 
 }
