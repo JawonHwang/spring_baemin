@@ -1,10 +1,9 @@
 package com.baemin.dto;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
 
 public class ClubNumDTO {
-	private Long clubNumId;
+	private int clubNumId;
 	private int startYear;
 	private int semester;
 	private int clubNum;
@@ -14,7 +13,7 @@ public class ClubNumDTO {
 		super();
 	}
 
-	public ClubNumDTO(Long clubNumId, int startYear, int semester, int clubNum, LocalDate creAt) {
+	public ClubNumDTO(int clubNumId, int startYear, int semester, int clubNum, LocalDate creAt) {
 		super();
 		this.clubNumId = clubNumId;
 		this.startYear = startYear;
@@ -23,11 +22,11 @@ public class ClubNumDTO {
 		this.creAt = creAt;
 	}
 
-	public Long getClubNumId() {
+	public int getClubNumId() {
 		return clubNumId;
 	}
 
-	public void setClubNumId(Long clubNumId) {
+	public void setClubNumId(int clubNumId) {
 		this.clubNumId = clubNumId;
 	}
 

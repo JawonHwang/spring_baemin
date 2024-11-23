@@ -17,12 +17,12 @@ public class Admin {
 	@Column(name = "ADMIN_ID")
 	private String adminId; 
 	
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.EAGER)
 	@MapsId
 	@JoinColumn(name = "ADMIN_ID")
 	private Member member;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "ADMIN_TYPE_ID", nullable = true)
 	private AdminType adminType;
 

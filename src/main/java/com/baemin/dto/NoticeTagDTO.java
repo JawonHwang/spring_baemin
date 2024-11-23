@@ -9,6 +9,8 @@ public class NoticeTagDTO {
 	private AdminDTO creAdmin;
 	private Timestamp uptAt;
 	private AdminDTO uptAdmin;
+	private int order;
+	
 	public Long getNotTagId() {
 		return notTagId;
 	}
@@ -45,8 +47,15 @@ public class NoticeTagDTO {
 	public void setUptAdmin(AdminDTO uptAdmin) {
 		this.uptAdmin = uptAdmin;
 	}
+	
+	public int getOrder() {
+		return order;
+	}
+	public void setOrder(int order) {
+		this.order = order;
+	}
 	public NoticeTagDTO(Long notTagId, String notTagName, Timestamp creAt, AdminDTO creAdmin, Timestamp uptAt,
-			AdminDTO uptAdmin) {
+			AdminDTO uptAdmin, int order) {
 		super();
 		this.notTagId = notTagId;
 		this.notTagName = notTagName;
@@ -54,6 +63,7 @@ public class NoticeTagDTO {
 		this.creAdmin = creAdmin;
 		this.uptAt = uptAt;
 		this.uptAdmin = uptAdmin;
+		this.order = order;
 	}
 	public NoticeTagDTO() {
 		super();

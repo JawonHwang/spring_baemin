@@ -1,26 +1,40 @@
 package com.baemin.controllers;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.baemin.domain.entity.Attendance;
+import com.baemin.domain.entity.NewMember;
+import com.baemin.domain.entity.Visitor;
 import com.baemin.dto.AdminDTO;
+import com.baemin.dto.AttendanceDTO;
+import com.baemin.dto.FeeDetailDTO;
+import com.baemin.dto.JoinClubDTO;
 import com.baemin.dto.MemberDTO;
 import com.baemin.dto.MemberShipFeeDTO;
+import com.baemin.dto.NewMemberDTO;
+import com.baemin.dto.NoticeDTO;
 import com.baemin.dto.NoticeTagDTO;
+import com.baemin.dto.VisitorDTO;
 import com.baemin.services.AdminService;
 import com.baemin.services.MemberService;
+import com.baemin.services.SataticService;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -32,15 +46,144 @@ public class AdminController {
 
 	@Autowired
 	private MemberService mServ;
+	
+	@Autowired
+	private SataticService vServ;
+	
+	
+	//관리자 대시보드
+	
+	//총 회원수
+	@GetMapping("/count/member")
+	public ResponseEntity<Integer> countMember() {
+		int num = vServ.countMember();
+		return ResponseEntity.ok(num);
+	}
+	
+	// 오늘 방문자수
+	@GetMapping("/dailyVisitors")
+	public ResponseEntity<Visitor> getDailyVisitors() {
+		LocalDate today = LocalDate.now();
+		Visitor dailyVisitors = vServ.getDailyVisitors(today);
 
+		return ResponseEntity.ok(dailyVisitors);
+	}
+	//어제 방문자수
+	@GetMapping("/getYesterdayVisitors")
+	public ResponseEntity<Visitor> getYesterdayVisitors() {
+		LocalDate yesterday = LocalDate.now().minusDays(1); // 어제 날짜 구하기
+		Visitor yesterdayVisitors = vServ.getYesterdayVisitors(yesterday);
+		return ResponseEntity.ok(yesterdayVisitors);
+	}
+
+	//모든 방문자수
+	@GetMapping("/visitors/getAll")
+	public ResponseEntity<List<VisitorDTO>> visitorsGetAll() {
+		List<VisitorDTO> list = vServ.getAll();
+		return ResponseEntity.ok(list);
+	}
+	//누적 방문자수
+	@GetMapping("/visitors/sum")
+	public ResponseEntity<Integer> sum() {
+		int num = vServ.sum();
+		return ResponseEntity.ok(num);
+	}
+
+
+	@GetMapping("/monthlyVisitors")
+	public ResponseEntity<List<Visitor>> getMonthlyVisitors() {
+		LocalDate startOfMonth = LocalDate.now().withDayOfMonth(1);
+		LocalDate endOfMonth = LocalDate.now().plusMonths(1).withDayOfMonth(1).minusDays(1);
+		List<Visitor> monthlyVisitors = vServ.getMonthlyVisitors(startOfMonth, endOfMonth);
+		return ResponseEntity.ok(monthlyVisitors);
+	}
+	
+	//가입 인원
+	//신규회원 등록 수
+    @GetMapping("/todayNewMember")
+    public ResponseEntity<NewMemberDTO> getTodayNewMamber() {
+    	try {
+    		NewMemberDTO dto = vServ.getTodayNewMamber();
+            return ResponseEntity.ok(dto);
+        } catch (Exception e) {
+            // 예외가 발생한 경우 처리
+        	logger.error(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+    @PostMapping("/createNewMember")
+    public ResponseEntity<Void> createNewMember() {
+    	vServ.createNewMamber();
+        return ResponseEntity.ok().build();
+    }
+    @PutMapping("/incrementNewMember/{id}")
+    public ResponseEntity<Void> incrementNewMember(@PathVariable Long id) {
+        try {
+        	vServ.incrementNewMember(id);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            // 예외 처리
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+	
+	@GetMapping("/newMember/getAll")
+	public ResponseEntity<List<NewMemberDTO>> newMemberGetAll() {
+		List<NewMemberDTO> list = vServ.getAllNm();
+		return ResponseEntity.ok(list);
+	}
+	
+	//누적 신규가입자수
+	@GetMapping("/newMember/sum")
+	public ResponseEntity<Integer> sumNM() {
+		int num = vServ.sumNM();
+		return ResponseEntity.ok(num);
+	}
+
+	@GetMapping("/dailyMember")
+	public ResponseEntity<NewMember> getDailyMember() {
+		LocalDate today = LocalDate.now();
+		NewMember dailyNewMember = vServ.getDailyNewMember(today);
+		return ResponseEntity.ok(dailyNewMember);
+	}
+
+	@GetMapping("/getYesterdayMember")
+	public ResponseEntity<NewMember> getYesterdayMember() {
+		LocalDate yesterday = LocalDate.now().minusDays(1);
+		NewMember dailyNewMember = vServ.getYesterdayMember(yesterday);
+		return ResponseEntity.ok(dailyNewMember);
+	}
+	
+	
+	
+	
 	//관리
+	//비회원관리 > 전체조회
+	@GetMapping("/management/nonMember/getAll")
+	public ResponseEntity<List<JoinClubDTO>> getNonMemberAll() {
+		List<JoinClubDTO> list = aServ.getNonMemberAll();
+		return ResponseEntity.ok(list);
+	}
+	
+	//비회원관리 > 신청폼 > 승인
+	@PutMapping("/management/nonMember/form/approve/{joId}")
+		public ResponseEntity<Void> nonMemberApprove(@PathVariable int joId) {
+		aServ.nonMemberApprove(joId);
+		return ResponseEntity.ok().build();
+	}
+	
+	//비회원관리 > 신청폼 > 반려
+	@PutMapping("/management/nonMember/form/disApprove/{joId}")
+		public ResponseEntity<Void> nonMemberDisApprove(@PathVariable int joId) {
+		aServ.nonMemberDisApprove(joId);
+		return ResponseEntity.ok().build();
+	}
+	
+	
 	//회원관리 > 전체조회
 	@GetMapping("/management/member/getAll")
 	public ResponseEntity<List<MemberDTO>> getMemberAll() {
 		List<MemberDTO> list = aServ.getByMember();
-		System.out.println("확인!!!!!");
-		System.out.println(list.get(0).getMemberTier().getMemTier());
-		System.out.println(list.get(0).getMemId());
 		return ResponseEntity.ok(list);
 	}
 
@@ -89,18 +232,88 @@ public class AdminController {
 	//관리자관리 > 관리자 정보 수정
 	@PutMapping("/management/admin/updateInfo/{adminId}")
 	public ResponseEntity<Void> updateAdminInfo(@PathVariable String adminId, @RequestBody Map<String, Object> updateFields) {
-		System.out.println(adminId);
-		System.out.println(updateFields);
 		aServ.updateAdminInfo(adminId, updateFields);
 		return ResponseEntity.ok().build();
 	}
 
-	//대회관리 > 태그 > 전체조회
+	//공지사항관리 > 전체조회
+	@GetMapping("/management/notice/getAll")
+	public ResponseEntity<List<NoticeDTO>> getNoticeAll() {
+		List<NoticeDTO> list = aServ.getNoticeAll();
+		return ResponseEntity.ok(list);
+	}
+	
+	//공지사항관리 > 제목으로 해당 추가된 내용 수정 또는 조회 기능
+	@GetMapping("/management/notice/{notId}")
+	public ResponseEntity<NoticeDTO> getNotId(@PathVariable Long notId) throws Exception{
+		NoticeDTO dto = aServ.getNotId(notId);
+		return ResponseEntity.ok(dto);
+	}
+	
+	//공지사항관리 > 조회수 업데이트
+	@PutMapping("/management/notice/incrementView/{notId}")
+	public ResponseEntity<Void> incrementView(@PathVariable Long notId) {
+		aServ.incrementView(notId);
+		return ResponseEntity.ok().build();
+	}
+	
+	//공지사항관리 > 업데이트
+	@PutMapping("/management/notice/update/{notId}")
+	public ResponseEntity<Void> updateByNotId(@PathVariable Long notId, @RequestBody NoticeDTO noticeDTO) {
+		aServ.updateByNotId(notId, noticeDTO);
+		return ResponseEntity.ok().build();
+	}
+	
+	//공지사항관리 > 추가 > 등록
+	@PostMapping("/management/notice/add")
+	public ResponseEntity<Void> noticeInsert(@RequestBody NoticeDTO noticeDTO) {
+		aServ.noticeInsert(noticeDTO);
+		return ResponseEntity.ok().build();
+	}
+	
+	//공지사항관리 > 삭제
+	@DeleteMapping("/management/notice/delete/{notId}")
+	public ResponseEntity<Void> deleteByNotId(@PathVariable Long notId) {
+	    aServ.deleteByNotId(notId);
+	    return ResponseEntity.ok().build();
+	}
+	
+	//공지사항관리 > 태그 > 전체조회
 	@GetMapping("/management/noticeTag/getAll")
 	public ResponseEntity<List<NoticeTagDTO>> getNoticeTagAll() {
 		List<NoticeTagDTO> list = aServ.getNoticeTagAll();
 		return ResponseEntity.ok(list);
 	}
+	
+	//공지사항관리 > 태그 > 등록
+	@PostMapping("/management/noticeTag/insert")
+	public ResponseEntity<Void> noticeTagInsert(@RequestBody NoticeTagDTO noticeTagDTO) {
+		String notTagName = noticeTagDTO.getNotTagName();
+		aServ.noticeTagInsert(notTagName);
+		return ResponseEntity.ok().build();
+	}
+	
+	//공지사항관리 > 태그 > 수정
+	@PutMapping("/management/noticeTag/update/{notTagId}")
+	public ResponseEntity<Void> updateByNotTagId(@PathVariable Long notTagId, @RequestBody NoticeTagDTO noticeTagDTO) {
+		aServ.updateByNotTagId(notTagId, noticeTagDTO);
+		return ResponseEntity.ok().build();
+	}
+	
+	//공지사항관리 > 태그 > 순서수정
+	@PutMapping("/management/noticeTag/updateOrder")
+	public ResponseEntity<Void> updateOrder( @RequestBody List<NoticeTagDTO> noticeTagDTOList) {
+		aServ.updateOrder(noticeTagDTOList);
+		return ResponseEntity.ok().build();
+	}
+	
+	//공지사항관리 > 태그 > 삭제
+	@DeleteMapping("/management/noticeTag/delete/{notTagId}")
+	public ResponseEntity<Void> deleteByNotTagId(@PathVariable Long notTagId) {
+	    aServ.deleteByNotTagId(notTagId);
+	    return ResponseEntity.ok().build();
+	}
+
 	
 	//회비관리 > 전체조회
 	@GetMapping("/management/memberShipFee/getAll/{currentMonth}")
@@ -108,7 +321,6 @@ public class AdminController {
         List<MemberShipFeeDTO> list = aServ.getMemberShipFeeAllByCreAt(currentMonth);
         return ResponseEntity.ok(list);
     }
-	//await axios.put(`/api/admin/management/fee/updateInfo/${newData.feeId}`, fee);
 	
 	//회비관리 > 회비 정보 수정
 	@PutMapping("/management/fee/updateInfo/{feeId}")
@@ -116,4 +328,45 @@ public class AdminController {
 		aServ.updateFeeInfo(feeId, fee);
 		return ResponseEntity.ok().build();
 	}
+	
+	//회비세부사항관리 > 전체조회
+	@GetMapping("/management/feeDetail/getAll")
+	public ResponseEntity<List<FeeDetailDTO>> getFeeDetailAll() {
+		List<FeeDetailDTO> list = aServ.getFeeDetailAll();
+		return ResponseEntity.ok(list);
+	}
+	
+	//회비세부사항관리 > 등록
+	@PostMapping("/management/feeDetail/insert")
+	public ResponseEntity<Void> insert(@RequestBody FeeDetailDTO feeDatail) {
+		aServ.insertFeeDetailInfo(feeDatail);
+		return ResponseEntity.ok().build();
+	}
+	
+	//회비세부사항관리 > 수정
+	@PutMapping("/management/feeDetail/feeDetailInfo/{feeDetailId}")
+	public ResponseEntity<Void> feeDetailInfo(@PathVariable Long feeDetailId, @RequestBody FeeDetailDTO feeDatail) {
+		aServ.feeDetailInfo(feeDetailId, feeDatail);
+		return ResponseEntity.ok().build();
+	}
+	
+	//공통 > 정지 안된 회원만 조회
+	@GetMapping("/management/common/getMemberbyIsBan")
+	public ResponseEntity<List<MemberDTO>> getMemberByIsBan() {
+		List<MemberDTO> list = mServ.getMemberByIsBan();
+		return ResponseEntity.ok(list);
+	}
+	
+	//출석관리 > 회원출석 정보 수정
+	@PostMapping("/management/attendance/saveAll")
+	public ResponseEntity<Void> updateAttInfo(@RequestBody List<AttendanceDTO> attendanceDataList) {
+		aServ.updateAttInfo(attendanceDataList);
+		return ResponseEntity.ok().build();
+	}
+	
+	//출석관리 > 해당월 전체조회
+	@GetMapping("/management/attendance/monthGetAll")
+	public List<Attendance> getAttendanceByMonth(@RequestParam int year, @RequestParam int month) {
+        return aServ.getAttendanceByMonth(year, month);
+    }
 }

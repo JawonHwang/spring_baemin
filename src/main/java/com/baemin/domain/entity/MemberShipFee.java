@@ -51,7 +51,7 @@ public class MemberShipFee {
 	private LocalDateTime uptAt;
 	
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "ADMIN_ID")
+	@JoinColumn(name = "ADMIN_ID") //수정자
 	private Admin admin;
 
 	public MemberShipFee() {

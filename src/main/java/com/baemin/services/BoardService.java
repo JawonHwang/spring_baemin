@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.baemin.controllers.BoardController;
 import com.baemin.domain.entity.Board;
 import com.baemin.dto.BoardDTO;
 import com.baemin.mappers.BoardMapper;
@@ -16,35 +15,53 @@ import com.baemin.repositories.BoardRepository;
 @Service
 public class BoardService {
 
-	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
-	
+	private static final Logger logger = LoggerFactory.getLogger(BoardService.class);
+
 	@Autowired
 	private BoardRepository bRepo;
-	
+
 	@Autowired
 	private BoardMapper bMapper;
-	
-	public void insertBoard(BoardDTO dto) {
+
+	public Board insertBoard(BoardDTO dto) {
 		Board ab = bMapper.toEntity(dto);
-		bRepo.save(ab);
+		return bRepo.save(ab); // 저장 후 엔티티 반환
 	}
-	
-	public List<BoardDTO> selectAll(){
+
+	public void updateBoard(Long boardId, String boardTitle, String boardContents) {
+		// 기존 게시물 조회
+	    Board b = bRepo.findById(boardId).get();
+	    // 새로운 값으로 기존 게시물의 필드 업데이트
+	    b.setBoardTitle(boardTitle);
+	    b.setBoardContents(boardContents);
+
+	    // 수정된 게시물 저장
+	    bRepo.save(b);
+	}
+
+	public List<BoardDTO> selectAll() {
 		List<Board> list = bRepo.findAll();
 		List<BoardDTO> dtos = bMapper.toDtoList(list);
 		return dtos;
 	}
 
-	public BoardDTO getContents(Long boardId) throws Exception{
+	public BoardDTO getContents(Long boardId) throws Exception {
 		Board Board = bRepo.findById(boardId).get();
 		BoardDTO dto = bMapper.toDto(Board);
 		return dto;
 	}
-	
-	public void deletePost(Long boardId) throws Exception{
+
+	public void deletePost(Long boardId) throws Exception {
 		Board Board = bRepo.findById(boardId).get();
-		//Post Delete
-		bRepo.delete(Board);	
+		// Post Delete
+		bRepo.delete(Board);
 	}
 	
+	public void incrementViewCount(Long boardId) throws Exception {
+	    Board board = bRepo.findById(boardId).orElseThrow(() -> new Exception("게시물 없음"));
+	    board.setBoardViewCount(board.getBoardViewCount() + 1); // 조회수 증가
+	    bRepo.save(board); // 변경 사항 저장
+	}
+
+
 }

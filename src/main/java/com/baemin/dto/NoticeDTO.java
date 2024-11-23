@@ -7,9 +7,8 @@ public class NoticeDTO {
 	private Long notId;			//관리자ID
 	private String title;		//제목
 	private String content;		//내용
-	private Long notTagId;		//태그ID
+	private NoticeTagDTO tag;
 	private Long views;			//조회수
-	private Long notSteId;		//상태ID
 	private String adminId;		//작성자(관리자)ID
 	private Timestamp creAt;	//작성일
 	private Timestamp uptAt;	//수정일
@@ -19,15 +18,14 @@ public class NoticeDTO {
 		super();
 	}
 
-	public NoticeDTO(Long notId, String title, String content, Long notTagId, Long views, Long notSteId, String adminId,
+	public NoticeDTO(Long notId, String title, String content, NoticeTagDTO tag, Long views, String adminId,
 			Timestamp creAt, Timestamp uptAt, Timestamp delAt) {
 		super();
 		this.notId = notId;
 		this.title = title;
 		this.content = content;
-		this.notTagId = notTagId;
+		this.tag = tag;
 		this.views = views;
-		this.notSteId = notSteId;
 		this.adminId = adminId;
 		this.creAt = creAt;
 		this.uptAt = uptAt;
@@ -58,12 +56,12 @@ public class NoticeDTO {
 		this.content = content;
 	}
 
-	public Long getNotTagId() {
-		return notTagId;
+	public NoticeTagDTO getTag() {
+		return tag;
 	}
 
-	public void setNotTagId(Long notTagId) {
-		this.notTagId = notTagId;
+	public void setTag(NoticeTagDTO tag) {
+		this.tag = tag;
 	}
 
 	public Long getViews() {
@@ -72,14 +70,6 @@ public class NoticeDTO {
 
 	public void setViews(Long views) {
 		this.views = views;
-	}
-
-	public Long getNotSteId() {
-		return notSteId;
-	}
-
-	public void setNotSteId(Long notSteId) {
-		this.notSteId = notSteId;
 	}
 
 	public String getAdminId() {

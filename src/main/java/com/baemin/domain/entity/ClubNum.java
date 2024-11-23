@@ -16,7 +16,7 @@ public class ClubNum {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "CLUB_NUM_ID")
-	private Long clubNumId;
+	private int clubNumId;
 
 	@Column(name = "START_YEAR")
 	private int startYear;
@@ -34,7 +34,7 @@ public class ClubNum {
 		super();
 	}
 
-	public ClubNum(Long clubNumId, int startYear, int semester, int clubNum, LocalDate creAt) {
+	public ClubNum(int clubNumId, int startYear, int semester, int clubNum, LocalDate creAt) {
 		super();
 		this.clubNumId = clubNumId;
 		this.startYear = startYear;
@@ -43,11 +43,11 @@ public class ClubNum {
 		this.creAt = creAt;
 	}
 
-	public Long getClubNumId() {
+	public int getClubNumId() {
 		return clubNumId;
 	}
 
-	public void setClubNumId(Long clubNumId) {
+	public void setClubNumId(int clubNumId) {
 		this.clubNumId = clubNumId;
 	}
 
